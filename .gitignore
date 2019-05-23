@@ -11,6 +11,9 @@
 # production
 /build
 
+# semantic build
+/semantic/build
+
 # misc
 .DS_Store
 .env.local
