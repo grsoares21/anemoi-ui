@@ -32,8 +32,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "semantic-ui": "^2.4.2"
   }
 }
