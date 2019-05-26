@@ -1,12 +1,3 @@
-$blue:    #0fbcf9;
-$indigo:  #3c40c6;
-$purple:  #575fcf;
-$pink:    #ef5777;
-$red:     #ff3f34;
-$orange:  #ffa801;
-$yellow:  #ffd32a;
-$green:   #05c46b;
-$teal:    #0be881;
-$cyan:    #4bcffa;
+@import "variables";
 
 @import "node_modules/bootstrap/scss/bootstrap";

@@ -1,0 +1,18 @@
+@import "../variables";
+
+.WelcomePhrase {
+	color: white;
+}
+
+.WelcomePhraseCallToAction {
+
+}
+
+.WelcomePhraseIntroduction {
+	font-weight: bold;
+}
+
+.WelcomePhrase em {
+	color: $indigo;
+	font-style: normal;
+}
