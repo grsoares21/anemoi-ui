@@ -10,11 +10,7 @@ const WelcomePage: React.FC = () => {
   return (
     <div className="WelcomePage">
       <Row className="h-100">
-<<<<<<< HEAD
-        <Col xs={{span: 12, order: 2}} md={{ span: 6, order: 1 }}>
-=======
         <Col xs={{span: 12, order: 2}} md={{ span: 6, order: 1 }} className="my-auto">
->>>>>>> Added catch phrase and logo to welcome page
           <WelcomePhrase />
           <Button size="lg" variant="primary"><b>Sim!</b></Button>
         </Col>
