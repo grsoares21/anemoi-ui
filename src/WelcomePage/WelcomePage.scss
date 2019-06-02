@@ -3,8 +3,14 @@
 .WelcomePage {
     width: 100vw;
 	background: linear-gradient(135deg, $blue 0%, $cyan 100%);
-	transition: height 0.5s cubic-bezier(0.455, 0.030, 0.515, 0.955);
 	overflow: hidden;
+}
+
+.WelcomePage h3 {
+	transition: opacity 0.2s linear;
+	color: white;
+	text-align: center;
+	line-height: 50px;
 }
 
 .WelcomePageLogo {
