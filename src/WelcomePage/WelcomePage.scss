@@ -7,7 +7,6 @@
 }
 
 .WelcomePage h3 {
-	transition: opacity 0.2s linear;
 	color: white;
 	text-align: center;
 	line-height: 50px;
@@ -18,8 +17,26 @@
 	margin: 0 auto;
 }
 
-.WelcomeContent {
+.AnemoiTitle-appear {
+	opacity: 0;
+}
+
+.AnemoiTitle-appear-active {
+	opacity: 1;
 	transition: opacity 0.2s linear;
+}
+
+.WelcomeContent-enter {
+	opacity: 1;
+}
+
+.WelcomeContent-enter-active {
+	opacity: 0;
+	transition: opacity 0.2s linear;
+}
+
+.WelcomeContent-enter-done {
+	display: none;
 }
 
 // CLOUD ANIMATIONS
