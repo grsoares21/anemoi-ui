@@ -12,30 +12,25 @@
 	line-height: 50px;
 }
 
-.WelcomePageLogo {
-	width: 80%;
-	margin: 0 auto;
-}
-
-.AnemoiTitle-appear {
+.AnemoiTitleAnim-appear {
 	opacity: 0;
 }
 
-.AnemoiTitle-appear-active {
+.AnemoiTitleAnim-appear-active {
 	opacity: 1;
 	transition: opacity 0.2s linear;
 }
 
-.WelcomeContent-enter {
+.WelcomeContentAnim-enter {
 	opacity: 1;
 }
 
-.WelcomeContent-enter-active {
+.WelcomeContentAnim-enter-active {
 	opacity: 0;
 	transition: opacity 0.2s linear;
 }
 
-.WelcomeContent-enter-done {
+.WelcomeContentAnim-enter-done {
 	display: none;
 }
 
