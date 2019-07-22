@@ -3,6 +3,7 @@ import './TravelPlannerWorkflow.scss'
 import React, { useState } from 'react';
 import { Row, Col, Container } from 'react-bootstrap';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
+import MultiCitySelector from '../Shared/MultiCitySelector';
 
 interface TravelPlannerWorkflowProps {
   launchWorkflow: boolean
@@ -26,19 +27,27 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
           <br />
           <br />
           <TransitionGroup className="WorkflowSteps">
-            {props.launchWorkflow && 
+            {props.launchWorkflow &&
               <CSSTransition {...stepsAnimProps} onEntered={incrementWorkflowStep}>
                 <h4>Ótimo, então vamos lá!</h4>
               </CSSTransition>
             }
             {worfklowStep >= 1 &&
               <CSSTransition {...stepsAnimProps} timeout={400} onEntered={incrementWorkflowStep}>
-                <h4>Eu posso lhe dizer a ordem mais barata para visitar as cidades que você deseja.</h4>
+                <div>
+                  <h4 className="FocusedStep">Primeiramente, eu gostaria de saber quais cidades poderiam ser seu ponto de partida.</h4>
+                  <MultiCitySelector />
+                </div>
               </CSSTransition>
             }
             {worfklowStep >= 2 &&
               <CSSTransition {...stepsAnimProps} onEntered={incrementWorkflowStep}>
-                <h4 className="FocusedStep">Para onde você gostaria de ir?</h4>
+                <h4 className="FocusedStep">Ótimo! E quais cidades poderiam ser seu ponto de chegada?</h4>
+              </CSSTransition>
+            }
+            {worfklowStep >= 3 &&
+              <CSSTransition {...stepsAnimProps} onEntered={incrementWorkflowStep}>
+                <h4 className="FocusedStep">Perfeito! E, finalmente, quais cidades você gostaria de visitar?</h4>
               </CSSTransition>
             }
           </TransitionGroup>
