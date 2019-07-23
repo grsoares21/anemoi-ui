@@ -1,0 +1,25 @@
+@import '../bootstrap-overrides.scss';
+
+.MultiCitySelector {
+  line-height: 2;
+}
+.MultiCitySelector > .MultiCitySelector__menu {
+  margin-top: 0px;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+}
+
+.MultiCitySelector > .MultiCitySelector__control {
+  border: 2px solid $gray-400;
+}
+
+.MultiCitySelector > .MultiCitySelector__control--is-focused, .MultiCitySelector > .MultiCitySelector__control:hover {
+  box-shadow: 0 0 2px $cyan;
+  border-color: $cyan;
+}
+
+.MultiCitySelector > .MultiCitySelector__control--menu-is-open {
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+  border-bottom: 0px;
+}

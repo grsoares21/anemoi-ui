@@ -36,18 +36,24 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
               <CSSTransition {...stepsAnimProps} timeout={400} onEntered={incrementWorkflowStep}>
                 <div>
                   <h4 className="FocusedStep">Primeiramente, eu gostaria de saber quais cidades poderiam ser seu ponto de partida.</h4>
-                  <MultiCitySelector />
+                  <MultiCitySelector placeholder="Cidades de partida..." />
                 </div>
               </CSSTransition>
             }
             {worfklowStep >= 2 &&
               <CSSTransition {...stepsAnimProps} onEntered={incrementWorkflowStep}>
-                <h4 className="FocusedStep">Ótimo! E quais cidades poderiam ser seu ponto de chegada?</h4>
+                <div>
+                  <h4 className="FocusedStep">Ótimo! E quais cidades poderiam ser seu ponto de chegada?</h4>
+                  <MultiCitySelector placeholder="Cidades de chegada..." />
+                </div>
               </CSSTransition>
             }
             {worfklowStep >= 3 &&
               <CSSTransition {...stepsAnimProps} onEntered={incrementWorkflowStep}>
-                <h4 className="FocusedStep">Perfeito! E, finalmente, quais cidades você gostaria de visitar?</h4>
+                <div>
+                  <h4 className="FocusedStep">Perfeito! E, finalmente, quais cidades você gostaria de visitar?</h4>
+                  <MultiCitySelector placeholder="Cidades para visitar..." />
+                </div>
               </CSSTransition>
             }
           </TransitionGroup>

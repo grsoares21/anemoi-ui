@@ -1,3 +1,5 @@
+import './MultiCitySelector.scss';
+
 import React from 'react';
 import Async from 'react-select/async';
 import debounce from 'lodash/debounce';
@@ -10,7 +12,7 @@ const debouncedFetchCityOptions = debounce((searchTerm, callback) => {
   fetch(locationsBaseUrl + 'term=' + searchTerm)
     .then(result => result.json())
     .then(result => result.locations.map((loc: any) => {return {label: loc.name, value: loc.id}}))
-    .then(locations => {callback(locations);})
+    .then(locations => {callback(locations);debugger;})
     .catch((error) => {console.log(error)});
 }, 500);
 
@@ -21,12 +23,24 @@ const searchCityOptions = (searchTerm: string, callback: Function) => {
   debouncedFetchCityOptions(searchTerm, callback);
 }
 
-const MultiCitySelector: React.FC = () => {
+interface MultiCitySelectorProps {
+  placeholder: string
+}
+
+const MultiCitySelector: React.FC<MultiCitySelectorProps> = (props) => {
   return (
     <Async
+      className='MultiCitySelector'
+      classNamePrefix='MultiCitySelector'
       isMulti
       cacheOptions
+      placeholder={props.placeholder}
       loadOptions={searchCityOptions}
+      components={{
+        // hides the dropdown arroww on the right of the select
+        DropdownIndicator: () => null,
+        IndicatorSeparator: () => null
+      }}
       />
   );
 }
