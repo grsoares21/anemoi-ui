@@ -1,31 +1,38 @@
 import './MultiCitySelector.scss';
 
-import LocationServices from '../Services/LocationServices';
+import LocationServices, {City} from '../Services/LocationServices';
 
 import React from 'react';
 import Async from 'react-select/async';
 import debounce from 'lodash/debounce';
+import { ValueType, ActionMeta } from 'react-select/src/types';
 
-// TODO: save selected values in state
+interface MultiCitySelectorOptions {
+  label: string;
+  value: string;
+  data: City;
+}
+
+interface MultiCitySelectorProps {
+  placeholder: string;
+  onChange: (selectedCities: City[]) => void;
+}
+
 const debouncedFetchCityOptions = debounce((searchTerm, callback) => {
   LocationServices.searchCities(searchTerm)
     .then(cities =>
       cities.map(city => {
-        return {label: `${city.name}, ${city.country.name}`, value: city}
+        return {label: `${city.name}, ${city.country.name}`, value: city.id, data: city}
       }))
     .then(cities => callback(cities))
     .catch((error) => {console.log(error)});
 }, 500);
 
-const searchCityOptions = (searchTerm: string, callback: Function) => {
+const fetchCityOptions = (searchTerm: string, callback: Function) => {
   if (!searchTerm) {
     return Promise.resolve({ options: [] });
   }
   debouncedFetchCityOptions(searchTerm, callback);
-}
-
-interface MultiCitySelectorProps {
-  placeholder: string
 }
 
 const MultiCitySelector: React.FC<MultiCitySelectorProps> = (props) => {
@@ -36,11 +43,15 @@ const MultiCitySelector: React.FC<MultiCitySelectorProps> = (props) => {
       isMulti
       cacheOptions
       placeholder={props.placeholder}
-      loadOptions={searchCityOptions}
+      loadOptions={fetchCityOptions}
       components={{
         // hides the dropdown arroww on the right of the select
         DropdownIndicator: () => null,
         IndicatorSeparator: () => null
+      }}
+      onChange={(value: ValueType<MultiCitySelectorOptions>) => {
+        if(value === null) props.onChange([]);
+        else props.onChange((value as MultiCitySelectorOptions[]).map(option => option.data));
       }}
       />
   );

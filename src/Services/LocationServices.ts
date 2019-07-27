@@ -5,7 +5,7 @@ interface Location {
   code: string;
 }
 
-interface City extends Location {
+export interface City extends Location {
   active: boolean;
   country: Location;
 }
