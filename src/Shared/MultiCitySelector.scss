@@ -4,7 +4,7 @@
   line-height: 2;
 }
 .MultiCitySelector > .MultiCitySelector__menu {
-  margin-top: 0px;
+  margin-top: -1px;
   border-top-left-radius: 0px;
   border-top-right-radius: 0px;
 }
@@ -21,5 +21,4 @@
 .MultiCitySelector > .MultiCitySelector__control--menu-is-open {
   border-bottom-left-radius: 0px;
   border-bottom-right-radius: 0px;
-  border-bottom: 0px;
 }

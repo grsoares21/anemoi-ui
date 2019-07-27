@@ -1,18 +1,19 @@
 import './MultiCitySelector.scss';
 
+import LocationServices from '../Services/LocationServices';
+
 import React from 'react';
 import Async from 'react-select/async';
 import debounce from 'lodash/debounce';
 
-const locationsBaseUrl = 'https://api.skypicker.com/locations?locale=en-US&location_types=city&limit=10&';
-
-// TODO: refactor this in a more appropriate way
 // TODO: save selected values in state
 const debouncedFetchCityOptions = debounce((searchTerm, callback) => {
-  fetch(locationsBaseUrl + 'term=' + searchTerm)
-    .then(result => result.json())
-    .then(result => result.locations.map((loc: any) => {return {label: loc.name, value: loc.id}}))
-    .then(locations => {callback(locations);debugger;})
+  LocationServices.searchCities(searchTerm)
+    .then(cities =>
+      cities.map(city => {
+        return {label: `${city.name}, ${city.country.name}`, value: city}
+      }))
+    .then(cities => callback(cities))
     .catch((error) => {console.log(error)});
 }, 500);
 
