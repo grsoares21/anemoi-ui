@@ -5,7 +5,7 @@ import LocationServices, {City} from '../Services/LocationServices';
 import React from 'react';
 import Async from 'react-select/async';
 import debounce from 'lodash/debounce';
-import { ValueType, ActionMeta } from 'react-select/src/types';
+import { ValueType } from 'react-select/src/types';
 
 interface MultiCitySelectorOptions {
   label: string;

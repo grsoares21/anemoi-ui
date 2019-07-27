@@ -19,7 +19,7 @@ class LocationServices {
     return fetch(searchUrl)
             .then(result => result.json())
             .then(data => data.locations)
-            .then(locations => <Array<City>>locations)
+            .then(locations => locations as Array<City>)
   }
 }
 
