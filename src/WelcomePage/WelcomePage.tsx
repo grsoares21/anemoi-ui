@@ -28,14 +28,14 @@ const WelcomePage: React.FC<WelcomePageProps> = props => {
       height: welcomeCollapsed ? "50px" : "100vh",
       transition: `height ${collapseDuration}s cubic-bezier(0.455, 0.030, 0.515, 0.955)`
     }}>
-      {collapseFinished && 
+      {collapseFinished &&
         <CSSTransition enter={false} appear={true} in={collapseFinished} timeout={200} classNames="AnemoiTitleAnim">
           <h3>Anemoi</h3>
         </CSSTransition>
       }
-      <CSSTransition 
-        in={welcomeCollapsed} 
-        timeout={collapseDuration * 1000} 
+      <CSSTransition
+        in={welcomeCollapsed}
+        timeout={collapseDuration * 1000}
         classNames="WelcomeContentAnim"
         onEntered={onCollapseFinished}>
         <Row className="h-100">
