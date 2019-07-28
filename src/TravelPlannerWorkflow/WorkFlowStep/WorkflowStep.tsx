@@ -1,6 +1,6 @@
 import './WorkflowStep.scss'
 
-import React, { useState } from 'react';
+import React from 'react';
 import posed, { PoseGroup } from 'react-pose';
 
 const WorkflowStepAnimation = posed.div({
