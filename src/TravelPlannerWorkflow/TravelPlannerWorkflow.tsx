@@ -14,7 +14,6 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
   let [departureCities, setDepartureCities] = useState<City[]>([]);
   let [visitingCities, setVisitingCities] = useState<City[]>([]);
   let [arrivalCities, setArrivalCities] = useState<City[]>([]);
-  let incrementWorkflowStep = () => setWorkflowStep(worfklowStep + 1);
 
   return (
     <Container>
@@ -26,7 +25,7 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
           <WorkflowStep
               isVisible={props.launchWorkflow}
               uniqueKey="letsGo"
-              onAnimationEnd={incrementWorkflowStep}>
+              onAnimationEnd={() => setWorkflowStep(1)}>
             <h4>Ótimo, então vamos lá!</h4>
           </WorkflowStep>
           <WorkflowStep isVisible={worfklowStep >= 1} uniqueKey="departureCities" isFocused>

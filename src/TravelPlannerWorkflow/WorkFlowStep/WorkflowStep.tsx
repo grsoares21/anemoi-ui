@@ -20,7 +20,6 @@ interface WorkflowStepProps {
 }
 
 const WorkflowStep: React.FC<WorkflowStepProps> = props => {
-  let [animationComplete, setAnimationComplete] = useState(false);
 
   return (
     <div className="WorkflowStep">
@@ -28,14 +27,7 @@ const WorkflowStep: React.FC<WorkflowStepProps> = props => {
         {props.isVisible &&
           <WorkflowStepAnimation
             key={props.uniqueKey}
-            onPoseComplete={() => {
-              if(props.onAnimationEnd && !animationComplete) {
-                // onPoseComplete has a bug that makes it re-execute at every re-render
-                // this hack prevents it
-                setAnimationComplete(true);
-                props.onAnimationEnd();
-              }
-            }}
+            onPoseComplete={props.onAnimationEnd}
             className={props.isFocused ? 'FocusedStep' : ''}>
             {props.children}
           </WorkflowStepAnimation>
