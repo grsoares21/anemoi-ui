@@ -11,25 +11,3 @@
 		line-height: 50px;
 	}
 }
-
-.AnemoiTitleAnim-appear {
-	opacity: 0;
-
-	&-active {
-		opacity: 1;
-		transition: opacity 0.2s linear;
-	}
-}
-
-.WelcomeContentAnim-enter {
-	opacity: 1;
-
-	&-active {
-		opacity: 0;
-		transition: opacity 0.2s linear;
-	}
-
-	&-done {
-		display: none;
-	}
-}

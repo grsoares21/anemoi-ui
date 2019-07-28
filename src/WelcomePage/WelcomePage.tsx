@@ -1,14 +1,38 @@
 import React, { useState } from 'react';
 
 import { Row, Col } from 'react-bootstrap';
-import { CSSTransition } from 'react-transition-group';
+import posed from 'react-pose';
 
-import WelcomePhrase from './WelcomePhrase';
+import WelcomePhrase from './WelcomePhrase/WelcomePhrase';
 import WelcomePageLogo from './WelcomePageLogo';
 
 import './WelcomePage.scss';
+import AnemoiTitle from './AnemoiTitle';
 
-const collapseDuration = 0.5;
+const collapseDuration = 500;
+
+const PageAnimation = posed.div({
+  open: { height: '100vh' },
+  collapsed: {
+    height: '50px',
+    transition: {
+      ease: [0.455, 0.030, 0.515, 0.955],
+      duration: collapseDuration
+    }
+  }
+});
+
+const ContentAnimation = posed.div({
+  open: { opacity: 1 },
+  collapsed: {
+    opacity: 0,
+    transition: {
+      ease: 'linear',
+      duration: 200
+    }
+  }
+});
+
 
 interface WelcomePageProps {
   collapseCallback: Function
@@ -23,31 +47,22 @@ const WelcomePage: React.FC<WelcomePageProps> = props => {
     props.collapseCallback();
   }
 
+  const poseString = welcomeCollapsed ? 'collapsed' : 'open';
+
   return (
-    <div className="WelcomePage" style={{
-      height: welcomeCollapsed ? "50px" : "100vh",
-      transition: `height ${collapseDuration}s cubic-bezier(0.455, 0.030, 0.515, 0.955)`
-    }}>
-      {collapseFinished &&
-        <CSSTransition enter={false} appear={true} in={collapseFinished} timeout={200} classNames="AnemoiTitleAnim">
-          <h3>Anemoi</h3>
-        </CSSTransition>
-      }
-      <CSSTransition
-        in={welcomeCollapsed}
-        timeout={collapseDuration * 1000}
-        classNames="WelcomeContentAnim"
-        onEntered={onCollapseFinished}>
+    <PageAnimation className="WelcomePage" pose={poseString} onPoseComplete={onCollapseFinished}>
+      <AnemoiTitle isVisible={collapseFinished} />
+      <ContentAnimation pose={poseString} className="h-100">
         <Row className="h-100">
           <Col xs={{ span: 12, order: 2 }} md={{ span: 6, order: 1 }}>
-            <WelcomePhrase collapse={() => setWelcomeCollapsed(true)} />
+            <WelcomePhrase onConfirm={() => setWelcomeCollapsed(true)} />
           </Col>
           <Col xs={{ span: 12, order: 1 }} md={{ span: 6, order: 1 }}>
             <WelcomePageLogo />
           </Col>
         </Row>
-      </CSSTransition>
-    </div>
+      </ContentAnimation>
+    </PageAnimation>
   );
 }
 
