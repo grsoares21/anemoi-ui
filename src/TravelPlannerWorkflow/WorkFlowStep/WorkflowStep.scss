@@ -1,11 +1,11 @@
-@import '../bootstrap-overrides.scss';
+@import '../../bootstrap-overrides.scss';
 
-.WorkflowSteps h4 {
+.WorkflowStep h4 {
   color: $gray-600;
   margin-bottom: 10px;
   margin-top: 10px;
 }
 
-.FocusedStep {
+.FocusedStep h4 {
   color: $pink !important;
 }
