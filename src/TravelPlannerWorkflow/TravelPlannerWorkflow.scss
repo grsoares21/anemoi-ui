@@ -1,21 +1,5 @@
 @import '../bootstrap-overrides.scss';
 
-.WorkflowStepsAnim-enter {
-  opacity: 0;
-  margin-top: -10px;
-}
-
-.WorkflowStepsAnim-enter-active {
-  opacity: 1;
-  margin-top: 0px;
-	transition: opacity 0.3s ease-out, margin 0.3s ease-out;
-}
-
-.WorkflowStepsAnim-enter-done {
-  margin-top: 0px;
-	opacity: 1;
-}
-
 .WorkflowSteps h4 {
   color: $gray-600;
   margin-bottom: 10px;

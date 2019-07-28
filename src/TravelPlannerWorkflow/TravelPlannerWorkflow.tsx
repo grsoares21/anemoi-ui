@@ -5,11 +5,20 @@ import MultiCitySelector from '../Shared/MultiCitySelector';
 
 import React, { useState } from 'react';
 import { Row, Col, Container } from 'react-bootstrap';
-import { TransitionGroup, CSSTransition } from 'react-transition-group';
+import posed, { PoseGroup } from 'react-pose';
 
 interface TravelPlannerWorkflowProps {
   launchWorkflow: boolean
 }
+
+const WorkflowStepAnimation = posed.div({
+  exit: { opacity: 0, marginTop: '-10px' },
+  enter: {
+    opacity: 1,
+    marginTop: '0px',
+    transition: { ease: 'easeOut', duration: 300 }
+  }
+})
 
 const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
   let [worfklowStep, setWorkflowStep] = useState(0);
@@ -18,12 +27,6 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
   let [arrivalCities, setArrivalCities] = useState<City[]>([]);
   let incrementWorkflowStep = () => setWorkflowStep(worfklowStep + 1);
 
-  let stepsAnimProps = {
-    appear: true,
-    timeout: 300,
-    classNames: "WorkflowStepsAnim"
-  }
-
   return (
     <Container>
       <Row>
@@ -31,46 +34,40 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
           <br />
           <br />
           <br />
-          <TransitionGroup className="WorkflowSteps">
+          <PoseGroup className="WorkflowSteps">
             {props.launchWorkflow &&
-              <CSSTransition {...stepsAnimProps} onEntered={incrementWorkflowStep}>
+              <WorkflowStepAnimation key="letsGo" onPoseComplete={incrementWorkflowStep}>
                 <h4>Ótimo, então vamos lá!</h4>
-              </CSSTransition>
+              </WorkflowStepAnimation>
             }
             {worfklowStep >= 1 &&
-              <CSSTransition {...stepsAnimProps} timeout={400} onEntered={incrementWorkflowStep}>
-                <div>
-                  <h4 className="FocusedStep">Primeiramente, eu gostaria de saber quais cidades poderiam ser seu ponto de partida.</h4>
-                  <MultiCitySelector
-                    placeholder="Cidades de partida..."
-                    onChange={(cities) => {setDepartureCities(cities)}}
-                    />
-                </div>
-              </CSSTransition>
+              <WorkflowStepAnimation key="departureCities" onPoseComplete={incrementWorkflowStep}>
+                <h4 className="FocusedStep">Primeiramente, eu gostaria de saber quais cidades poderiam ser seu ponto de partida.</h4>
+                <MultiCitySelector
+                  placeholder="Cidades de partida..."
+                  onChange={(cities) => {setDepartureCities(cities)}}
+                  />
+              </WorkflowStepAnimation>
             }
             {worfklowStep >= 2 &&
-              <CSSTransition {...stepsAnimProps} onEntered={incrementWorkflowStep}>
-                <div>
-                  <h4 className="FocusedStep">Ótimo! E quais cidades poderiam ser seu ponto de chegada?</h4>
-                  <MultiCitySelector
-                    placeholder="Cidades de chegada..."
-                    onChange={(cities) => {setArrivalCities(cities)}}
-                    />
-                </div>
-              </CSSTransition>
+              <WorkflowStepAnimation key="arrivalCities" onPoseComplete={incrementWorkflowStep}>
+                <h4 className="FocusedStep">Ótimo! E quais cidades poderiam ser seu ponto de chegada?</h4>
+                <MultiCitySelector
+                  placeholder="Cidades de chegada..."
+                  onChange={(cities) => {setArrivalCities(cities)}}
+                  />
+              </WorkflowStepAnimation>
             }
             {worfklowStep >= 3 &&
-              <CSSTransition {...stepsAnimProps} onEntered={incrementWorkflowStep}>
-                <div>
-                  <h4 className="FocusedStep">Perfeito! E, finalmente, quais cidades você gostaria de visitar?</h4>
-                  <MultiCitySelector
-                    placeholder="Cidades para visitar..."
-                    onChange={(cities) => {setVisitingCities(cities)}}
-                    />
-                </div>
-              </CSSTransition>
+              <WorkflowStepAnimation key="visitingCities" onPoseComplete={incrementWorkflowStep}>
+                <h4 className="FocusedStep">Perfeito! E, finalmente, quais cidades você gostaria de visitar?</h4>
+                <MultiCitySelector
+                  placeholder="Cidades para visitar..."
+                  onChange={(cities) => {setVisitingCities(cities)}}
+                  />
+              </WorkflowStepAnimation>
             }
-          </TransitionGroup>
+          </PoseGroup>
         </Col>
       </Row>
     </Container>
