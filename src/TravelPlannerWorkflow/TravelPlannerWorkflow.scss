@@ -1,0 +1,10 @@
+@import '../bootstrap-overrides.scss';
+
+.SelectorStep {
+  display: flex;
+
+  & > .MultiCitySelector {
+    flex-grow: 1;
+    margin-right: 10px;
+  }
+}

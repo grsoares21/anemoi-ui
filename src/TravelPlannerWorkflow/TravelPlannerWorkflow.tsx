@@ -1,8 +1,10 @@
+import './TravelPlannerWorkflow.scss';
+
 import {City} from '../Services/LocationServices';
 import MultiCitySelector from '../Shared/MultiCitySelector';
 
 import React, { useState } from 'react';
-import { Row, Col, Container } from 'react-bootstrap';
+import { Row, Col, Container, Button } from 'react-bootstrap';
 import WorkflowStep from './WorkFlowStep/WorkflowStep';
 
 interface TravelPlannerWorkflowProps {
@@ -33,27 +35,42 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
           </WorkflowStep>
           <WorkflowStep isVisible={workflowStep >= 1} uniqueKey="departureCities" isFocused>
             <h4>Primeiramente, eu gostaria de saber quais cidades poderiam ser seu ponto de partida.</h4>
-            <MultiCitySelector
-                placeholder="Cidades de partida..."
-                onChange={(cities) => {setDepartureCities(cities)}}
-                onConfirm={() => updateWorkflowStep(2)} />
+            <div className="SelectorStep">
+              <MultiCitySelector
+                  placeholder="Cidades de partida..."
+                  onChange={(cities) => {setDepartureCities(cities)}}
+                  onConfirm={() => updateWorkflowStep(2)} />
+              <Button size="lg" onClick={() => departureCities.length > 0 && updateWorkflowStep(2)}>
+                <b>↵</b>
+              </Button>
+            </div>
           </WorkflowStep>
           <WorkflowStep isVisible={workflowStep >= 2} uniqueKey="arrivalCities" isFocused>
             <h4>Ótimo! E quais cidades poderiam ser seu ponto de chegada?</h4>
-            <MultiCitySelector
-                placeholder="Cidades de chegada..."
-                onChange={(cities) => {setArrivalCities(cities)}}
-                onConfirm={() => updateWorkflowStep(3)} />
+            <div className="SelectorStep">
+              <MultiCitySelector
+                  placeholder="Cidades de chegada..."
+                  onChange={(cities) => {setArrivalCities(cities)}}
+                  onConfirm={() => updateWorkflowStep(3)} />
+              <Button size="lg" onClick={() => arrivalCities.length > 0 && updateWorkflowStep(3)}>
+                <b>↵</b>
+              </Button>
+            </div>
           </WorkflowStep>
           <WorkflowStep isVisible={workflowStep >= 3} uniqueKey="arrivalCities" isFocused>
             <h4>Perfeito! E, finalmente, quais cidades você gostaria de visitar?</h4>
-            <MultiCitySelector
-              placeholder="Cidades para visitar..."
-              onChange={(cities) => {setVisitingCities(cities)}}
-              onConfirm={() => {
-                console.log(departureCities, arrivalCities, visitingCities);
-                // TODO: continue workflow
-              }} />
+            <div className="SelectorStep">
+              <MultiCitySelector
+                placeholder="Cidades para visitar..."
+                onChange={(cities) => {setVisitingCities(cities)}}
+                onConfirm={() => {
+                  console.log(departureCities, arrivalCities, visitingCities);
+                  // TODO: continue workflow
+                }} />
+              <Button size="lg" onClick={() => console.log(departureCities, arrivalCities, visitingCities)}>
+                <b>↵</b>
+              </Button>
+            </div>
           </WorkflowStep>
         </Col>
       </Row>

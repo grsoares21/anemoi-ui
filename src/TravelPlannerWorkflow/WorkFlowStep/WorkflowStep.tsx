@@ -23,7 +23,7 @@ const WorkflowStep: React.FC<WorkflowStepProps> = props => {
 
   return (
     <div className="WorkflowStep">
-      <PoseGroup className="WorkflowStep">
+      <PoseGroup>
         {props.isVisible &&
           <WorkflowStepAnimation
             key={props.uniqueKey}
