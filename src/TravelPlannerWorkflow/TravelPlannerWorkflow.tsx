@@ -1,29 +1,22 @@
 import './TravelPlannerWorkflow.scss';
 
-import {City} from '../Services/LocationServices';
-
 import React, { useState } from 'react';
 import { Row, Col, Container } from 'react-bootstrap';
 import WorkflowStep from './WorkFlowStep/WorkflowStep';
-import CitySelectionWorkflow from './CitySelectionWorkflow';
+import CitySelectionWorkflow, { SelectedCities } from './CitySelectionWorkflow';
 
-export interface SelectedCities {
-  departureCities: City[];
-  visitingCities: City[];
-  arrivalCities: City[];
-}
 interface TravelPlannerWorkflowProps {
   launchWorkflow: boolean
 }
 
 const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
-  let [workflowStep, setWorkflowStep] = useState(0);
   let [selectedCities, setSelectedCities] = useState<SelectedCities>({
     departureCities: [],
     visitingCities: [],
     arrivalCities: []
   });
 
+  let [workflowStep, setWorkflowStep] = useState(0);
   let updateWorkflowStep = (step: number) => setWorkflowStep(Math.max(step, workflowStep));
   // to prevent coming backwards on the steps when re-executing animations' end callback
 
@@ -41,9 +34,18 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
             <h4>Ótimo, então vamos lá!</h4>
           </WorkflowStep>
           <CitySelectionWorkflow
-            setSelectedCities={setSelectedCities}
-            setWorkflowStep={updateWorkflowStep}
-            workflowStep={workflowStep} />
+            isVisible={workflowStep >= 1}
+            onComplete={(cities) => {setSelectedCities(cities); updateWorkflowStep(2)}} />
+          <br />
+          <WorkflowStep
+              isVisible={workflowStep >= 2}
+              uniqueKey="letsGo">
+            <h4>Soa como um bom plano!</h4>
+            <h4>
+              Para te ajudar a planejar ele, vou precisar saber por volta
+               de quantos dias você deseja ficar em cada cidade:
+            </h4>
+          </WorkflowStep>
         </Col>
       </Row>
     </Container>
