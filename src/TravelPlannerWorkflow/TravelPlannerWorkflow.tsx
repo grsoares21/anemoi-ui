@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { Row, Col, Container } from 'react-bootstrap';
 import WorkflowStep from './WorkFlowStep/WorkflowStep';
 import CitySelectionWorkflow, { SelectedCities } from './CitySelectionWorkflow';
+import StayPeriodWorkflow from './StayPeriodWorkflow';
 
 interface TravelPlannerWorkflowProps {
   launchWorkflow: boolean
@@ -24,9 +25,7 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
     <Container>
       <Row>
         <Col xs={{ span: 12 }} md={{ span: 8, offset: 2 }}>
-          <br />
-          <br />
-          <br />
+          <br /><br /><br />
           <WorkflowStep
               isVisible={props.launchWorkflow}
               uniqueKey="letsGo"
@@ -39,13 +38,20 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
           <br />
           <WorkflowStep
               isVisible={workflowStep >= 2}
-              uniqueKey="letsGo">
+              uniqueKey="letsGo"
+              onAnimationEnd={() => updateWorkflowStep(3)}>
             <h4>Soa como um bom plano!</h4>
             <h4>
               Para te ajudar a planejar ele, vou precisar saber por volta
                de quantos dias você deseja ficar em cada cidade:
             </h4>
           </WorkflowStep>
+          {selectedCities.visitingCities.length > 0 &&
+            <StayPeriodWorkflow
+              isVisible={workflowStep >= 3}
+              cities={selectedCities.visitingCities}
+              onComplete={(bla) => {console.log(bla)}} />
+          }
         </Col>
       </Row>
     </Container>

@@ -1,3 +1,5 @@
+import './App.scss';
+
 import React, { useState } from 'react';
 import WelcomePage from './WelcomePage/WelcomePage';
 import TravelPlannerWorkflow from './TravelPlannerWorkflow/TravelPlannerWorkflow';
@@ -7,7 +9,7 @@ const App: React.FC = () => {
   return (
     <div className="App">
       <WelcomePage collapseCallback={() => setWelcomePageCollapsed(true)} />
-      <div style={{display: welcomePageCollapsed ? 'block' : 'none'}}>
+      <div className="TravelPlannerWorkflow" style={{display: welcomePageCollapsed ? 'block' : 'none'}}>
         <TravelPlannerWorkflow launchWorkflow={welcomePageCollapsed} />
       </div>
     </div>
