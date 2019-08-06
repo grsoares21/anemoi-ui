@@ -9,10 +9,7 @@ const App: React.FC = () => {
   return (
     <div className="App">
       <WelcomePage collapseCallback={() => setWelcomePageCollapsed(true)} />
-      <div className="TravelPlannerWorkflow" style={{display: welcomePageCollapsed ? 'block' : 'none'}}>
-        <div className="FaderGradient"></div>
-        <TravelPlannerWorkflow launchWorkflow={welcomePageCollapsed} />
-      </div>
+      <TravelPlannerWorkflow launchWorkflow={welcomePageCollapsed} />
     </div>
   );
 }

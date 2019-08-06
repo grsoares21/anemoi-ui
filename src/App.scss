@@ -6,18 +6,4 @@
   & > .WelcomePage {
     flex-shrink: 0;
   }
-
-  & > .TravelPlannerWorkflow {
-    flex: 1 1 auto;
-    overflow-y: scroll;
-
-    & > .FaderGradient {
-      height: 100px;
-      z-index: 1;
-      width: 100vw;
-      right: 20px;
-      background: linear-gradient(to bottom, rgba(255, 255, 255, 1) 15%,  rgba(255, 255, 255, 0.6) 65%, rgba(255, 255, 255, 0) 100%);
-      position: absolute;
-    }
-  }
 }
