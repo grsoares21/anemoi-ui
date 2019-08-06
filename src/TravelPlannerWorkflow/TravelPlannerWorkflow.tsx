@@ -2,6 +2,8 @@ import './TravelPlannerWorkflow.scss';
 
 import React, { useState } from 'react';
 import { Row, Col, Container } from 'react-bootstrap';
+import { animateScroll } from 'react-scroll';
+
 import WorkflowStep from './WorkFlowStep/WorkflowStep';
 import CitySelectionWorkflow, { SelectedCities } from './CitySelectionWorkflow';
 import StayPeriodWorkflow from './StayPeriodWorkflow';
@@ -18,7 +20,12 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
   });
 
   let [workflowStep, setWorkflowStep] = useState(0);
-  let updateWorkflowStep = (step: number) => setWorkflowStep(Math.max(step, workflowStep));
+  let updateWorkflowStep = (step: number) => {
+    if(step > workflowStep) {
+      setWorkflowStep(step);
+      animateScroll.scrollToBottom({containerId: "TravelPlannerWorkflow", isDynamic: true, duration: 500});
+    }
+  }
   // to prevent coming backwards on the steps when re-executing animations' end callback
 
   return (
@@ -54,6 +61,7 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
                 cities={selectedCities.visitingCities}
                 onComplete={(bla) => {console.log(bla)}} />
             }
+            <br /><br />
           </Col>
         </Row>
       </Container>
