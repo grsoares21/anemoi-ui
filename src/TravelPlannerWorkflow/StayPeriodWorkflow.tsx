@@ -1,6 +1,9 @@
 import { City } from '../Services/LocationServices';
 import WorkflowStep from './WorkFlowStep/WorkflowStep';
 
+import InputRange, { Range } from 'react-input-range';
+import 'react-input-range/lib/css/index.css';
+
 import React, { useState } from 'react';
 
 interface StayPeriodWorkflowProps {
@@ -23,13 +26,23 @@ const StayPeriodWorkflow: React.FC<StayPeriodWorkflowProps> = props => {
 
   return (
     <WorkflowStep isVisible={props.isVisible} uniqueKey="stayPeriodSelection" isFocused>
+      <form>
       {props.cities.map(city => (
         <span key={city.name}>
           <h4>
             Eu gostaria de ficar em {city.name} entre {stayPeriods[city.name][0]} e {stayPeriods[city.name][1]} dias.
           </h4>
+          <InputRange
+            minValue={1}
+            maxValue={30}
+            value={{min: stayPeriods[city.name][0], max: stayPeriods[city.name][1]}}
+            onChange={value => {
+              var range = value as Range;
+              setStayPeriods({...stayPeriods, [city.name]: [range.min, range.max]})
+              }} />
         </span>
       ))}
+      </form>
     </WorkflowStep>
   );
 }
