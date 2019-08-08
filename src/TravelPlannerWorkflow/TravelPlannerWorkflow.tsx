@@ -6,7 +6,7 @@ import { animateScroll } from 'react-scroll';
 
 import WorkflowStep from './WorkFlowStep/WorkflowStep';
 import CitySelectionWorkflow, { SelectedCities } from './CitySelectionWorkflow';
-import StayPeriodWorkflow from './StayPeriodWorkflow';
+import StayPeriodWorkflow from './StayPeriodWorkflow/StayPeriodWorkflow';
 
 interface TravelPlannerWorkflowProps {
   launchWorkflow: boolean

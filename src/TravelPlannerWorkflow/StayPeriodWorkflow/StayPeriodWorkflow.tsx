@@ -1,8 +1,10 @@
-import { City } from '../Services/LocationServices';
-import WorkflowStep from './WorkFlowStep/WorkflowStep';
+import 'react-input-range/lib/css/index.css';
+import './StayPeriodWorkflow.scss';
+
+import { City } from '../../Services/LocationServices';
+import WorkflowStep from '../WorkFlowStep/WorkflowStep';
 
 import InputRange, { Range } from 'react-input-range';
-import 'react-input-range/lib/css/index.css';
 
 import React, { useState } from 'react';
 
@@ -32,6 +34,7 @@ const StayPeriodWorkflow: React.FC<StayPeriodWorkflowProps> = props => {
           <h4>
             Eu gostaria de ficar em {city.name} entre {stayPeriods[city.name][0]} e {stayPeriods[city.name][1]} dias.
           </h4>
+          <br />
           <InputRange
             minValue={1}
             maxValue={30}

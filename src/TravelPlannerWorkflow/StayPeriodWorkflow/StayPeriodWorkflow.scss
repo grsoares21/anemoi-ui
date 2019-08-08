@@ -1,0 +1,13 @@
+
+.input-range {
+  &__label {
+    font-family: inherit;
+    color: white;
+    z-index: 1;
+    pointer-events: none;
+
+    &--min, &--max {
+      display: none;
+    }
+  }
+}
