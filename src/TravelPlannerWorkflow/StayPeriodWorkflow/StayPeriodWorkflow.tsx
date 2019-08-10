@@ -47,6 +47,7 @@ const StayPeriodWorkflow: React.FC<StayPeriodWorkflowProps> = props => {
                 var range = value as Range;
                 setStayPeriods({...stayPeriods, [cityName]: [range.min, range.max]})
                 }} />
+            <br />
           </span>
         ))
       }
