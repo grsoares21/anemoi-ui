@@ -55,12 +55,10 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
                 de quantos dias você deseja ficar em cada cidade:
               </h4>
             </WorkflowStep>
-            {selectedCities.visitingCities.length > 0 &&
-              <StayPeriodWorkflow
-                isVisible={workflowStep >= 3}
-                cities={selectedCities.visitingCities}
-                onComplete={(bla) => {console.log(bla)}} />
-            }
+            <StayPeriodWorkflow
+              isVisible={workflowStep >= 3}
+              cities={selectedCities.visitingCities}
+              onComplete={(bla) => {console.log(bla)}} />
             <br /><br />
           </Col>
         </Row>
