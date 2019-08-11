@@ -2,7 +2,7 @@ import 'react-input-range/lib/css/index.css';
 import './StayPeriodWorkflow.scss';
 
 import { City } from '../../Services/LocationServices';
-import WorkflowStep from '../WorkFlowStep/WorkflowStep';
+import WorkflowStep from '../WorkflowStep/WorkflowStep';
 
 import InputRange, { Range } from 'react-input-range';
 

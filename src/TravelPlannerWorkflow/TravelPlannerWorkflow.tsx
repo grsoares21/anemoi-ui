@@ -4,9 +4,10 @@ import React, { useState } from 'react';
 import { Row, Col, Container } from 'react-bootstrap';
 import { animateScroll } from 'react-scroll';
 
-import WorkflowStep from './WorkFlowStep/WorkflowStep';
+import WorkflowStep from './WorkflowStep/WorkflowStep';
 import CitySelectionWorkflow, { SelectedCities } from './CitySelectionWorkflow';
 import StayPeriodWorkflow from './StayPeriodWorkflow/StayPeriodWorkflow';
+import TravelPlanResult from './TravelPlanResult/TravelPlanResult';
 
 interface TravelPlannerWorkflowProps {
   launchWorkflow: boolean
@@ -23,11 +24,12 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
   let updateWorkflowStep = (step: number) => {
     if(step > workflowStep) {
       setWorkflowStep(step);
-      animateScroll.scrollToBottom({containerId: "TravelPlannerWorkflow", isDynamic: true, duration: 500});
+      setTimeout(() => animateScroll.scrollToBottom({containerId: "TravelPlannerWorkflow", isDynamic: true, duration: 500}), 100);
     }
   }
   // to prevent coming backwards on the steps when re-executing animations' end callback
 
+  let [loadingDots, setLoadingDots] = useState('.');
   return (
     <div id="TravelPlannerWorkflow" style={{display: props.launchWorkflow ? 'block' : 'none'}}>
       <div className="FaderGradient"></div>
@@ -58,7 +60,24 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
             <StayPeriodWorkflow
               isVisible={workflowStep >= 3}
               cities={selectedCities.visitingCities}
-              onSubmit={(bla) => {console.log(bla)}} />
+              onSubmit={(cityPeriods) => {
+                  console.log(cityPeriods);
+                  updateWorkflowStep(4);
+                  var loadingDotsInterval = setInterval(() => setLoadingDots(prevDots => prevDots + '.'), 800);
+                  setTimeout(() => {
+                    // TODO: this is temporary to simulate the async request to calculate the best route
+                    clearInterval(loadingDotsInterval);
+                    updateWorkflowStep(5);
+                  }, 3000);
+                }} />
+            <br />
+            <WorkflowStep
+              isVisible={workflowStep >= 4}
+              uniqueKey="calculatingRoute">
+              <h4>Perfeito!</h4>
+              <h4>Estamos calculando a melhor rota para sua viagem{loadingDots}</h4>
+            </WorkflowStep>
+            <TravelPlanResult isVisible={workflowStep >= 5} />
             <br /><br />
           </Col>
         </Row>

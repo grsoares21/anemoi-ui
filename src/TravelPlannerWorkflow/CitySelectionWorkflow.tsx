@@ -1,6 +1,6 @@
 import { City } from '../Services/LocationServices';
 import MultiCitySelector from '../Shared/MultiCitySelector';
-import WorkflowStep from './WorkFlowStep/WorkflowStep';
+import WorkflowStep from './WorkflowStep/WorkflowStep';
 
 import React, { useState } from 'react';
 import { Button } from 'react-bootstrap';
