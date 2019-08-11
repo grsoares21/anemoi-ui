@@ -16,7 +16,7 @@ interface StayPeriodWorkflowProps {
 }
 
 interface CityToStayPeriodMapping {
-  [cityName: string]: [number, number]
+  [cityId: string]: [string, number, number]
 }
 
 const StayPeriodWorkflow: React.FC<StayPeriodWorkflowProps> = props => {
@@ -24,7 +24,7 @@ const StayPeriodWorkflow: React.FC<StayPeriodWorkflowProps> = props => {
 
   useEffect(() => {
     var initialPeriods = props.cities.reduce<CityToStayPeriodMapping>((mappings, currCity) => {
-      mappings[currCity.name] = [3, 5];
+      mappings[currCity.id] = [currCity.name, 3, 5];
       return mappings;
     }, {});
     setStayPeriods(initialPeriods);
@@ -34,8 +34,8 @@ const StayPeriodWorkflow: React.FC<StayPeriodWorkflowProps> = props => {
     <WorkflowStep isVisible={props.isVisible} uniqueKey="stayPeriodSelection" isFocused>
       <form>
       {
-        Object.entries(stayPeriods).map(([cityName, [minDays, maxDays]]) => (
-          <span key={cityName}>
+        Object.entries(stayPeriods).map(([cityId, [cityName, minDays, maxDays]]) => (
+          <span key={cityId}>
             <h4>
               Eu gostaria de ficar em {cityName} entre {minDays} e {maxDays} dias.
             </h4>
@@ -46,7 +46,7 @@ const StayPeriodWorkflow: React.FC<StayPeriodWorkflowProps> = props => {
               value={{min: minDays, max: maxDays}}
               onChange={value => {
                 var range = value as Range;
-                setStayPeriods({...stayPeriods, [cityName]: [range.min, range.max]})
+                setStayPeriods({...stayPeriods, [cityId]: [cityName, range.min, range.max]})
                 }} />
             <br />
           </span>
