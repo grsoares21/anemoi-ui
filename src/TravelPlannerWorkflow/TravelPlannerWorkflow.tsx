@@ -58,7 +58,7 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
             <StayPeriodWorkflow
               isVisible={workflowStep >= 3}
               cities={selectedCities.visitingCities}
-              onComplete={(bla) => {console.log(bla)}} />
+              onSubmit={(bla) => {console.log(bla)}} />
             <br /><br />
           </Col>
         </Row>

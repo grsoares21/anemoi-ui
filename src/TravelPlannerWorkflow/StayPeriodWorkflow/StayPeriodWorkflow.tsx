@@ -7,11 +7,12 @@ import WorkflowStep from '../WorkFlowStep/WorkflowStep';
 import InputRange, { Range } from 'react-input-range';
 
 import React, { useState, useEffect } from 'react';
+import { Button } from 'react-bootstrap';
 
 interface StayPeriodWorkflowProps {
   isVisible: boolean;
   cities: City[];
-  onComplete: (stayPeriods: CityToStayPeriodMapping) => void;
+  onSubmit: (stayPeriods: CityToStayPeriodMapping) => void;
 }
 
 interface CityToStayPeriodMapping {
@@ -52,6 +53,10 @@ const StayPeriodWorkflow: React.FC<StayPeriodWorkflowProps> = props => {
         ))
       }
       </form>
+      <br />
+      <Button onClick={() => props.onSubmit(stayPeriods)} block size="lg">
+        <b>Criar Plano de Viagem</b>
+      </Button>
     </WorkflowStep>
   );
 }
