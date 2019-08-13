@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
-import { Row, Col } from 'react-bootstrap';
+import { Row, Col, Button } from 'react-bootstrap';
 import posed from 'react-pose';
 
 import WelcomePhrase from './WelcomePhrase/WelcomePhrase';
@@ -49,13 +49,25 @@ const WelcomePage: React.FC<WelcomePageProps> = props => {
 
   const poseString = welcomeCollapsed ? 'collapsed' : 'open';
 
+  const buttonRef = useRef<any>();
+
+  useEffect(() => buttonRef.current.focus(), []);
+  // focus on "yes" button on first load
+
   return (
     <PageAnimation className="WelcomePage" pose={poseString} onPoseComplete={onCollapseFinished}>
       <AnemoiTitle isVisible={collapseFinished} />
       <ContentAnimation pose={poseString} className="h-100">
         <Row className="h-100">
           <Col xs={{ span: 12, order: 2 }} md={{ span: 6, order: 1 }}>
-            <WelcomePhrase onConfirm={() => setWelcomeCollapsed(true)} />
+            <Row className="h-100">
+                <Col xs={{ span: 10, offset: 1 }} className="my-auto">
+                <WelcomePhrase />
+                <Button ref={buttonRef} size="lg" variant="primary" onClick={() => setWelcomeCollapsed(true)}>
+                  <b>Sim!</b>
+                </Button>
+              </Col>
+            </Row>
           </Col>
           <Col xs={{ span: 12, order: 1 }} md={{ span: 6, order: 1 }}>
             <WelcomePageLogo />
