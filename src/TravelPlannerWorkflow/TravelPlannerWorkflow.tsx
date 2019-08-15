@@ -8,6 +8,7 @@ import WorkflowStep from './WorkflowStep/WorkflowStep';
 import CitySelectionWorkflow, { SelectedCities } from './CitySelectionWorkflow';
 import StayPeriodWorkflow from './StayPeriodWorkflow/StayPeriodWorkflow';
 import TravelPlanResult from './TravelPlanResult/TravelPlanResult';
+import TravelPeriodWorkflow from './TravelPeriodWorkflow/TravelPeriodWorkflow';
 
 interface TravelPlannerWorkflowProps {
   launchWorkflow: boolean
@@ -77,6 +78,7 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
               <h4>Perfeito!</h4>
               <h4>Estamos calculando a melhor rota para sua viagem{loadingDots}</h4>
             </WorkflowStep>
+            <TravelPeriodWorkflow isVisible={workflowStep >= 5} />
             <TravelPlanResult isVisible={workflowStep >= 5} />
             <br /><br />
           </Col>
