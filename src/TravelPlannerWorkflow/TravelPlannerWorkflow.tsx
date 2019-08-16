@@ -6,7 +6,7 @@ import { animateScroll } from 'react-scroll';
 
 import WorkflowStep from './WorkflowStep/WorkflowStep';
 import CitySelectionWorkflow, { SelectedCities } from './CitySelectionWorkflow';
-import StayPeriodWorkflow from './StayPeriodWorkflow/StayPeriodWorkflow';
+import StayPeriodWorkflow, { CityToStayPeriodMapping } from './StayPeriodWorkflow/StayPeriodWorkflow';
 import TravelPlanResult from './TravelPlanResult/TravelPlanResult';
 import TravelPeriodWorkflow from './TravelPeriodWorkflow/TravelPeriodWorkflow';
 
@@ -20,6 +20,7 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
     visitingCities: [],
     arrivalCities: []
   });
+  let [stayPeriods, setStayPeriods] = useState<CityToStayPeriodMapping>({});
 
   let [workflowStep, setWorkflowStep] = useState(0);
   let updateWorkflowStep = (step: number) => {
@@ -50,7 +51,7 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
             <br />
             <WorkflowStep
                 isVisible={workflowStep >= 2}
-                uniqueKey="letsGo"
+                uniqueKey="needStayPeriods"
                 onAnimationEnd={() => updateWorkflowStep(3)}>
               <h4>Soa como um bom plano!</h4>
               <h4>
@@ -61,28 +62,31 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
             <StayPeriodWorkflow
               isVisible={workflowStep >= 3}
               cities={selectedCities.visitingCities}
-              onSubmit={(cityPeriods) => {
-                  console.log(cityPeriods);
-                  updateWorkflowStep(4);
-                  var loadingDotsInterval = setInterval(() => setLoadingDots(prevDots => prevDots + '.'), 800);
-                  setTimeout(() => {
-                    // TODO: this is temporary to simulate the async request to calculate the best route
-                    clearInterval(loadingDotsInterval);
-                    updateWorkflowStep(5);
-                  }, 3000);
-                }} />
+              onSubmit={(cityPeriods) => {setStayPeriods(cityPeriods); updateWorkflowStep(4)}} />
             <br />
             <WorkflowStep
-              isVisible={workflowStep >= 4}
+                isVisible={workflowStep >= 4}
+                uniqueKey="needTravelPeriods"
+                onAnimationEnd={() => updateWorkflowStep(5)}>
+              <h4>
+                Anotado!
+              </h4>
+            </WorkflowStep>
+            <TravelPeriodWorkflow
+              isVisible={workflowStep >= 5}
+              minTravelDays={Object.entries(stayPeriods).reduce((accumulator, [, [, minDays, ]]) => {
+                  return accumulator + minDays;
+              }, 0)}
+              maxTravelDays={Object.entries(stayPeriods).reduce((accumulator, [, [, , maxDays]]) => {
+                  return accumulator + maxDays;
+              }, 0)} />
+            <WorkflowStep
+              isVisible={workflowStep >= 6}
               uniqueKey="calculatingRoute">
               <h4>Perfeito!</h4>
               <h4>Estamos calculando a melhor rota para sua viagem{loadingDots}</h4>
             </WorkflowStep>
-            <TravelPeriodWorkflow
-              isVisible={workflowStep >= 5}
-              minTravelDays={3}
-              maxTravelDays={5} />
-            <TravelPlanResult isVisible={workflowStep >= 5} />
+            <TravelPlanResult isVisible={workflowStep >= 7} />
             <br /><br />
           </Col>
         </Row>

@@ -1,1 +1,34 @@
-// placeholder file for now
+@import '../../bootstrap-overrides.scss';
+
+.DateRangePickerInput {
+    &.DateRangePickerInput__withBorder {
+        border: 2px solid $gray-400;
+        border-radius: 0.5rem;
+        padding: 2px;
+
+        &:focus-within, &:hover {
+            box-shadow: 0 0 2px $cyan;
+            border-color: $cyan;
+        }
+    }
+
+    & .DateInput {
+        &_input {
+            font-weight: 400;
+            &__focused {
+                color: $cyan;
+                border: none;
+
+                &::placeholder {
+                    color: $cyan;
+                }
+                &:-ms-input-placeholder {
+                    color: $cyan;
+                }
+                &::-ms-input-placeholder {
+                    color: $cyan;
+                }
+            }
+        }
+    }
+}

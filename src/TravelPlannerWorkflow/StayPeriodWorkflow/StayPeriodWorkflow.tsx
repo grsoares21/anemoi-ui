@@ -15,7 +15,7 @@ interface StayPeriodWorkflowProps {
   onSubmit: (stayPeriods: CityToStayPeriodMapping) => void;
 }
 
-interface CityToStayPeriodMapping {
+export interface CityToStayPeriodMapping {
   [cityId: string]: [string, number, number]
 }
 
