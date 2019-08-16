@@ -78,7 +78,10 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
               <h4>Perfeito!</h4>
               <h4>Estamos calculando a melhor rota para sua viagem{loadingDots}</h4>
             </WorkflowStep>
-            <TravelPeriodWorkflow isVisible={workflowStep >= 5} />
+            <TravelPeriodWorkflow
+              isVisible={workflowStep >= 5}
+              minTravelDays={3}
+              maxTravelDays={5} />
             <TravelPlanResult isVisible={workflowStep >= 5} />
             <br /><br />
           </Col>
