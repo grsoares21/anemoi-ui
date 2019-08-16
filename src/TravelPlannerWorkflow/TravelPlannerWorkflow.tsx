@@ -74,11 +74,11 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
             </WorkflowStep>
             <TravelPeriodWorkflow
               isVisible={workflowStep >= 5}
-              minTravelDays={Object.entries(stayPeriods).reduce((accumulator, [, [, minDays, ]]) => {
-                  return accumulator + minDays;
+              minTravelDays={Object.entries(stayPeriods).reduce((accumulator, [, cityStayPeriod]) => {
+                  return accumulator + cityStayPeriod.minDays;
               }, 0)}
-              maxTravelDays={Object.entries(stayPeriods).reduce((accumulator, [, [, , maxDays]]) => {
-                  return accumulator + maxDays;
+              maxTravelDays={Object.entries(stayPeriods).reduce((accumulator, [, cityStayPeriod]) => {
+                  return accumulator + cityStayPeriod.maxDays;
               }, 0)} />
             <WorkflowStep
               isVisible={workflowStep >= 6}
