@@ -67,14 +67,13 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
             <br />
             <WorkflowStep
                 isVisible={workflowStep >= 4}
-                uniqueKey="needTravelPeriods"
-                onAnimationEnd={() => updateWorkflowStep(5)}>
+                uniqueKey="needTravelPeriods">
               <h4>
                 Anotado!
               </h4>
             </WorkflowStep>
             <TravelPeriodWorkflow
-              isVisible={workflowStep >= 5}
+              isVisible={workflowStep >= 4}
               minTravelDays={Object.entries(stayPeriods).reduce((accumulator, [, cityStayPeriod]) => {
                   return accumulator + cityStayPeriod.minDays;
               }, 0)}
