@@ -64,6 +64,7 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
               cities={selectedCities.visitingCities}
               onSubmit={(cityPeriods) => {setStayPeriods(cityPeriods); updateWorkflowStep(4)}} />
             <br />
+            <br />
             <WorkflowStep
                 isVisible={workflowStep >= 4}
                 uniqueKey="needTravelPeriods"

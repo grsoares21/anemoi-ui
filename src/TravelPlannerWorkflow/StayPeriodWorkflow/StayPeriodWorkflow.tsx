@@ -60,8 +60,8 @@ const StayPeriodWorkflow: React.FC<StayPeriodWorkflowProps> = props => {
       }
       </form>
       <br />
-      <Button onClick={() => props.onSubmit(stayPeriods)} block size="lg">
-        <b>Criar Plano de Viagem</b>
+      <Button onClick={() => props.onSubmit(stayPeriods)} size="lg" className="float-right">
+        <b>↵</b>
       </Button>
     </WorkflowStep>
   );
