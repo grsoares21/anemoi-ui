@@ -50,19 +50,23 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
               onComplete={(cities) => {setSelectedCities(cities); updateWorkflowStep(2)}} />
             <br />
             <WorkflowStep
-                isVisible={workflowStep >= 2}
-                uniqueKey="needStayPeriods"
-                onAnimationEnd={() => updateWorkflowStep(3)}>
+              isVisible={workflowStep >= 2}
+              uniqueKey="needStayPeriods"
+              onAnimationEnd={() => updateWorkflowStep(3)}>
               <h4>Soa como um bom plano!</h4>
               <h4>
                 Para te ajudar a planejar ele, vou precisar saber por volta
                 de quantos dias você deseja ficar em cada cidade:
               </h4>
             </WorkflowStep>
-            <StayPeriodWorkflow
+            <WorkflowStep
               isVisible={workflowStep >= 3}
-              cities={selectedCities.visitingCities}
-              onSubmit={(cityPeriods) => {setStayPeriods(cityPeriods); updateWorkflowStep(4)}} />
+              uniqueKey="stayPeriodWorkflow"
+              isFocused>
+              <StayPeriodWorkflow
+                cities={selectedCities.visitingCities}
+                onSubmit={(cityPeriods) => {setStayPeriods(cityPeriods); updateWorkflowStep(4)}} />
+            </WorkflowStep>
             <br />
             <br />
             <WorkflowStep

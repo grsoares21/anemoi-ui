@@ -2,7 +2,6 @@ import 'react-input-range/lib/css/index.css';
 import './StayPeriodWorkflow.scss';
 
 import { City } from '../../Services/LocationServices';
-import WorkflowStep from '../WorkflowStep/WorkflowStep';
 
 import InputRange, { Range } from 'react-input-range';
 
@@ -10,7 +9,6 @@ import React, { useState, useEffect } from 'react';
 import { Button } from 'react-bootstrap';
 
 interface StayPeriodWorkflowProps {
-  isVisible: boolean;
   cities: City[];
   onSubmit: (stayPeriods: CityToStayPeriodMapping) => void;
 }
@@ -37,7 +35,7 @@ const StayPeriodWorkflow: React.FC<StayPeriodWorkflowProps> = props => {
   }, [props.cities]);
 
   return (
-    <WorkflowStep isVisible={props.isVisible} uniqueKey="stayPeriodSelection" isFocused>
+    <div>
       <form>
       {
         Object.entries(stayPeriods).map(([cityId, {cityName, minDays, maxDays}]) => (
@@ -63,7 +61,7 @@ const StayPeriodWorkflow: React.FC<StayPeriodWorkflowProps> = props => {
       <Button onClick={() => props.onSubmit(stayPeriods)} size="lg" className="float-right">
         <b>↵</b>
       </Button>
-    </WorkflowStep>
+    </div>
   );
 }
 
