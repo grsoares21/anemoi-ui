@@ -70,20 +70,19 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
             <br />
             <br />
             <WorkflowStep
-                isVisible={workflowStep >= 4}
-                uniqueKey="needTravelPeriods">
-              <h4>
-                Anotado!
-              </h4>
-            </WorkflowStep>
-            <TravelPeriodWorkflow
               isVisible={workflowStep >= 4}
-              minTravelDays={Object.entries(stayPeriods).reduce((accumulator, [, cityStayPeriod]) => {
-                  return accumulator + cityStayPeriod.minDays;
-              }, 0)}
-              maxTravelDays={Object.entries(stayPeriods).reduce((accumulator, [, cityStayPeriod]) => {
-                  return accumulator + cityStayPeriod.maxDays;
-              }, 0)} />
+              uniqueKey="travelPeriodWorkflow"
+              isFocused>
+              <h4>Anotado!</h4>
+              <h4>Para quando você está planejando esta viagem?</h4>
+              <TravelPeriodWorkflow
+                minTravelDays={Object.entries(stayPeriods).reduce((accumulator, [, cityStayPeriod]) => {
+                    return accumulator + cityStayPeriod.minDays;
+                }, 0)}
+                maxTravelDays={Object.entries(stayPeriods).reduce((accumulator, [, cityStayPeriod]) => {
+                    return accumulator + cityStayPeriod.maxDays;
+                }, 0)} />
+            </WorkflowStep>
             <WorkflowStep
               isVisible={workflowStep >= 6}
               uniqueKey="calculatingRoute">
@@ -100,3 +99,16 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
 }
 
 export default TravelPlannerWorkflow;
+/*
+
+            <Button onClick={() => {
+              updateWorkflowStep(6);
+              var loadingDotsInterval = setInterval(() => setLoadingDots(prevDots => prevDots + '.'), 800);
+              setTimeout(() => {
+                // TODO: this is temporary to simulate the async request to calculate the best route
+                clearInterval(loadingDotsInterval);
+                updateWorkflowStep(7);
+              }, 3000);
+            }} size="lg" block variant="success">
+              <b>Criar Plano de Viagem</b>
+            </Button>*/

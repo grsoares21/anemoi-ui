@@ -5,8 +5,6 @@ import 'react-dates/lib/css/_datepicker.css';
 
 import React, { useState } from 'react';
 
-import WorkflowStep from '../WorkflowStep/WorkflowStep';
-
 import { Row, Col } from 'react-bootstrap';
 import { DateRangePicker } from 'react-dates';
 import moment, { Moment } from 'moment';
@@ -14,7 +12,6 @@ import moment, { Moment } from 'moment';
 interface TravelPlanResultProps {
   minTravelDays: number;
   maxTravelDays: number;
-  isVisible: boolean;
 }
 
 interface DateRange {
@@ -37,53 +34,50 @@ const TravelPlanResult: React.FC<TravelPlanResultProps> = props => {
 
 
   return (
-    <WorkflowStep isVisible={props.isVisible} uniqueKey="travelPeriodWorkflow" isFocused>
-      <h4>Para quando você está planejando esta viagem?</h4>
-      <Row>
-        <Col xs={12}>
-          <label>Possível período de partida:</label>
-          <br />
-          <DateRangePicker
-            {...departureDateRange}
-            onDatesChange={setDepartureDateRange}
-            focusedInput={departureFocusedInput}
-            onFocusChange={setDepartureFocusedInput}
-            startDateId="departureStartDate"
-            endDateId="departureEndDate"
-            numberOfMonths={1}
-            openDirection="up" />
-          <br />
-        </Col>
-        <Col xs={12}>
-          <br />
-          <label>Possível período de chegada:</label>
-          <br />
-          <DateRangePicker
-            {...arrivalDateRange}
-            onDatesChange={setArrivalDateRange}
-            focusedInput={arrivalFocusedInput}
-            onFocusChange={setArrivalFocusedInput}
-            startDateId="arrivalStartDate"
-            endDateId="arrivalEndDate"
-            numberOfMonths={1}
-            openDirection="up"
-            isOutsideRange={(date: Moment) => {
-              let [isBefore, isAfter] = [false, false];
+    <Row>
+      <Col xs={12}>
+        <label>Possível período de partida:</label>
+        <br />
+        <DateRangePicker
+          {...departureDateRange}
+          onDatesChange={setDepartureDateRange}
+          focusedInput={departureFocusedInput}
+          onFocusChange={setDepartureFocusedInput}
+          startDateId="departureStartDate"
+          endDateId="departureEndDate"
+          numberOfMonths={1}
+          openDirection="up" />
+        <br />
+      </Col>
+      <Col xs={12}>
+        <br />
+        <label>Possível período de chegada:</label>
+        <br />
+        <DateRangePicker
+          {...arrivalDateRange}
+          onDatesChange={setArrivalDateRange}
+          focusedInput={arrivalFocusedInput}
+          onFocusChange={setArrivalFocusedInput}
+          startDateId="arrivalStartDate"
+          endDateId="arrivalEndDate"
+          numberOfMonths={1}
+          openDirection="up"
+          isOutsideRange={(date: Moment) => {
+            let [isBefore, isAfter] = [false, false];
 
-              if(departureDateRange.startDate) {
-                let minArrivalDate = moment(departureDateRange.startDate).add(props.minTravelDays, 'days');
-                isBefore = date.isBefore(minArrivalDate);
-              }
-              if(departureDateRange.endDate) {
-                let maxArrivalDate = moment(departureDateRange.endDate).add(props.maxTravelDays, 'days');
-                isAfter = date.isAfter(maxArrivalDate);
-              }
+            if(departureDateRange.startDate) {
+              let minArrivalDate = moment(departureDateRange.startDate).add(props.minTravelDays, 'days');
+              isBefore = date.isBefore(minArrivalDate);
+            }
+            if(departureDateRange.endDate) {
+              let maxArrivalDate = moment(departureDateRange.endDate).add(props.maxTravelDays, 'days');
+              isAfter = date.isAfter(maxArrivalDate);
+            }
 
-              return isAfter || isBefore || date.isBefore(moment());
-            }} />
-        </Col>
-      </Row>
-    </WorkflowStep>
+            return isAfter || isBefore || date.isBefore(moment());
+          }} />
+      </Col>
+    </Row>
   );
 }
 
