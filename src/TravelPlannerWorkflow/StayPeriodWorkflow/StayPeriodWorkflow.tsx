@@ -41,7 +41,7 @@ const StayPeriodWorkflow: React.FC<StayPeriodWorkflowProps> = props => {
         Object.entries(stayPeriods).map(([cityId, {cityName, minDays, maxDays}]) => (
           <span key={cityId}>
             <h4>
-              Eu gostaria de ficar em {cityName} entre {minDays} e {maxDays} dias.
+              <em>Eu gostaria de ficar em {cityName} entre {minDays} e {maxDays} dias.</em>
             </h4>
             <br />
             <InputRange

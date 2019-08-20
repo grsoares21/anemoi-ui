@@ -61,8 +61,7 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
             </WorkflowStep>
             <WorkflowStep
               isVisible={workflowStep >= 3}
-              uniqueKey="stayPeriodWorkflow"
-              isFocused>
+              uniqueKey="stayPeriodWorkflow">
               <StayPeriodWorkflow
                 cities={selectedCities.visitingCities}
                 onSubmit={(cityPeriods) => {setStayPeriods(cityPeriods); updateWorkflowStep(4)}} />
@@ -71,10 +70,9 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
             <br />
             <WorkflowStep
               isVisible={workflowStep >= 4}
-              uniqueKey="travelPeriodWorkflow"
-              isFocused>
+              uniqueKey="travelPeriodWorkflow">
               <h4>Anotado!</h4>
-              <h4>Para quando você está planejando esta viagem?</h4>
+              <h4><em>Para quando você está planejando esta viagem?</em></h4>
               <TravelPeriodWorkflow
                 minTravelDays={Object.entries(stayPeriods).reduce((accumulator, [, cityStayPeriod]) => {
                     return accumulator + cityStayPeriod.minDays;

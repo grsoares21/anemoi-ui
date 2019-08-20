@@ -6,9 +6,10 @@
     margin-bottom: 10px;
     margin-top: 10px;
     text-align: justify;
-  }
-}
 
-.FocusedStep h4 {
-  color: $pink !important;
+    & > em {
+      font-style: normal;
+      color: $pink;
+    }
+  }
 }

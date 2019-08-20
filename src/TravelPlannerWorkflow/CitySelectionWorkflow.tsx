@@ -27,8 +27,8 @@ const CitySelectionWorkflow: React.FC<CitySelectionWorkflowProps> = props => {
 
   return (
     <span>
-      <WorkflowStep isVisible={props.isVisible} uniqueKey="departureCities" isFocused>
-        <h4>Primeiramente, eu gostaria de saber quais cidades poderiam ser seu ponto de partida.</h4>
+      <WorkflowStep isVisible={props.isVisible} uniqueKey="departureCities">
+        <h4><em>Primeiramente, eu gostaria de saber quais cidades poderiam ser seu ponto de partida.</em></h4>
         <div className="SelectorStep">
           <MultiCitySelector
               placeholder="Cidades de partida..."
@@ -39,8 +39,8 @@ const CitySelectionWorkflow: React.FC<CitySelectionWorkflowProps> = props => {
           </Button>
         </div>
       </WorkflowStep>
-      <WorkflowStep isVisible={workflowStep >= 1} uniqueKey="arrivalCities" isFocused>
-        <h4>Ótimo! E quais cidades poderiam ser seu ponto de chegada?</h4>
+      <WorkflowStep isVisible={workflowStep >= 1} uniqueKey="arrivalCities">
+        <h4><em>Ótimo! E quais cidades poderiam ser seu ponto de chegada?</em></h4>
         <div className="SelectorStep">
           <MultiCitySelector
               placeholder="Cidades de chegada..."
@@ -51,8 +51,8 @@ const CitySelectionWorkflow: React.FC<CitySelectionWorkflowProps> = props => {
           </Button>
         </div>
       </WorkflowStep>
-      <WorkflowStep isVisible={workflowStep >= 2} uniqueKey="arrivalCities" isFocused>
-        <h4>Perfeito! E, finalmente, quais cidades você gostaria de visitar?</h4>
+      <WorkflowStep isVisible={workflowStep >= 2} uniqueKey="arrivalCities">
+        <h4><em>Perfeito! E, finalmente, quais cidades você gostaria de visitar?</em></h4>
         <div className="SelectorStep">
           <MultiCitySelector
             placeholder="Cidades para visitar..."

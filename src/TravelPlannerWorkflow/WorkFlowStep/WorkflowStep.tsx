@@ -13,7 +13,6 @@ const WorkflowStepAnimation = posed.div({
 });
 
 interface WorkflowStepProps {
-  isFocused?: boolean;
   isVisible: boolean;
   onAnimationEnd?: () => any;
   uniqueKey: string;
@@ -27,8 +26,7 @@ const WorkflowStep: React.FC<WorkflowStepProps> = props => {
         {props.isVisible &&
           <WorkflowStepAnimation
             key={props.uniqueKey}
-            onPoseComplete={props.onAnimationEnd}
-            className={props.isFocused ? 'FocusedStep' : ''}>
+            onPoseComplete={props.onAnimationEnd}>
             {props.children}
           </WorkflowStepAnimation>
         }

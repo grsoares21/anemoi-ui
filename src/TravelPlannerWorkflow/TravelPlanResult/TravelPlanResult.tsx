@@ -10,7 +10,7 @@ interface TravelPlanResultProps {
 
 const TravelPlanResult: React.FC<TravelPlanResultProps> = props => {
   return (
-    <WorkflowStep isVisible={props.isVisible} uniqueKey="stayPeriodSelection" isFocused>
+    <WorkflowStep isVisible={props.isVisible} uniqueKey="stayPeriodSelection">
       <h4>Melhor rota encontrada! Aqui está o seu plano de viagem:</h4>
     </WorkflowStep>
   );
