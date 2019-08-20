@@ -31,23 +31,25 @@ const fetchCityOptions = (searchTerm: string, callback: (values: MultiCitySelect
 }
 
 interface MultiCitySelectorProps {
+  inputRef?: any;
+  // using any here because the type definition in @types/react-select
+  // are not compatible with the library for the state manager
+
   placeholder: string;
   onChange: (selectedCities: City[]) => void;
   onConfirm: () => void;
 }
 
 const MultiCitySelector: React.FC<MultiCitySelectorProps> = (props) => {
-  const selectElement = useRef<any>(null);
-  // using any here because the type definition in @types/react-select
-  // are not compatible with the library for the state manager
-
+  const ownRef = useRef<any>(null);
+  // same reason as above
+  const selectElement = props.inputRef ? props.inputRef : ownRef;
   return (
     <Async
       ref={selectElement}
       className='MultiCitySelector'
       classNamePrefix='MultiCitySelector'
       isMulti
-      autoFocus
       onKeyDown={(e: KeyboardEventInit) => {
         let stateManager = selectElement.current && selectElement.current.select.state;
         if(stateManager != null && e.key === 'Enter') {
@@ -61,7 +63,6 @@ const MultiCitySelector: React.FC<MultiCitySelectorProps> = (props) => {
       cacheOptions
       placeholder={props.placeholder}
       loadOptions={fetchCityOptions}
-      selectOptions={{ autoFocus: true }}
       components={{
         // hides the dropdown arroww on the right of the select
         DropdownIndicator: () => null,

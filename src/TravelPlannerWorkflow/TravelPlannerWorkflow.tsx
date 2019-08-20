@@ -40,14 +40,16 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
           <Col xs={{ span: 12 }} md={{ span: 8, offset: 2 }}>
             <br /><br /><br />
             <WorkflowStep
-                isVisible={props.launchWorkflow}
-                uniqueKey="letsGo"
-                onAnimationEnd={() => updateWorkflowStep(1)}>
+              isVisible={props.launchWorkflow}
+              uniqueKey="letsGo"
+              onAnimationEnd={() => updateWorkflowStep(1)}>
               <h4>Ótimo, então vamos lá!</h4>
             </WorkflowStep>
-            <CitySelectionWorkflow
+            <WorkflowStep
               isVisible={workflowStep >= 1}
-              onComplete={(cities) => {setSelectedCities(cities); updateWorkflowStep(2)}} />
+              uniqueKey="citySelectionWorkflow">
+              <CitySelectionWorkflow onComplete={(cities) => {setSelectedCities(cities); updateWorkflowStep(2)}} />
+            </WorkflowStep>
             <br />
             <WorkflowStep
               isVisible={workflowStep >= 2}

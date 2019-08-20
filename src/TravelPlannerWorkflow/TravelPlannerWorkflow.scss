@@ -1,12 +1,3 @@
-.SelectorStep {
-  display: flex;
-
-  & > .MultiCitySelector {
-    flex-grow: 1;
-    margin-right: 10px;
-  }
-}
-
 #TravelPlannerWorkflow {
   flex: 1 1 auto;
   overflow-y: scroll;
