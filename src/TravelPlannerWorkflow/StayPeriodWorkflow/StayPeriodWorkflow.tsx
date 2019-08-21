@@ -5,7 +5,7 @@ import { City } from '../../Services/LocationServices';
 
 import InputRange, { Range } from 'react-input-range';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Button } from 'react-bootstrap';
 
 interface StayPeriodWorkflowProps {
@@ -24,7 +24,8 @@ export interface CityToStayPeriodMapping {
 }
 
 const StayPeriodWorkflow: React.FC<StayPeriodWorkflowProps> = props => {
-  let [stayPeriods, setStayPeriods] = useState<CityToStayPeriodMapping>({});
+  const [stayPeriods, setStayPeriods] = useState<CityToStayPeriodMapping>({});
+  const confirmButtonRef = useRef<any>(null);
 
   useEffect(() => {
     var initialPeriods = props.cities.reduce<CityToStayPeriodMapping>((mappings, currCity) => {
@@ -33,6 +34,7 @@ const StayPeriodWorkflow: React.FC<StayPeriodWorkflowProps> = props => {
     }, {});
     setStayPeriods(initialPeriods);
   }, [props.cities]);
+  useEffect(() => confirmButtonRef.current.focus(), []);
 
   return (
     <div>
@@ -58,7 +60,7 @@ const StayPeriodWorkflow: React.FC<StayPeriodWorkflowProps> = props => {
       }
       </form>
       <br />
-      <Button onClick={() => props.onSubmit(stayPeriods)} size="lg" className="float-right">
+      <Button ref={confirmButtonRef} onClick={() => props.onSubmit(stayPeriods)} size="lg" className="float-right">
         <b>↵</b>
       </Button>
     </div>

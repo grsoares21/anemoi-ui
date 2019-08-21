@@ -39,12 +39,14 @@ const CitySelectionWorkflow: React.FC<CitySelectionWorkflowProps> = props => {
         placeholder="Cidades de partida..."
         onChange={(cities) => {setDepartureCities(cities)}}
         onConfirm={() => arrivalsSelectRef.current.focus()} />
+      <br />
       <label>Possíveis pontos de chegada:</label>
       <MultiCitySelector
         inputRef={arrivalsSelectRef}
         placeholder="Cidades de chegada..."
         onChange={(cities) => {setArrivalCities(cities)}}
         onConfirm={() => visitingSelectRef.current.focus()} />
+      <br />
       <label>Cidades para visitar:</label>
       <MultiCitySelector
         inputRef={visitingSelectRef}

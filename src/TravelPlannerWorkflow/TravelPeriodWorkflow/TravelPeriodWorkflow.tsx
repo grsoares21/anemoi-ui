@@ -32,7 +32,6 @@ const TravelPlanResult: React.FC<TravelPlanResultProps> = props => {
   });
   const [arrivalFocusedInput, setArrivalFocusedInput] = useState<'startDate' | 'endDate' | null>(null);
 
-
   return (
     <Row>
       <Col xs={12}>
@@ -40,7 +39,11 @@ const TravelPlanResult: React.FC<TravelPlanResultProps> = props => {
         <br />
         <DateRangePicker
           {...departureDateRange}
-          onDatesChange={setDepartureDateRange}
+          onDatesChange={dates => {
+            setDepartureDateRange(dates);
+            if(departureFocusedInput === 'endDate')
+              setArrivalFocusedInput('startDate');
+          }}
           focusedInput={departureFocusedInput}
           onFocusChange={setDepartureFocusedInput}
           startDateId="departureStartDate"
