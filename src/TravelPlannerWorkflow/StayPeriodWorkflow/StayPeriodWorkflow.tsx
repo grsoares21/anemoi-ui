@@ -10,7 +10,7 @@ import { Button } from 'react-bootstrap';
 
 interface StayPeriodWorkflowProps {
   cities: City[];
-  onSubmit: (stayPeriods: CityToStayPeriodMapping) => void;
+  onComplete: (stayPeriods: CityToStayPeriodMapping) => void;
 }
 
 interface CityStayPeriod {
@@ -60,7 +60,7 @@ const StayPeriodWorkflow: React.FC<StayPeriodWorkflowProps> = props => {
       }
       </form>
       <br />
-      <Button ref={confirmButtonRef} onClick={() => props.onSubmit(stayPeriods)} size="lg" className="float-right">
+      <Button ref={confirmButtonRef} onClick={() => props.onComplete(stayPeriods)} size="lg" className="float-right">
         <b>↵</b>
       </Button>
     </div>

@@ -3,7 +3,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { Row, Col } from 'react-bootstrap';
 import { DateRangePicker } from 'react-dates';
@@ -12,6 +12,7 @@ import moment, { Moment } from 'moment';
 interface TravelPlanResultProps {
   minTravelDays: number;
   maxTravelDays: number;
+  onComplete: (departueDateRange: DateRange, arrivalDateRange: DateRange) => void;
 }
 
 interface DateRange {
@@ -32,6 +33,15 @@ const TravelPlanResult: React.FC<TravelPlanResultProps> = props => {
   });
   const [arrivalFocusedInput, setArrivalFocusedInput] = useState<'startDate' | 'endDate' | null>(null);
 
+  useEffect(() => {
+    if(departureDateRange.startDate &&
+       departureDateRange.endDate &&
+       arrivalDateRange.startDate &&
+       arrivalDateRange.endDate
+       ) {
+         props.onComplete(departureDateRange, arrivalDateRange)
+       }
+  }, [arrivalDateRange, departureDateRange])
   return (
     <Row>
       <Col xs={12}>
