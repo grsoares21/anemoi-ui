@@ -9,25 +9,27 @@ import { Row, Col } from 'react-bootstrap';
 import { DateRangePicker } from 'react-dates';
 import moment, { Moment } from 'moment';
 
+import { DateRange } from '../../Services/AnemoiServices/TravelPlanParameters';
+
 interface TravelPlanResultProps {
   minTravelDays: number;
   maxTravelDays: number;
-  onComplete: (departueDateRange: DateRange, arrivalDateRange: DateRange) => void;
+  onComplete: (departueMomentDateRange: DateRange, arrivalDateRange: DateRange) => void;
 }
 
-interface DateRange {
+interface MomentDateRange {
   startDate: Moment | null;
   endDate: Moment | null;
 }
 
 const TravelPlanResult: React.FC<TravelPlanResultProps> = props => {
-  const [departureDateRange, setDepartureDateRange] = useState<DateRange>({
+  const [departureDateRange, setdepartureDateRange] = useState<MomentDateRange>({
     startDate: null,
     endDate: null
   });
   const [departureFocusedInput, setDepartureFocusedInput] = useState<'startDate' | 'endDate' | null>(null);
 
-  const [arrivalDateRange, setArrivalDateRange] = useState<DateRange>({
+  const [arrivalDateRange, setarrivalDateRange] = useState<MomentDateRange>({
     startDate: null,
     endDate: null
   });
@@ -39,7 +41,9 @@ const TravelPlanResult: React.FC<TravelPlanResultProps> = props => {
        arrivalDateRange.startDate &&
        arrivalDateRange.endDate
        ) {
-         props.onComplete(departureDateRange, arrivalDateRange)
+         props.onComplete(
+           { startDate: departureDateRange.startDate.toISOString(), endDate: departureDateRange.endDate.toISOString() },
+           { startDate: arrivalDateRange.startDate.toISOString(), endDate: arrivalDateRange.endDate.toISOString() });
        }
   }, [arrivalDateRange, departureDateRange])
   return (
@@ -50,7 +54,7 @@ const TravelPlanResult: React.FC<TravelPlanResultProps> = props => {
         <DateRangePicker
           {...departureDateRange}
           onDatesChange={dates => {
-            setDepartureDateRange(dates);
+            setdepartureDateRange(dates);
             if(departureFocusedInput === 'endDate')
               setArrivalFocusedInput('startDate');
           }}
@@ -68,7 +72,7 @@ const TravelPlanResult: React.FC<TravelPlanResultProps> = props => {
         <br />
         <DateRangePicker
           {...arrivalDateRange}
-          onDatesChange={setArrivalDateRange}
+          onDatesChange={setarrivalDateRange}
           focusedInput={arrivalFocusedInput}
           onFocusChange={setArrivalFocusedInput}
           startDateId="arrivalStartDate"

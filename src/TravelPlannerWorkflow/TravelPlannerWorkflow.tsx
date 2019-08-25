@@ -10,6 +10,9 @@ import StayPeriodWorkflow, { CityToStayPeriodMapping } from './StayPeriodWorkflo
 import TravelPlanResult from './TravelPlanResult/TravelPlanResult';
 import TravelPeriodWorkflow from './TravelPeriodWorkflow/TravelPeriodWorkflow';
 
+import AnemoiServices from '../Services/AnemoiServices/AnemoiServices';
+import { DateRange } from '../Services/AnemoiServices/TravelPlanParameters';
+
 interface TravelPlannerWorkflowProps {
   launchWorkflow: boolean
 }
@@ -21,6 +24,8 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
     arrivalCities: []
   });
   let [stayPeriods, setStayPeriods] = useState<CityToStayPeriodMapping>({});
+
+  let [[departureDateRange, arrivalDateRange], setDateRanges] = useState<[DateRange, DateRange]>([{startDate: "", endDate: ""}, {startDate: "", endDate: ""}]);
 
   const submitButtonRef = useRef<any>(null);
 
@@ -84,7 +89,10 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
                 maxTravelDays={Object.entries(stayPeriods).reduce((accumulator, [, cityStayPeriod]) => {
                     return accumulator + cityStayPeriod.maxDays;
                 }, 0)}
-                onComplete={(departureDateRange, arrivalDateRange) => updateWorkflowStep(6)} />
+                onComplete={(departureDateRange, arrivalDateRange) => {
+                  updateWorkflowStep(6);
+                  setDateRanges([departureDateRange, arrivalDateRange]);
+                }} />
             </WorkflowStep>
             <br />
             <WorkflowStep
@@ -95,11 +103,20 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
                 onClick={() => {
                   updateWorkflowStep(7);
                   var loadingDotsInterval = setInterval(() => setLoadingDots(prevDots => prevDots + '.'), 800);
-                  setTimeout(() => {
-                    // TODO: this is temporary to simulate the async request to calculate the best route
+
+                  AnemoiServices.calculateTravelPlan({
+                    departureCities: selectedCities.departureCities.map(city => city.id),
+                    arrivalCities: selectedCities.arrivalCities.map(city => city.id),
+                    visitingCities: selectedCities.visitingCities.map(city => {
+                      let cityStayPeriod = stayPeriods[city.id];
+                      return {cityId: city.id, stayPeriod: [cityStayPeriod.minDays, cityStayPeriod.maxDays]}
+                    }),
+                    departureDateRange,
+                    arrivalDateRange
+                  }).then(() => {
                     clearInterval(loadingDotsInterval);
                     updateWorkflowStep(8);
-                  }, 3000);
+                  }).catch(err => console.log(err));
               }}>
                 <b>Calcular Plano de Viagem</b>
               </Button>
@@ -121,16 +138,3 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
 }
 
 export default TravelPlannerWorkflow;
-/*
-
-            <Button onClick={() => {
-              updateWorkflowStep(6);
-              var loadingDotsInterval = setInterval(() => setLoadingDots(prevDots => prevDots + '.'), 800);
-              setTimeout(() => {
-                // TODO: this is temporary to simulate the async request to calculate the best route
-                clearInterval(loadingDotsInterval);
-                updateWorkflowStep(7);
-              }, 3000);
-            }} size="lg" block variant="success">
-              <b>Criar Plano de Viagem</b>
-            </Button>*/
