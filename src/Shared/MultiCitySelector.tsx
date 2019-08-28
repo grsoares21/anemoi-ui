@@ -5,12 +5,16 @@ import LocationServices, {City} from '../Services/LocationServices';
 import React, { useRef } from 'react';
 import Async from 'react-select/async';
 import debounce from 'lodash/debounce';
-import { ValueType } from 'react-select/src/types';
+import { ValueType, ActionMeta } from 'react-select/src/types';
 
 interface MultiCitySelectorOptions {
   label: string;
   value: string;
   data: City;
+}
+
+interface Action extends ActionMeta {
+  option?: ValueType<MultiCitySelectorOptions>
 }
 
 const debouncedFetchCityOptions = debounce((searchTerm: string, callback: (values: MultiCitySelectorOptions[]) => void) => {
@@ -36,8 +40,11 @@ interface MultiCitySelectorProps {
   // are not compatible with the library for the state manager
 
   placeholder: string;
-  onChange: (selectedCities: City[]) => void;
-  onConfirm: () => void;
+  onChange?: (selectedCities: City[]) => void;
+  onAddCity?: (selectedCity: City) => void;
+  onRemoveCity?: (removedCity: City) => void;
+  onClear?: () => void;
+  onConfirm?: () => void;
 }
 
 const MultiCitySelector: React.FC<MultiCitySelectorProps> = (props) => {
@@ -56,7 +63,7 @@ const MultiCitySelector: React.FC<MultiCitySelectorProps> = (props) => {
           if(!stateManager.menuIsOpen && stateManager.value && stateManager.value.length > 0) {
             // the confirm is executed when there is at least one value selected
             // and the user is not selecting any values
-            props.onConfirm();
+            props.onConfirm && props.onConfirm();
           }
         }
       }}
@@ -64,13 +71,26 @@ const MultiCitySelector: React.FC<MultiCitySelectorProps> = (props) => {
       placeholder={props.placeholder}
       loadOptions={fetchCityOptions}
       components={{
-        // hides the dropdown arroww on the right of the select
+        // hides the dropdown arrow on the right of the select
         DropdownIndicator: () => null,
         IndicatorSeparator: () => null
       }}
-      onChange={(value: ValueType<MultiCitySelectorOptions>) => {
-        if(value === null) props.onChange([]);
-        else props.onChange((value as MultiCitySelectorOptions[]).map(option => option.data));
+      onChange={(value: ValueType<MultiCitySelectorOptions>, action: Action) => {
+        switch(action.action) {
+          case "clear":
+            props.onClear && props.onClear();
+            break;
+          case "select-option":
+            props.onAddCity && props.onAddCity((action.option as MultiCitySelectorOptions).data);
+            break;
+          case "remove-value":
+            props.onRemoveCity && props.onRemoveCity((action.option as MultiCitySelectorOptions).data);
+            break;
+          default:
+            value ?
+              props.onChange && props.onChange((value as MultiCitySelectorOptions[]).map(option => option.data)) :
+              props.onChange && props.onChange([]);
+        }
       }}
       />
   );
