@@ -87,10 +87,12 @@ const MultiCitySelector: React.FC<MultiCitySelectorProps> = (props) => {
             props.onRemoveCity && props.onRemoveCity((action.option as MultiCitySelectorOptions).data);
             break;
           default:
-            value ?
-              props.onChange && props.onChange((value as MultiCitySelectorOptions[]).map(option => option.data)) :
-              props.onChange && props.onChange([]);
+            break;
         }
+
+        value ?
+          props.onChange && props.onChange((value as MultiCitySelectorOptions[]).map(option => option.data)) :
+          props.onChange && props.onChange([]);
       }}
       />
   );
