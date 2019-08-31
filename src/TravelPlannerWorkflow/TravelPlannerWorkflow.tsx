@@ -1,29 +1,56 @@
 import './TravelPlannerWorkflow.scss';
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useReducer } from 'react';
 import { Row, Col, Container, Button } from 'react-bootstrap';
 import { animateScroll } from 'react-scroll';
 
 import WorkflowStep from './WorkflowStep/WorkflowStep';
-import CitySelectionWorkflow, { SelectedCities } from './CitySelectionWorkflow';
-import StayPeriodWorkflow, { CityToStayPeriodMapping } from './StayPeriodWorkflow/StayPeriodWorkflow';
+import CitySelectionWorkflow from './CitySelectionWorkflow';
+import StayPeriodWorkflow from './StayPeriodWorkflow/StayPeriodWorkflow';
 import TravelPlanResult from './TravelPlanResult/TravelPlanResult';
 import TravelPeriodWorkflow from './TravelPeriodWorkflow/TravelPeriodWorkflow';
 
 import AnemoiServices from '../Services/AnemoiServices/AnemoiServices';
 import { DateRange } from '../Services/AnemoiServices/TravelPlanParameters';
+import { City } from '../Services/LocationServices';
 
-interface TravelPlannerWorkflowProps {
+export type CityStayPeriod = {
+  city: City,
+  minDays: number,
+  maxDays: number
+}
+
+type State = {
+  departureCities: City[],
+  arrivalCities: City[],
+  visitingCities: CityStayPeriod[]
+}
+
+type Action =
+  | { type: 'setDepartureCities', cities: City[] }
+  | { type: 'setArrivalCities', cities: City[] }
+  | { type: 'setVisitingCities', cities: CityStayPeriod[] }
+
+const reducer = (state: State, action: Action): State => {
+  switch (action.type) {
+    case 'setArrivalCities':
+      return { ...state, arrivalCities: action.cities };
+    case 'setDepartureCities':
+      return { ...state, departureCities: action.cities };
+    case 'setVisitingCities':
+        return { ...state, visitingCities: action.cities };
+    default:
+      return { ...state };
+  }
+}
+
+type TravelPlannerWorkflowProps = {
   launchWorkflow: boolean
 }
 
 const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
-  let [selectedCities, setSelectedCities] = useState<SelectedCities>({
-    departureCities: [],
-    visitingCities: [],
-    arrivalCities: []
-  });
-  let [stayPeriods, setStayPeriods] = useState<CityToStayPeriodMapping>({});
+  const [{departureCities, arrivalCities, visitingCities}, dispatch] =
+    useReducer(reducer, { departureCities: [], arrivalCities: [], visitingCities: [] });
 
   let [[departureDateRange, arrivalDateRange], setDateRanges] = useState<[DateRange, DateRange]>([{startDate: "", endDate: ""}, {startDate: "", endDate: ""}]);
 
@@ -40,7 +67,7 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
 
   let [loadingDots, setLoadingDots] = useState('.');
   return (
-    <div id="TravelPlannerWorkflow" style={{display: props.launchWorkflow ? 'block' : 'none'}}>
+    <div id="TravelPlannerWorkflow" style={{ display: props.launchWorkflow ? 'block' : 'none' }}>
       <div className="FaderGradient"></div>
       <Container>
         <Row>
@@ -55,7 +82,22 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
             <WorkflowStep
               isVisible={workflowStep >= 1}
               uniqueKey="citySelectionWorkflow">
-              <CitySelectionWorkflow onComplete={(cities) => {setSelectedCities(cities); updateWorkflowStep(2)}} />
+              <CitySelectionWorkflow
+                departureCities={departureCities}
+                arrivalCities={arrivalCities}
+                visitingCities={visitingCities.map(vc => vc.city)}
+                onComplete={() => updateWorkflowStep(2)}
+                onSetDepartureCities={cities => dispatch({ type: 'setDepartureCities', cities: cities })}
+                onSetArrivalCities={cities => dispatch({ type: 'setArrivalCities', cities: cities })}
+                onClearVisitingCities={() => dispatch({ type: 'setVisitingCities', cities: [] })}
+                onAddVisitingCity={city => dispatch({
+                  type: 'setVisitingCities',
+                  cities: [...visitingCities, {city: city, minDays: 3, maxDays: 5}]
+                })}
+                onRemoveVisitingCity={city => dispatch({
+                  type: 'setVisitingCities',
+                  cities: visitingCities.filter(cityPeriod => cityPeriod.city.id !== city.id)
+                })} />
             </WorkflowStep>
             <br />
             <WorkflowStep
@@ -72,8 +114,10 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
               isVisible={workflowStep >= 3}
               uniqueKey="stayPeriodWorkflow">
               <StayPeriodWorkflow
-                cities={selectedCities.visitingCities}
-                onComplete={(cityPeriods) => {setStayPeriods(cityPeriods); updateWorkflowStep(4)}} />
+                cityStayPeriods={visitingCities}
+                onChange={cityStayPeriods => dispatch({type: 'setVisitingCities', cities: cityStayPeriods})}
+                onComplete={() => updateWorkflowStep(4)}
+                 />
             </WorkflowStep>
             <br />
             <br />
@@ -83,10 +127,10 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
               <h4>Anotado!</h4>
               <h4><em>Para quando você está planejando esta viagem?</em></h4>
               <TravelPeriodWorkflow
-                minTravelDays={Object.entries(stayPeriods).reduce((accumulator, [, cityStayPeriod]) => {
+                minTravelDays={visitingCities.reduce((accumulator, cityStayPeriod) => {
                     return accumulator + cityStayPeriod.minDays;
                 }, 0)}
-                maxTravelDays={Object.entries(stayPeriods).reduce((accumulator, [, cityStayPeriod]) => {
+                maxTravelDays={visitingCities.reduce((accumulator, cityStayPeriod) => {
                     return accumulator + cityStayPeriod.maxDays;
                 }, 0)}
                 onComplete={(departureDateRange, arrivalDateRange) => {
@@ -105,11 +149,10 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
                   var loadingDotsInterval = setInterval(() => setLoadingDots(prevDots => prevDots + '.'), 800);
 
                   AnemoiServices.calculateTravelPlan({
-                    departureCities: selectedCities.departureCities.map(city => city.id),
-                    arrivalCities: selectedCities.arrivalCities.map(city => city.id),
-                    visitingCities: selectedCities.visitingCities.map(city => {
-                      let cityStayPeriod = stayPeriods[city.id];
-                      return {cityId: city.id, stayPeriod: [cityStayPeriod.minDays, cityStayPeriod.maxDays]}
+                    departureCities: departureCities.map(city => city.id),
+                    arrivalCities: arrivalCities.map(city => city.id),
+                    visitingCities: visitingCities.map(cityStayPeriod => {
+                      return {cityId: cityStayPeriod.city.id, stayPeriod: [cityStayPeriod.minDays, cityStayPeriod.maxDays]}
                     }),
                     departureDateRange,
                     arrivalDateRange

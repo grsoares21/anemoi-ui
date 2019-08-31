@@ -14,7 +14,8 @@ interface MultiCitySelectorOptions {
 }
 
 interface Action extends ActionMeta {
-  option?: ValueType<MultiCitySelectorOptions>
+  option?: ValueType<MultiCitySelectorOptions>;
+  removedValue?: ValueType<MultiCitySelectorOptions>;
 }
 
 const debouncedFetchCityOptions = debounce((searchTerm: string, callback: (values: MultiCitySelectorOptions[]) => void) => {
@@ -77,14 +78,15 @@ const MultiCitySelector: React.FC<MultiCitySelectorProps> = (props) => {
       }}
       onChange={(value: ValueType<MultiCitySelectorOptions>, action: Action) => {
         switch(action.action) {
-          case "clear":
+          case 'clear':
             props.onClear && props.onClear();
             break;
-          case "select-option":
+          case 'select-option':
             props.onAddCity && props.onAddCity((action.option as MultiCitySelectorOptions).data);
             break;
-          case "remove-value":
-            props.onRemoveCity && props.onRemoveCity((action.option as MultiCitySelectorOptions).data);
+          case 'pop-value':
+          case 'remove-value':
+            props.onRemoveCity && props.onRemoveCity((action.removedValue as MultiCitySelectorOptions).data);
             break;
           default:
             break;

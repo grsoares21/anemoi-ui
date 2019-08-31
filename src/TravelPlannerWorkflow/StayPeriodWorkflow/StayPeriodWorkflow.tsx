@@ -1,49 +1,32 @@
 import 'react-input-range/lib/css/index.css';
 import './StayPeriodWorkflow.scss';
 
-import { City } from '../../Services/LocationServices';
+import { CityStayPeriod } from '../TravelPlannerWorkflow';
 
 import InputRange, { Range } from 'react-input-range';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Button } from 'react-bootstrap';
 
 interface StayPeriodWorkflowProps {
-  cities: City[];
-  onComplete: (stayPeriods: CityToStayPeriodMapping) => void;
-}
-
-interface CityStayPeriod {
-  cityName: string;
-  minDays: number;
-  maxDays: number;
-}
-
-export interface CityToStayPeriodMapping {
-  [cityId: string]: CityStayPeriod
+  cityStayPeriods: CityStayPeriod[];
+  onChange: (cityStayPeriods: CityStayPeriod[]) => void;
+  onComplete: () => void;
 }
 
 const StayPeriodWorkflow: React.FC<StayPeriodWorkflowProps> = props => {
-  const [stayPeriods, setStayPeriods] = useState<CityToStayPeriodMapping>({});
   const confirmButtonRef = useRef<any>(null);
 
-  useEffect(() => {
-    var initialPeriods = props.cities.reduce<CityToStayPeriodMapping>((mappings, currCity) => {
-      mappings[currCity.id] = {cityName: currCity.name, minDays: 3, maxDays: 5};
-      return mappings;
-    }, {});
-    setStayPeriods(initialPeriods);
-  }, [props.cities]);
   useEffect(() => confirmButtonRef.current.focus(), []);
 
   return (
     <div>
       <form>
       {
-        Object.entries(stayPeriods).map(([cityId, {cityName, minDays, maxDays}]) => (
-          <span key={cityId}>
+        props.cityStayPeriods.map(({city, minDays, maxDays}) => (
+          <span key={city.id}>
             <h4>
-              <em>Eu gostaria de ficar em {cityName} entre {minDays} e {maxDays} dias.</em>
+              <em>Eu gostaria de ficar em {city.name} entre {minDays} e {maxDays} dias.</em>
             </h4>
             <br />
             <InputRange
@@ -52,7 +35,10 @@ const StayPeriodWorkflow: React.FC<StayPeriodWorkflowProps> = props => {
               value={{min: minDays, max: maxDays}}
               onChange={value => {
                 var range = value as Range;
-                setStayPeriods({...stayPeriods, [cityId]: {cityName, minDays: range.min, maxDays: range.max}})
+                props.onChange(props.cityStayPeriods.map(
+                  cityPeriod =>
+                    cityPeriod.city.id === city.id ? {city: city, minDays: range.min, maxDays: range.max} : cityPeriod
+                ));
               }} />
             <br />
           </span>
@@ -60,7 +46,7 @@ const StayPeriodWorkflow: React.FC<StayPeriodWorkflowProps> = props => {
       }
       </form>
       <br />
-      <Button ref={confirmButtonRef} onClick={() => props.onComplete(stayPeriods)} size="lg" className="float-right">
+      <Button ref={confirmButtonRef} onClick={props.onComplete} size="lg" className="float-right">
         <b>↵</b>
       </Button>
     </div>

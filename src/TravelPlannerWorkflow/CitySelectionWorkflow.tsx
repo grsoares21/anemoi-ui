@@ -1,24 +1,22 @@
 import { City } from '../Services/LocationServices';
 import MultiCitySelector from '../Shared/MultiCitySelector';
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { Button } from 'react-bootstrap';
 
-export interface SelectedCities {
+interface CitySelectionWorkflowProps {
+  onSetDepartureCities: (cities: City[]) => void;
+  onSetArrivalCities: (cities: City[]) => void;
+  onClearVisitingCities: () => void;
+  onAddVisitingCity: (city: City) => void;
+  onRemoveVisitingCity: (city: City) => void;
+  onComplete: () => void;
   departureCities: City[];
   visitingCities: City[];
   arrivalCities: City[];
 }
 
-interface CitySelectionWorkflowProps {
-  onComplete: (selectedCities: SelectedCities) => void;
-}
-
 const CitySelectionWorkflow: React.FC<CitySelectionWorkflowProps> = props => {
-  let [departureCities, setDepartureCities] = useState<City[]>([]);
-  let [visitingCities, setVisitingCities] = useState<City[]>([]);
-  let [arrivalCities, setArrivalCities] = useState<City[]>([]);
-
   let departuresSelectRef = useRef<any>(null);
   let visitingSelectRef = useRef<any>(null);
   let arrivalsSelectRef = useRef<any>(null);
@@ -37,32 +35,26 @@ const CitySelectionWorkflow: React.FC<CitySelectionWorkflowProps> = props => {
       <MultiCitySelector
         inputRef={departuresSelectRef}
         placeholder="Cidades de partida..."
-        onChange={(cities) => {setDepartureCities(cities)}}
+        onChange={(cities) => {props.onSetDepartureCities(cities)}}
         onConfirm={() => arrivalsSelectRef.current.focus()} />
       <br />
       <label>Possíveis pontos de chegada:</label>
       <MultiCitySelector
         inputRef={arrivalsSelectRef}
         placeholder="Cidades de chegada..."
-        onChange={(cities) => {setArrivalCities(cities)}}
+        onChange={(cities) => {props.onSetArrivalCities(cities)}}
         onConfirm={() => visitingSelectRef.current.focus()} />
       <br />
       <label>Cidades para visitar:</label>
       <MultiCitySelector
         inputRef={visitingSelectRef}
         placeholder="Cidades para visitar..."
-        onChange={(cities) => {setVisitingCities(cities)}}
-        onConfirm={() => props.onComplete({
-          arrivalCities: arrivalCities,
-          visitingCities: visitingCities,
-          departureCities: departureCities
-        })} />
+        onAddCity={(city) => props.onAddVisitingCity(city)}
+        onRemoveCity={(city) => props.onRemoveVisitingCity(city)}
+        onClear={props.onClearVisitingCities}
+        onConfirm={props.onComplete} />
       <br />
-      <Button className="float-right" size="lg" onClick={() => props.onComplete({
-          arrivalCities: arrivalCities,
-          visitingCities: visitingCities,
-          departureCities: departureCities
-        })}>
+      <Button className="float-right" size="lg" onClick={props.onComplete}>
         <b>↵</b>
       </Button>
     </span>
