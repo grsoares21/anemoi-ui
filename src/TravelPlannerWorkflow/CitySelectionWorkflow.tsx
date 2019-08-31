@@ -16,7 +16,7 @@ interface CitySelectionWorkflowProps {
   arrivalCities: City[];
 }
 
-const CitySelectionWorkflow: React.FC<CitySelectionWorkflowProps> = props => {
+const CitySelectionWorkflow: React.FC<CitySelectionWorkflowProps> = React.memo((props) => {
   let departuresSelectRef = useRef<any>(null);
   let visitingSelectRef = useRef<any>(null);
   let arrivalsSelectRef = useRef<any>(null);
@@ -59,6 +59,10 @@ const CitySelectionWorkflow: React.FC<CitySelectionWorkflowProps> = props => {
       </Button>
     </span>
   );
-}
+}, (prevProps, nextProps) => {
+  return JSON.stringify(prevProps.arrivalCities) === JSON.stringify(nextProps.arrivalCities) &&
+    JSON.stringify(prevProps.departureCities) === JSON.stringify(nextProps.departureCities) &&
+    JSON.stringify(prevProps.visitingCities) === JSON.stringify(nextProps.visitingCities);
+});
 
 export default CitySelectionWorkflow;
