@@ -1,19 +1,27 @@
 import './TravelPlanResult.scss';
 
 import React from 'react';
+import TravelPlanResult from '../../Services/AnemoiServices/TravelPlanResult';
 
-import WorkflowStep from '../WorkflowStep/WorkflowStep';
+import AirplaneRouteResult from './AirplaneRouteResult';
+import { Button } from 'react-bootstrap';
 
 interface TravelPlanResultProps {
-  isVisible: boolean;
+  result: TravelPlanResult;
 }
 
-const TravelPlanResult: React.FC<TravelPlanResultProps> = props => {
+const TravelPlanResultComponent: React.FC<TravelPlanResultProps> = props => {
   return (
-    <WorkflowStep isVisible={props.isVisible} uniqueKey="stayPeriodSelection">
-      <h4>Melhor rota encontrada! Aqui está o seu plano de viagem:</h4>
-    </WorkflowStep>
+    <div>
+      <h4><em>Melhor rota encontrada!</em></h4>
+      <h4>Aqui está o seu plano de viagem:</h4>
+      {props.result.routes.map(route => <AirplaneRouteResult route={route} />)}
+      <h4><em>Preço total:</em> R$ {props.result.totalPrice.toFixed(2).replace('.', ',')}</h4>
+      <Button block size="lg" variant="success" onClick={() => window.open(props.result.deepLink, '_blank')}>
+        <b>Clique aqui para reservar</b>
+      </Button>
+    </div>
   );
 }
 
-export default TravelPlanResult;
+export default TravelPlanResultComponent;

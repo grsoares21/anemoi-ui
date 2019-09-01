@@ -174,7 +174,11 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
               <h4><em>Perfeito!</em></h4>
               <h4>Estamos calculando a melhor rota para sua viagem{loadingDots}</h4>
             </WorkflowStep>
-            <TravelPlanResult isVisible={workflowStep >= 8} />
+            <WorkflowStep
+              isVisible={workflowStep >= 8}
+              uniqueKey="travelPlanResult">
+              {state.travelPlanResult && <TravelPlanResult result={state.travelPlanResult} />}
+            </WorkflowStep>
             <br /><br />
           </Col>
         </Row>
