@@ -11,7 +11,6 @@ import TravelPlanResult from './TravelPlanResult/TravelPlanResult';
 import TravelPeriodWorkflow from './TravelPeriodWorkflow/TravelPeriodWorkflow';
 
 import AnemoiServices from '../Services/AnemoiServices/AnemoiServices';
-import { DateRange } from '../Services/AnemoiServices/TravelPlanParameters';
 import { City } from '../Services/LocationServices';
 
 export type CityStayPeriod = {
@@ -20,16 +19,24 @@ export type CityStayPeriod = {
   maxDays: number
 }
 
+export type DateRange = {
+  startDate: Date | null,
+  endDate: Date | null
+}
+
 type State = {
   departureCities: City[],
   arrivalCities: City[],
-  visitingCities: CityStayPeriod[]
+  visitingCities: CityStayPeriod[],
+  departureDateRange: DateRange,
+  arrivalDateRange: DateRange
 }
 
 type Action =
   | { type: 'setDepartureCities', cities: City[] }
   | { type: 'setArrivalCities', cities: City[] }
   | { type: 'setVisitingCities', cities: CityStayPeriod[] }
+  | { type: 'setDateRanges', dateRanges: {departureDateRange: DateRange, arrivalDateRange: DateRange}}
 
 const reducer = (state: State, action: Action): State => {
   switch (action.type) {
@@ -39,6 +46,8 @@ const reducer = (state: State, action: Action): State => {
       return { ...state, departureCities: action.cities };
     case 'setVisitingCities':
         return { ...state, visitingCities: action.cities };
+    case 'setDateRanges':
+        return { ...state, ...action.dateRanges }
     default:
       return { ...state };
   }
@@ -49,10 +58,14 @@ type TravelPlannerWorkflowProps = {
 }
 
 const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
-  const [{departureCities, arrivalCities, visitingCities}, dispatch] =
-    useReducer(reducer, { departureCities: [], arrivalCities: [], visitingCities: [] });
-
-  let [[departureDateRange, arrivalDateRange], setDateRanges] = useState<[DateRange, DateRange]>([{startDate: "", endDate: ""}, {startDate: "", endDate: ""}]);
+  const [{departureCities, arrivalCities, visitingCities, departureDateRange, arrivalDateRange}, dispatch] =
+    useReducer(reducer, {
+      departureCities: [],
+      arrivalCities: [],
+      visitingCities: [],
+      departureDateRange: { startDate: null, endDate: null },
+      arrivalDateRange: { startDate: null, endDate: null }
+    });
 
   const submitButtonRef = useRef<any>(null);
 
@@ -133,10 +146,13 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
                 maxTravelDays={visitingCities.reduce((accumulator, cityStayPeriod) => {
                     return accumulator + cityStayPeriod.maxDays;
                 }, 0)}
-                onComplete={(departureDateRange, arrivalDateRange) => {
-                  updateWorkflowStep(6);
-                  setDateRanges([departureDateRange, arrivalDateRange]);
-                }} />
+                departureDateRange={departureDateRange}
+                arrivalDateRange={arrivalDateRange}
+                onComplete={() => updateWorkflowStep(6)}
+                onChange={
+                  (departureDateRange, arrivalDateRange) =>
+                    dispatch({ type: 'setDateRanges', dateRanges: { departureDateRange, arrivalDateRange } })
+                } />
             </WorkflowStep>
             <br />
             <WorkflowStep
@@ -154,8 +170,14 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
                     visitingCities: visitingCities.map(cityStayPeriod => {
                       return {cityId: cityStayPeriod.city.id, stayPeriod: [cityStayPeriod.minDays, cityStayPeriod.maxDays]}
                     }),
-                    departureDateRange,
-                    arrivalDateRange
+                    departureDateRange: {
+                      startDate: (departureDateRange.startDate as Date).toISOString(),
+                      endDate: (departureDateRange.endDate as Date).toISOString()
+                    },
+                    arrivalDateRange: {
+                      startDate: (arrivalDateRange.startDate as Date).toISOString(),
+                      endDate: (arrivalDateRange.endDate as Date).toISOString()
+                    }
                   }).then(() => {
                     clearInterval(loadingDotsInterval);
                     updateWorkflowStep(8);
