@@ -1,7 +1,7 @@
 import 'react-input-range/lib/css/index.css';
 import './StayPeriodWorkflow.scss';
 
-import { CityStayPeriod } from '../TravelPlannerWorkflow';
+import { CityStayPeriod } from '../TravelPlannerWorkflow.d';
 
 import InputRange, { Range } from 'react-input-range';
 

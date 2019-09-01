@@ -8,7 +8,7 @@ import React, { useState, useEffect } from 'react';
 import { Row, Col } from 'react-bootstrap';
 import { DateRangePicker } from 'react-dates';
 import moment, { Moment } from 'moment';
-import { DateRange } from '../TravelPlannerWorkflow';
+import { DateRange } from '../TravelPlannerWorkflow.d';
 
 type TravelPlanResultProps = {
   minTravelDays: number;
