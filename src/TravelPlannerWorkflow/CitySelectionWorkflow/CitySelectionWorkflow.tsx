@@ -1,8 +1,10 @@
-import { City } from '../Services/LocationServices';
-import MultiCitySelector from '../Shared/MultiCitySelector';
+import './CitySelectionWorkflow.scss';
 
-import React, { useRef, useEffect } from 'react';
-import { Button } from 'react-bootstrap';
+import { City } from '../../Services/LocationServices';
+import MultiCitySelector from '../../Shared/MultiCitySelector';
+
+import React, { useRef, useEffect, useState, ChangeEvent } from 'react';
+import { Button, Form } from 'react-bootstrap';
 
 interface CitySelectionWorkflowProps {
   onSetDepartureCities: (cities: City[]) => void;
@@ -21,6 +23,8 @@ const CitySelectionWorkflow: React.FC<CitySelectionWorkflowProps> = React.memo((
   let visitingSelectRef = useRef<any>(null);
   let arrivalsSelectRef = useRef<any>(null);
 
+  let [sameDepartureArrival, setSameDepartureArrival] = useState(true);
+
   useEffect(() => {departuresSelectRef.current.focus()}, []);
 
   return (
@@ -35,20 +39,43 @@ const CitySelectionWorkflow: React.FC<CitySelectionWorkflowProps> = React.memo((
       <MultiCitySelector
         inputRef={departuresSelectRef}
         placeholder="Cidades de partida..."
-        onChange={(cities) => {props.onSetDepartureCities(cities)}}
-        onConfirm={() => arrivalsSelectRef.current.focus()} />
+        value={props.departureCities}
+        onChange={cities => {
+          props.onSetDepartureCities(cities);
+          sameDepartureArrival && props.onSetArrivalCities(cities);
+        }}
+        onConfirm={() => sameDepartureArrival ?
+          visitingSelectRef.current.focus() :
+          arrivalsSelectRef.current.focus()
+        } />
       <br />
       <label>Possíveis pontos de chegada:</label>
       <MultiCitySelector
+        disabled={sameDepartureArrival}
         inputRef={arrivalsSelectRef}
         placeholder="Cidades de chegada..."
-        onChange={(cities) => {props.onSetArrivalCities(cities)}}
+        value={sameDepartureArrival ? [] : props.arrivalCities}
+        onChange={cities => props.onSetArrivalCities(cities)}
         onConfirm={() => visitingSelectRef.current.focus()} />
+      <Form.Check
+        custom
+        type="checkbox"
+        className={sameDepartureArrival ? 'custom-checkbox-checked' : ''}
+        checked={sameDepartureArrival}
+        onChange={(e: ChangeEvent<HTMLInputElement>) => {
+          e.target.checked ?
+            props.onSetArrivalCities(props.departureCities) :
+            props.onSetArrivalCities([]);
+          setSameDepartureArrival(e.target.checked)
+        }}
+        label="Usar mesmos pontos de partida e chegada"
+        id="same-departure-arrival-checkbox" />
       <br />
       <label>Cidades para visitar:</label>
       <MultiCitySelector
         inputRef={visitingSelectRef}
         placeholder="Cidades para visitar..."
+        value={props.visitingCities}
         onAddCity={(city) => props.onAddVisitingCity(city)}
         onRemoveCity={(city) => props.onRemoveVisitingCity(city)}
         onClear={props.onClearVisitingCities}

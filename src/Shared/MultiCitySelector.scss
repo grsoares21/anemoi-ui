@@ -33,10 +33,10 @@
   &__multi-value {
     & > &__label {
       color: white;
+      padding: 3px 8px;
     }
 
     & > &__remove {
-      margin-left: 2px;
       padding-right: 6px;
       padding-left: 6px;
       background-color: darken($green, 5%);

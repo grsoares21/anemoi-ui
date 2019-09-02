@@ -46,6 +46,8 @@ interface MultiCitySelectorProps {
   onRemoveCity?: (removedCity: City) => void;
   onClear?: () => void;
   onConfirm?: () => void;
+  value?: City[];
+  disabled?: boolean;
 }
 
 const MultiCitySelector: React.FC<MultiCitySelectorProps> = (props) => {
@@ -57,7 +59,9 @@ const MultiCitySelector: React.FC<MultiCitySelectorProps> = (props) => {
       ref={selectElement}
       className='MultiCitySelector'
       classNamePrefix='MultiCitySelector'
+      isDisabled={props.disabled}
       isMulti
+      value={props.value && props.value.map(city => {return { value: city.id, label: city.name, data: city}})}
       onKeyDown={(e: KeyboardEventInit) => {
         let stateManager = selectElement.current && selectElement.current.select.state;
         if(stateManager != null && e.key === 'Enter') {
@@ -82,11 +86,11 @@ const MultiCitySelector: React.FC<MultiCitySelectorProps> = (props) => {
             props.onClear && props.onClear();
             break;
           case 'select-option':
-            props.onAddCity && props.onAddCity((action.option as MultiCitySelectorOptions).data);
+            props.onAddCity && action.option && props.onAddCity((action.option as MultiCitySelectorOptions).data);
             break;
           case 'pop-value':
           case 'remove-value':
-            props.onRemoveCity && props.onRemoveCity((action.removedValue as MultiCitySelectorOptions).data);
+            props.onRemoveCity && action.removedValue && props.onRemoveCity((action.removedValue as MultiCitySelectorOptions).data);
             break;
           default:
             break;

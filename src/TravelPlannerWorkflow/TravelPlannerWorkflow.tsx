@@ -5,7 +5,7 @@ import { Row, Col, Container, Button } from 'react-bootstrap';
 import { animateScroll } from 'react-scroll';
 
 import WorkflowStep from './WorkflowStep/WorkflowStep';
-import CitySelectionWorkflow from './CitySelectionWorkflow';
+import CitySelectionWorkflow from './CitySelectionWorkflow/CitySelectionWorkflow';
 import StayPeriodWorkflow from './StayPeriodWorkflow/StayPeriodWorkflow';
 import TravelPlanResult from './TravelPlanResult/TravelPlanResult';
 import TravelPeriodWorkflow from './TravelPeriodWorkflow/TravelPeriodWorkflow';
