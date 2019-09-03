@@ -18,23 +18,6 @@ interface Action extends ActionMeta {
   removedValue?: ValueType<MultiCitySelectorOptions>;
 }
 
-const debouncedFetchCityOptions = debounce((searchTerm: string, callback: (values: MultiCitySelectorOptions[]) => void) => {
-  LocationServices.searchCities(searchTerm)
-    .then(cities =>
-      cities.map(city => {
-        return {label: `${city.name}, ${city.country.name}`, value: city.id, data: city}
-      }))
-    .then(cities => callback(cities))
-    .catch((error) => {console.log(error)});
-}, 500);
-
-const fetchCityOptions = (searchTerm: string, callback: (values: MultiCitySelectorOptions[]) => void) => {
-  if (!searchTerm) {
-    return Promise.resolve({ options: [] });
-  }
-  debouncedFetchCityOptions(searchTerm, callback);
-}
-
 interface MultiCitySelectorProps {
   inputRef?: any;
   // using any here because the type definition in @types/react-select
@@ -47,6 +30,7 @@ interface MultiCitySelectorProps {
   onClear?: () => void;
   onConfirm?: () => void;
   value?: City[];
+  invalidCities?: City[];
   disabled?: boolean;
 }
 
@@ -54,6 +38,27 @@ const MultiCitySelector: React.FC<MultiCitySelectorProps> = (props) => {
   const ownRef = useRef<any>(null);
   // same reason as above
   const selectElement = props.inputRef ? props.inputRef : ownRef;
+
+  const debouncedFetchCityOptions = debounce((searchTerm: string, callback: (values: MultiCitySelectorOptions[]) => void) => {
+    LocationServices.searchCities(searchTerm)
+      .then(cities =>
+        cities
+          .filter(city => !props.invalidCities || !props.invalidCities.some(invalidCity => invalidCity.id === city.id))
+          // filter invalid options out if there are any
+          .map(city => {
+            return {label: `${city.name}, ${city.country.name}`, value: city.id, data: city}
+          }))
+      .then(cities => callback(cities))
+      .catch((error) => {console.log(error)});
+  }, 500);
+
+  const fetchCityOptions = (searchTerm: string, callback: (values: MultiCitySelectorOptions[]) => void) => {
+    if (!searchTerm) {
+      return Promise.resolve({ options: [] });
+    }
+    debouncedFetchCityOptions(searchTerm, callback);
+  }
+
   return (
     <Async
       ref={selectElement}
@@ -72,7 +77,6 @@ const MultiCitySelector: React.FC<MultiCitySelectorProps> = (props) => {
           }
         }
       }}
-      cacheOptions
       placeholder={props.placeholder}
       loadOptions={fetchCityOptions}
       components={{

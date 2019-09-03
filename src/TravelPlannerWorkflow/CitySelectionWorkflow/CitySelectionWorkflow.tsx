@@ -39,6 +39,7 @@ const CitySelectionWorkflow: React.FC<CitySelectionWorkflowProps> = React.memo((
       <MultiCitySelector
         inputRef={departuresSelectRef}
         placeholder="Cidades de partida..."
+        invalidCities={props.visitingCities}
         value={props.departureCities}
         onChange={cities => {
           props.onSetDepartureCities(cities);
@@ -54,6 +55,7 @@ const CitySelectionWorkflow: React.FC<CitySelectionWorkflowProps> = React.memo((
         disabled={sameDepartureArrival}
         inputRef={arrivalsSelectRef}
         placeholder="Cidades de chegada..."
+        invalidCities={props.visitingCities}
         value={sameDepartureArrival ? [] : props.arrivalCities}
         onChange={cities => props.onSetArrivalCities(cities)}
         onConfirm={() => visitingSelectRef.current.focus()} />
@@ -75,6 +77,7 @@ const CitySelectionWorkflow: React.FC<CitySelectionWorkflowProps> = React.memo((
       <MultiCitySelector
         inputRef={visitingSelectRef}
         placeholder="Cidades para visitar..."
+        invalidCities={props.arrivalCities.concat(props.departureCities)}
         value={props.visitingCities}
         onAddCity={(city) => props.onAddVisitingCity(city)}
         onRemoveCity={(city) => props.onRemoveVisitingCity(city)}
