@@ -1,6 +1,6 @@
 import './TravelPlannerWorkflow.scss';
 
-import React, { useState, useRef, useReducer } from 'react';
+import React, { useState, useRef, useReducer, useEffect } from 'react';
 import { Row, Col, Container, Button } from 'react-bootstrap';
 import { animateScroll } from 'react-scroll';
 
@@ -71,6 +71,12 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
     }
   }
   // to prevent coming backwards on the steps when re-executing animations' end callback
+
+  useEffect(() => {
+    if(workflowStep === 6) {
+      submitButtonRef.current.focus();
+    }
+  }, [workflowStep])
 
   let [loadingDots, setLoadingDots] = useState('.');
   return (
@@ -151,8 +157,7 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
             <br />
             <WorkflowStep
               isVisible={workflowStep >= 6}
-              uniqueKey="calculateRoute"
-              onAnimationEnd={() => submitButtonRef.current.focus()}>
+              uniqueKey="calculateRoute">
               <Button size="lg" block ref={submitButtonRef}
                 onClick={() => {
                   updateWorkflowStep(7);
