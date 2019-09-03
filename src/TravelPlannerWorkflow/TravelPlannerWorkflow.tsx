@@ -158,11 +158,15 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
                   updateWorkflowStep(7);
                   var loadingDotsInterval = setInterval(() => setLoadingDots(prevDots => prevDots + '.'), 800);
 
-                  sendTravelPlanRequest(state).then(result => {
-                    dispatch({ type: 'setTravelPlanResult', result })
-                    clearInterval(loadingDotsInterval);
-                    updateWorkflowStep(8);
-                  }).catch(err => console.log(err));
+                  sendTravelPlanRequest(state)
+                    .then(result => {
+                      dispatch({ type: 'setTravelPlanResult', result })
+                    })
+                    .catch(err => console.log(err))
+                    .finally(() => {
+                      clearInterval(loadingDotsInterval);
+                      updateWorkflowStep(8);
+                    });
               }}>
                 <b>Calcular Plano de Viagem</b>
               </Button>
@@ -178,6 +182,7 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
               isVisible={workflowStep >= 8}
               uniqueKey="travelPlanResult">
               {state.travelPlanResult && <TravelPlanResult result={state.travelPlanResult} />}
+              {!state.travelPlanResult && <h4><em>Desculpe, nenhuma rota foi encontrada para sua viagem ;(</em></h4>}
             </WorkflowStep>
             <br /><br />
           </Col>
