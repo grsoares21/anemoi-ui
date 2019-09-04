@@ -1,5 +1,4 @@
 import './TravelPeriodWorkflow.scss';
-import 'react-datepicker/dist/react-datepicker.css';
 import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
 
