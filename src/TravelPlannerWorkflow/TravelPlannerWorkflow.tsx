@@ -65,18 +65,35 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
 
   let [workflowStep, setWorkflowStep] = useState(0);
   let updateWorkflowStep = (step: number) => {
-    if(step > workflowStep) {
-      setWorkflowStep(step);
-      setTimeout(() => animateScroll.scrollToBottom({containerId: "TravelPlannerWorkflow", isDynamic: true, duration: 500}), 100);
-    }
+    setWorkflowStep(step);
+    setTimeout(() => animateScroll.scrollToBottom({
+      containerId: "TravelPlannerWorkflow",
+      isDynamic: true, duration: 500
+    }), 100);
   }
   // to prevent coming backwards on the steps when re-executing animations' end callback
 
   useEffect(() => {
-    if(workflowStep === 6) {
-      submitButtonRef.current.focus();
+    if(!props.launchWorkflow) return;
+    // TODO: make workflowStep an union type with proper meaning into it
+    let timeOutToClear: ReturnType<typeof setTimeout>;
+    switch(workflowStep) {
+      // defines the side effects for each workflow step
+      case 0:
+        timeOutToClear = setTimeout(() => updateWorkflowStep(1), 300);
+        break;
+      case 2:
+        timeOutToClear = setTimeout(() => updateWorkflowStep(3), 300);
+        break;
+      case 6:
+        submitButtonRef.current.focus();
+        break;
+      default:
+        break;
     }
-  }, [workflowStep])
+    let cleanUpFunction = () => clearTimeout(timeOutToClear);
+    return cleanUpFunction;
+  }, [workflowStep, props.launchWorkflow])
 
   let [loadingDots, setLoadingDots] = useState('.');
   return (
@@ -88,8 +105,7 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
             <br /><br /><br />
             <WorkflowStep
               isVisible={props.launchWorkflow}
-              uniqueKey="letsGo"
-              onAnimationEnd={() => updateWorkflowStep(1)}>
+              uniqueKey="letsGo">
               <h4>Ótimo, então vamos lá!</h4>
             </WorkflowStep>
             <WorkflowStep
@@ -115,8 +131,7 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
             <br />
             <WorkflowStep
               isVisible={workflowStep >= 2}
-              uniqueKey="needStayPeriods"
-              onAnimationEnd={() => updateWorkflowStep(3)}>
+              uniqueKey="needStayPeriods">
               <h4>Soa como um bom plano!</h4>
               <h4>
                 Para te ajudar a planejar ele, vou precisar saber por volta
@@ -148,7 +163,7 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
                 }, 0)}
                 departureDateRange={departureDateRange}
                 arrivalDateRange={arrivalDateRange}
-                onComplete={() => updateWorkflowStep(6)}
+                onComplete={() => workflowStep < 6 && updateWorkflowStep(6)}
                 onChange={
                   (departureDateRange, arrivalDateRange) =>
                     dispatch({ type: 'setDateRanges', dateRanges: { departureDateRange, arrivalDateRange } })
