@@ -2,7 +2,7 @@ import TravelPlanResult from "./TravelPlanResult";
 import TravelPlanParameters from "./TravelPlanParameters";
 
 class AnemoiServices {
-  private readonly baseUrl = 'http://localhost:3001/';
+  private readonly baseUrl = './api/';
 
   calculateTravelPlan(parameters: TravelPlanParameters): Promise<TravelPlanResult> {
     let searchUrl = this.baseUrl + `calculateTravelPlan`;
