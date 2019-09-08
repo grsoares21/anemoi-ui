@@ -2,7 +2,7 @@ import TravelPlanResult from "./TravelPlanResult";
 import TravelPlanParameters from "./TravelPlanParameters";
 
 class AnemoiServices {
-  private readonly baseUrl = './api/';
+  private readonly baseUrl = 'https://api.anemoi.app/.netlify/functions/server/';
 
   calculateTravelPlan(parameters: TravelPlanParameters): Promise<TravelPlanResult> {
     let searchUrl = this.baseUrl + `calculateTravelPlan`;
