@@ -1,11 +1,12 @@
-import TravelPlanResult from "./TravelPlanResult";
-import TravelPlanParameters from "./TravelPlanParameters";
+import TravelPlanResult from './TravelPlanResult';
+import TravelPlanParameters from './TravelPlanParameters';
+import config from '../../config';
 
 class AnemoiServices {
-  private readonly baseUrl = 'https://api.anemoi.app/.netlify/functions/server/';
+  private readonly baseUrl = config.anemoiServicesUrl;
 
   calculateTravelPlan(parameters: TravelPlanParameters): Promise<TravelPlanResult> {
-    let searchUrl = this.baseUrl + `calculateTravelPlan`;
+    let searchUrl = this.baseUrl + 'calculateTravelPlan';
 
     return fetch(searchUrl, {
           method: 'POST',
