@@ -1,6 +1,12 @@
+interface RouteCity {
+    cityName: string; // cityId as per Kiwi's skypicker API
+    countryName: string;
+    countryCode: string;
+}
+
 interface Route {
-    source: string; // cityId as per Kiwi's skypicker API
-    destination: string; // cityId as per Kiwi's skypicker API
+    source: RouteCity;
+    destination: RouteCity;
 
     startTime: string; // datetime as per ISO 8601 specification
     endTime: string; // datetime as per ISO 8601 specification

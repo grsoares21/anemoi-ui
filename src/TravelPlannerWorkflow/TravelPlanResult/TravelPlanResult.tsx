@@ -14,7 +14,7 @@ const TravelPlanResultComponent: React.FC<TravelPlanResultProps> = props => {
       <h4><em>Melhor rota encontrada!</em></h4>
       <h4>Aqui está o seu plano de viagem:</h4>
       {props.result.routes.map(route => (
-        <Fragment key={`${route.source}-${route.destination}`}>
+        <Fragment key={`${route.source.cityName}-${route.destination.cityName}`}>
           <RouteResult route={route} />
         </Fragment>
         )
