@@ -1,9 +1,7 @@
-import './TravelPlanResult.scss';
-
 import React, { Fragment } from 'react';
 import TravelPlanResult from '../../Services/AnemoiServices/TravelPlanResult';
 
-import AirplaneRouteResult from './AirplaneRouteResult';
+import RouteResult from './RouteResult/RouteResult';
 import { Button } from 'react-bootstrap';
 
 interface TravelPlanResultProps {
@@ -17,7 +15,7 @@ const TravelPlanResultComponent: React.FC<TravelPlanResultProps> = props => {
       <h4>Aqui está o seu plano de viagem:</h4>
       {props.result.routes.map(route => (
         <Fragment key={`${route.source}-${route.destination}`}>
-          <AirplaneRouteResult route={route} />
+          <RouteResult route={route} />
         </Fragment>
         )
       )}
