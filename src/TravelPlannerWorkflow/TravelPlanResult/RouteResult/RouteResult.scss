@@ -1,3 +1,24 @@
+@import '../../../bootstrap-overrides.scss';
+
 .RouteResult {
     text-align: center;
+
+    & .RouteCity {
+        & .FlagIcon {
+            border-radius: 50%;
+            box-shadow: 0 0px 4px 3px $cyan;
+            margin-bottom: 7px;
+        }
+
+        & .CityLabel {
+            font-weight: 700;
+            color: $indigo;
+        }
+
+        & .DateLabel {
+            font-weight: 500;
+            color: $green;
+            font-size: 11pt;
+        }
+    }
 }

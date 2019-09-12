@@ -15,10 +15,12 @@ const TravelPlanResultComponent: React.FC<TravelPlanResultProps> = props => {
       <h4>Aqui está o seu plano de viagem:</h4>
       {props.result.routes.map(route => (
         <Fragment key={`${route.source.cityName}-${route.destination.cityName}`}>
+          <br />
           <RouteResult route={route} />
         </Fragment>
         )
       )}
+      <br />
       <h4><em>Preço total:</em> R$ {props.result.totalPrice.toFixed(2).replace('.', ',')}</h4>
       <Button block size="lg" variant="success" onClick={() => window.open(props.result.deepLink, '_blank')}>
         <b>Clique aqui para reservar</b>
