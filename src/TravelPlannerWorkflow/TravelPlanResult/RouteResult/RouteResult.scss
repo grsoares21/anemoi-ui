@@ -2,12 +2,16 @@
 
 .RouteResult {
     text-align: center;
+    background-color: $gray-100;
+    border-radius: 1rem;
+    padding: 10px;
 
     & .RouteCity {
+
         & .FlagIcon {
             border-radius: 50%;
             box-shadow: 0 0px 4px 3px $cyan;
-            margin-bottom: 7px;
+            margin: 7px;
         }
 
         & .CityLabel {
@@ -20,5 +24,9 @@
             color: $green;
             font-size: 11pt;
         }
+    }
+
+    & .RouteSign > img {
+        width: 100%;
     }
 }
