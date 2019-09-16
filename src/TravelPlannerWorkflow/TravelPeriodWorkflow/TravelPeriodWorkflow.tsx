@@ -74,6 +74,7 @@ const TravelPeriodWorkflow: React.FC<TravelPlanResultProps> = props => {
           endDateId="arrivalEndDate"
           numberOfMonths={1}
           openDirection="up"
+          initialVisibleMonth={() => departureStartDate ? moment(departureStartDate).add(props.minTravelDays, 'days') : moment()}
           isOutsideRange={(date: Moment) => {
             let [isBefore, isAfter] = [false, false];
 
