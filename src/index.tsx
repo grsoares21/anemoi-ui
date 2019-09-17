@@ -1,8 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './bootstrap-overrides.scss';
+
 import App from './App';
+
 import * as serviceWorker from './serviceWorker';
+
+import './i18n/i18n';
+import './bootstrap-overrides.scss';
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
