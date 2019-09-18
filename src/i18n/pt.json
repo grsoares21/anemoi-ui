@@ -17,6 +17,15 @@
     "TOTAL_PRICE": "Preço total:",
     "BEST_ROUTE_FOUND": "Melhor rota encontrada!",
     "HERE_IS_YOUR_TRAVEL_PLAN": "Aqui está o seu plano de viagem:",
-    "CLICK_HERE_TO_BOOK": "Clique aqui para reservar"
+    "CLICK_HERE_TO_BOOK": "Clique aqui para reservar",
+    "GREAT_HERE_WE_GO": "Ótimo, então vamos lá!",
+    "SOUNDS_LIKE_A_GOOD_PLAN": "Soa como um bom plano!",
+    "HOW_MANY_DAYS_IN_EACH_CITY": "Para te ajudar a planejar ele, vou precisar saber por volta de quantos dias você deseja ficar em cada cidade:",
+    "CALCULATE_TRAVEL_PLAN": "Calcular Plano de Viagem",
+    "PERFECT": "Perfeito!",
+    "WE_ARE_CALCULATING_THE_BEST_ROUTE": "Estamos calculando a melhor rota para sua viagem{{loadingDots}}",
+    "SORRY_NO_ROUTE_FOUND": "Desculpe, nenhuma rota foi encontrada para sua viagem ;(",
+    "NOTED": "Anotado!",
+    "WHEN_ARE_PLANNING_THIS_TRIP_FOR": "Para quando você está planejando esta viagem?"
   }
 }

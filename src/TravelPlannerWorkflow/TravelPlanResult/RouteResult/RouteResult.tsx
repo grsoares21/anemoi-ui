@@ -13,6 +13,7 @@ interface RouteResultProps {
 }
 
 const RouteResult: React.FC<RouteResultProps> = props => {
+  // TODO: get locale context
   let locale = 'pt-BR';
   let dateStringOptions = {
     weekday: 'short',

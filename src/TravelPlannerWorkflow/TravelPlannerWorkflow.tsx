@@ -1,6 +1,7 @@
 import './TravelPlannerWorkflow.scss';
 
 import React, { useState, useRef, useReducer, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Row, Col, Container, Button } from 'react-bootstrap';
 import { animateScroll } from 'react-scroll';
 
@@ -61,6 +62,7 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
     });
   const {departureCities, arrivalCities, visitingCities, departureDateRange, arrivalDateRange} = state;
 
+  const { t } = useTranslation();
   const submitButtonRef = useRef<any>(null);
 
   let [workflowStep, setWorkflowStep] = useState(0);
@@ -106,7 +108,7 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
             <WorkflowStep
               isVisible={props.launchWorkflow}
               uniqueKey="letsGo">
-              <h4>Ótimo, então vamos lá!</h4>
+              <h4>{t('GREAT_HERE_WE_GO')}</h4>
             </WorkflowStep>
             <WorkflowStep
               isVisible={workflowStep >= 1}
@@ -132,11 +134,8 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
             <WorkflowStep
               isVisible={workflowStep >= 2}
               uniqueKey="needStayPeriods">
-              <h4>Soa como um bom plano!</h4>
-              <h4>
-                Para te ajudar a planejar ele, vou precisar saber por volta
-                de quantos dias você deseja ficar em cada cidade:
-              </h4>
+              <h4>{t('SOUNDS_LIKE_A_GOOD_PLAN')}</h4>
+              <h4>{t('HOW_MANY_DAYS_IN_EACH_CITY')}</h4>
             </WorkflowStep>
             <WorkflowStep
               isVisible={workflowStep >= 3}
@@ -152,8 +151,8 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
             <WorkflowStep
               isVisible={workflowStep >= 4}
               uniqueKey="travelPeriodWorkflow">
-              <h4>Anotado!</h4>
-              <h4><em>Para quando você está planejando esta viagem?</em></h4>
+              <h4>{t('NOTED')}</h4>
+              <h4><em>{t('WHEN_ARE_PLANNING_THIS_TRIP_FOR')}</em></h4>
               <TravelPeriodWorkflow
                 minTravelDays={visitingCities.reduce((accumulator, cityStayPeriod) => {
                     return accumulator + cityStayPeriod.minDays;
@@ -188,21 +187,21 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
                       updateWorkflowStep(8);
                     });
               }}>
-                <b>Calcular Plano de Viagem</b>
+                <b>{t('CALCULATE_TRAVEL_PLAN')}</b>
               </Button>
             </WorkflowStep>
             <br />
             <WorkflowStep
               isVisible={workflowStep >= 7}
               uniqueKey="calculatingRoute">
-              <h4><em>Perfeito!</em></h4>
-              <h4>Estamos calculando a melhor rota para sua viagem{loadingDots}</h4>
+              <h4><em>{t('PERFECT')}</em></h4>
+              <h4>{t('WE_ARE_CALCULATING_THE_BEST_ROUTE', { loadingDots })}</h4>
             </WorkflowStep>
             <WorkflowStep
               isVisible={workflowStep >= 8}
               uniqueKey="travelPlanResult">
               {state.travelPlanResult && <TravelPlanResult result={state.travelPlanResult} />}
-              {!state.travelPlanResult && <h4><em>Desculpe, nenhuma rota foi encontrada para sua viagem ;(</em></h4>}
+              {!state.travelPlanResult && <h4><em>{t('SORRY_NO_ROUTE_FOUND')}</em></h4>}
             </WorkflowStep>
             <br /><br />
           </Col>
