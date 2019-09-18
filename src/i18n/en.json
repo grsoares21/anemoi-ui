@@ -11,6 +11,8 @@
     "POSSIBLE_DEPARTURE_POINTS": "Possible points of departure:",
     "POSSIBLE_ARRIVAL_POINTS": "Possible points of arrival:",
     "YES": "Yes",
-    "ID_LIKE_TO_STAY_IN_CITY_BETWEEN_X_AND_Y_DAYS": "I'd like to stay in {{city}} between {{x}} and {{y}} days."
+    "ID_LIKE_TO_STAY_IN_CITY_BETWEEN_X_AND_Y_DAYS": "I'd like to stay in {{city}} between {{x}} and {{y}} days.",
+    "POSSIBLE_DEPARTURE_PERIOD": "Possible departure period:",
+    "POSSIBLE_ARRIVAL_PERIOD": "Possible arrival period:"
   }
 }

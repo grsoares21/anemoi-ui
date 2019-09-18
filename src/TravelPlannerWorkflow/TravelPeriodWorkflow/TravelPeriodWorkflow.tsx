@@ -3,6 +3,7 @@ import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
 
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { Row, Col } from 'react-bootstrap';
 import { DateRangePicker } from 'react-dates';
@@ -27,6 +28,7 @@ const TravelPeriodWorkflow: React.FC<TravelPlanResultProps> = props => {
   const arrivalStartDate = props.arrivalDateRange.startDate;
   const arrivalEndDate = props.arrivalDateRange.endDate;
 
+  const { t } = useTranslation();
   useEffect(() => {
     if(departureStartDate && departureEndDate && arrivalStartDate && arrivalEndDate) {
       props.onComplete();
@@ -36,7 +38,7 @@ const TravelPeriodWorkflow: React.FC<TravelPlanResultProps> = props => {
   return (
     <Row>
       <Col xs={12}>
-        <label>Possível período de partida:</label>
+        <label>{t('POSSIBLE_DEPARTURE_PERIOD')}</label>
         <br />
         <DateRangePicker
           startDate={departureStartDate ? moment(departureStartDate) : null}
@@ -57,7 +59,7 @@ const TravelPeriodWorkflow: React.FC<TravelPlanResultProps> = props => {
       </Col>
       <Col xs={12}>
         <br />
-        <label>Possível período de chegada:</label>
+        <label>{t('POSSIBLE_ARRIVAL_PERIOD')}</label>
         <br />
         <DateRangePicker
           startDate={arrivalStartDate ? moment(arrivalStartDate) : null}
