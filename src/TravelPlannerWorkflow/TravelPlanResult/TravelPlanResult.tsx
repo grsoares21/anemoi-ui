@@ -1,4 +1,6 @@
 import React, { Fragment } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import TravelPlanResult from '../../Services/AnemoiServices/TravelPlanResult';
 
 import RouteResult from './RouteResult/RouteResult';
@@ -9,10 +11,11 @@ interface TravelPlanResultProps {
 }
 
 const TravelPlanResultComponent: React.FC<TravelPlanResultProps> = props => {
+  const { t } = useTranslation();
   return (
     <div>
-      <h4><em>Melhor rota encontrada!</em></h4>
-      <h4>Aqui está o seu plano de viagem:</h4>
+      <h4><em>{t('BEST_ROUTE_FOUND')}</em></h4>
+      <h4>{t('HERE_IS_YOUR_TRAVEL_PLAN')}</h4>
       {props.result.routes.map(route => (
         <Fragment key={`${route.source.cityName}-${route.destination.cityName}`}>
           <br />
@@ -21,9 +24,10 @@ const TravelPlanResultComponent: React.FC<TravelPlanResultProps> = props => {
         )
       )}
       <br />
-      <h4><em>Preço total:</em> R$ {props.result.totalPrice.toFixed(2).replace('.', ',')}</h4>
+      {/* TODO: localize currency */}
+      <h4><em>{t('TOTAL_PRICE')}</em> R$ {props.result.totalPrice.toFixed(2).replace('.', ',')}</h4>
       <Button block size="lg" variant="success" onClick={() => window.open(props.result.deepLink, '_blank')}>
-        <b>Clique aqui para reservar</b>
+        <b>{t('CLICK_HERE_TO_BOOK')}</b>
       </Button>
     </div>
   );

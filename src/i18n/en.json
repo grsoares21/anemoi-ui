@@ -13,6 +13,10 @@
     "YES": "Yes",
     "ID_LIKE_TO_STAY_IN_CITY_BETWEEN_X_AND_Y_DAYS": "I'd like to stay in {{city}} between {{x}} and {{y}} days.",
     "POSSIBLE_DEPARTURE_PERIOD": "Possible departure period:",
-    "POSSIBLE_ARRIVAL_PERIOD": "Possible arrival period:"
+    "POSSIBLE_ARRIVAL_PERIOD": "Possible arrival period:",
+    "TOTAL_PRICE": "Total price:",
+    "BEST_ROUTE_FOUND": "Best route found!",
+    "HERE_IS_YOUR_TRAVEL_PLAN": "Here is your travel plan:",
+    "CLICK_HERE_TO_BOOK": "Click here to book"
   }
 }
