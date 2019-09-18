@@ -1,7 +1,14 @@
 {
-    "translation": {
-      "WELCOME_IM_ANEMOI": "Welcome, I am <1>Anemoi.</1>",
-      "TRAVEL_EXPERT": "Travel <1>expert.</1>",
-      "CAN_I_HELP_PLANNING_YOURS": "Can I help you planning yours?"
-    }
+  "translation": {
+    "WELCOME_IM_ANEMOI": "Welcome, I am <1>Anemoi.</1>",
+    "TRAVEL_EXPERT": "Travel <1>expert.</1>",
+    "CAN_I_HELP_PLANNING_YOURS": "Can I help you planning yours?",
+    "WHAT_ARE_THE_DEPARTURE_AND_ARRIVAL_POINTS": "Firstly, I'll need to know which are your possible points of departure and arrival as well as the cities you'd like to visit.",
+    "DEPARTURE_CITIES": "Departure cities",
+    "ARRIVAL_CITIES": "Arrival cities",
+    "USE_SAME_DEPARTURE_AND_ARRIVAL_POINTS": "Use the same points of departure and arrival",
+    "CITIES_TO_VISIT": "Cities to visit",
+    "POSSIBLE_DEPARTURE_POINTS": "Possible points of departure:",
+    "POSSIBLE_ARRIVAL_POINTS": "Possible points of arrival:"
+  }
 }

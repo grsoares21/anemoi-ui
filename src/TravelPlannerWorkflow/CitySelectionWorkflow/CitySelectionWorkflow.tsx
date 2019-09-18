@@ -5,6 +5,7 @@ import MultiCitySelector from '../../Shared/MultiCitySelector';
 
 import React, { useRef, useEffect, useState, ChangeEvent } from 'react';
 import { Button, Form } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 
 interface CitySelectionWorkflowProps {
   onSetDepartureCities: (cities: City[]) => void;
@@ -27,18 +28,19 @@ const CitySelectionWorkflow: React.FC<CitySelectionWorkflowProps> = React.memo((
 
   useEffect(() => {departuresSelectRef.current.focus()}, []);
 
+  const { t } = useTranslation()
+
   return (
     <span>
       <h4>
         <em>
-          Primeiramente, eu preciso saber quais são seus possíveis pontos de partida, chegada
-          e quais cidades você deseja visitar.
+          {t('WHAT_ARE_THE_DEPARTURE_AND_ARRIVAL_POINTS')}
         </em>
       </h4>
-      <label>Possíveis pontos de partida:</label>
+      <label>{t('POSSIBLE_DEPARTURE_POINTS')}</label>
       <MultiCitySelector
         inputRef={departuresSelectRef}
-        placeholder="Cidades de partida..."
+        placeholder={t('DEPARTURE_CITIES')}
         invalidCities={props.visitingCities}
         value={props.departureCities}
         onChange={cities => {
@@ -50,11 +52,11 @@ const CitySelectionWorkflow: React.FC<CitySelectionWorkflowProps> = React.memo((
           arrivalsSelectRef.current.focus()
         } />
       <br />
-      <label>Possíveis pontos de chegada:</label>
+      <label>{t('POSSIBLE_ARRIVAL_POINTS')}</label>
       <MultiCitySelector
         disabled={sameDepartureArrival}
         inputRef={arrivalsSelectRef}
-        placeholder="Cidades de chegada..."
+        placeholder={t('ARRIVAL_CITIES')}
         invalidCities={props.visitingCities}
         value={sameDepartureArrival ? [] : props.arrivalCities}
         onChange={cities => props.onSetArrivalCities(cities)}
@@ -70,13 +72,13 @@ const CitySelectionWorkflow: React.FC<CitySelectionWorkflowProps> = React.memo((
             props.onSetArrivalCities([]);
           setSameDepartureArrival(e.target.checked)
         }}
-        label="Usar mesmos pontos de partida e chegada"
+        label={t('USE_SAME_DEPARTURE_AND_ARRIVAL_POINTS')}
         id="same-departure-arrival-checkbox" />
       <br />
-      <label>Cidades para visitar:</label>
+      <label>{t('CITIES_TO_VISIT')}:</label>
       <MultiCitySelector
         inputRef={visitingSelectRef}
-        placeholder="Cidades para visitar..."
+        placeholder={t('CITIES_TO_VISIT')}
         invalidCities={props.arrivalCities.concat(props.departureCities)}
         value={props.visitingCities}
         onAddCity={(city) => props.onAddVisitingCity(city)}
