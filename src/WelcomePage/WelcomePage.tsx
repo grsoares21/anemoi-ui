@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { Row, Col, Button } from 'react-bootstrap';
 import posed from 'react-pose';
@@ -49,6 +50,7 @@ const WelcomePage: React.FC<WelcomePageProps> = props => {
 
   const poseString = welcomeCollapsed ? 'collapsed' : 'open';
 
+  const { t } = useTranslation();
   const buttonRef = useRef<any>();
 
   useEffect(() => buttonRef.current.focus(), []);
@@ -64,7 +66,7 @@ const WelcomePage: React.FC<WelcomePageProps> = props => {
                 <Col xs={{ span: 10, offset: 1 }} className="my-auto">
                 <WelcomePhrase />
                 <Button ref={buttonRef} size="lg" variant="primary" onClick={() => setWelcomeCollapsed(true)}>
-                  <b>Sim!</b>
+                  <b>{t('YES')}!</b>
                 </Button>
               </Col>
             </Row>

@@ -9,6 +9,7 @@
     "USE_SAME_DEPARTURE_AND_ARRIVAL_POINTS": "Use the same points of departure and arrival",
     "CITIES_TO_VISIT": "Cities to visit",
     "POSSIBLE_DEPARTURE_POINTS": "Possible points of departure:",
-    "POSSIBLE_ARRIVAL_POINTS": "Possible points of arrival:"
+    "POSSIBLE_ARRIVAL_POINTS": "Possible points of arrival:",
+    "YES": "Yes"
   }
 }

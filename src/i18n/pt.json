@@ -9,6 +9,7 @@
     "USE_SAME_DEPARTURE_AND_ARRIVAL_POINTS": "Usar mesmos pontos de partida e chegada",
     "CITIES_TO_VISIT": "Cidades para visitar",
     "POSSIBLE_DEPARTURE_POINTS": "Possíveis pontos de partida:",
-    "POSSIBLE_ARRIVAL_POINTS": "Possíveis pontos de chegada:"
+    "POSSIBLE_ARRIVAL_POINTS": "Possíveis pontos de chegada:",
+    "YES": "Sim"
   }
 }
