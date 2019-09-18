@@ -10,6 +10,7 @@
     "CITIES_TO_VISIT": "Cidades para visitar",
     "POSSIBLE_DEPARTURE_POINTS": "Possíveis pontos de partida:",
     "POSSIBLE_ARRIVAL_POINTS": "Possíveis pontos de chegada:",
-    "YES": "Sim"
+    "YES": "Sim",
+    "ID_LIKE_TO_STAY_IN_CITY_BETWEEN_X_AND_Y_DAYS": "Eu gostaria de ficar em {{city}} entre {{x}} e {{y}} dias."
   }
 }

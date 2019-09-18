@@ -6,6 +6,7 @@ import { CityStayPeriod } from '../TravelPlannerWorkflow.d';
 import InputRange, { Range } from 'react-input-range';
 
 import React, { useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button } from 'react-bootstrap';
 
 interface StayPeriodWorkflowProps {
@@ -17,6 +18,7 @@ interface StayPeriodWorkflowProps {
 const StayPeriodWorkflow: React.FC<StayPeriodWorkflowProps> = props => {
   const confirmButtonRef = useRef<any>(null);
 
+  const { t } = useTranslation();
   useEffect(() => confirmButtonRef.current.focus(), []);
 
   return (
@@ -26,7 +28,7 @@ const StayPeriodWorkflow: React.FC<StayPeriodWorkflowProps> = props => {
         props.cityStayPeriods.map(({city, minDays, maxDays}) => (
           <span key={city.id}>
             <h4>
-              <em>Eu gostaria de ficar em {city.name} entre {minDays} e {maxDays} dias.</em>
+              <em>{t('ID_LIKE_TO_STAY_IN_CITY_BETWEEN_X_AND_Y_DAYS', { city: city.name, x: minDays, y: maxDays})}</em>
             </h4>
             <br />
             <InputRange
