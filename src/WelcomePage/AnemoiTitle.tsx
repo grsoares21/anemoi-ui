@@ -20,7 +20,7 @@ const AnemoiTitle: React.FC<AnemoiTitleProps> = props => {
     <PoseGroup>
       {props.isVisible &&
         <Title key="anemoiTitle">
-          Anemoi
+          <span onClick={() => window.location.reload()}>Anemoi</span>
         </Title>
       }
     </PoseGroup>
