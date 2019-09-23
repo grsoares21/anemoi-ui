@@ -53,8 +53,11 @@ const TravelPeriodWorkflow: React.FC<TravelPlanResultProps> = props => {
           onFocusChange={setDepartureFocusedInput}
           startDateId="departureStartDate"
           endDateId="departureEndDate"
+          startDatePlaceholderText={t('START_DATE')}
+          endDatePlaceholderText={t('END_DATE')}
           numberOfMonths={1}
-          openDirection="up" />
+          openDirection="up"
+          weekDayFormat="ddd" />
         <br />
       </Col>
       <Col xs={12}>
@@ -74,8 +77,11 @@ const TravelPeriodWorkflow: React.FC<TravelPlanResultProps> = props => {
           onFocusChange={setArrivalFocusedInput}
           startDateId="arrivalStartDate"
           endDateId="arrivalEndDate"
+          startDatePlaceholderText={t('START_DATE')}
+          endDatePlaceholderText={t('END_DATE')}
           numberOfMonths={1}
           openDirection="up"
+          weekDayFormat="ddd"
           initialVisibleMonth={() => departureStartDate ? moment(departureStartDate).add(props.minTravelDays, 'days') : moment()}
           isOutsideRange={(date: Moment) => {
             let [isBefore, isAfter] = [false, false];

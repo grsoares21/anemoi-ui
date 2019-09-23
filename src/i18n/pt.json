@@ -26,6 +26,8 @@
     "WE_ARE_CALCULATING_THE_BEST_ROUTE": "Estamos calculando a melhor rota para sua viagem{{loadingDots}}",
     "SORRY_NO_ROUTE_FOUND": "Desculpe, nenhuma rota foi encontrada para sua viagem ;(",
     "NOTED": "Anotado!",
-    "WHEN_ARE_PLANNING_THIS_TRIP_FOR": "Para quando você está planejando esta viagem?"
+    "WHEN_ARE_PLANNING_THIS_TRIP_FOR": "Para quando você está planejando esta viagem?",
+    "START_DATE": "Data de Início",
+    "END_DATE": "Data de Fim"
   }
 }
