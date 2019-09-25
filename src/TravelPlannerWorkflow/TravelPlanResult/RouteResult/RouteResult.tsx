@@ -7,6 +7,7 @@ import { Route } from '../../../Services/AnemoiServices/TravelPlanResult';
 import FlagIcon from '../../../Shared/FlagIcon';
 
 import AirPlaneTravelIcon from './airplane-travel-icon.svg';
+import { useTranslation } from 'react-i18next';
 
 interface RouteResultProps {
   route: Route;
@@ -14,8 +15,9 @@ interface RouteResultProps {
 
 const RouteResult: React.FC<RouteResultProps> = props => {
   // TODO: get locale context
-  let locale = 'pt-BR';
-  let dateStringOptions = {
+  const { i18n } = useTranslation();
+  const locale = i18n.language;
+  const dateStringOptions = {
     weekday: 'short',
     day: 'numeric',
     month: 'numeric',
