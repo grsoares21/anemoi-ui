@@ -6,6 +6,7 @@ import React, { useRef } from 'react';
 import Async from 'react-select/async';
 import debounce from 'lodash/debounce';
 import { ValueType, ActionMeta } from 'react-select/src/types';
+import { useTranslation } from 'react-i18next';
 
 interface MultiCitySelectorOptions {
   label: string;
@@ -39,8 +40,10 @@ const MultiCitySelector: React.FC<MultiCitySelectorProps> = (props) => {
   // same reason as above
   const selectElement = props.inputRef ? props.inputRef : ownRef;
 
+  const { i18n } = useTranslation();
+
   const debouncedFetchCityOptions = debounce((searchTerm: string, callback: (values: MultiCitySelectorOptions[]) => void) => {
-    LocationServices.searchCities(searchTerm)
+    LocationServices.searchCities(searchTerm, i18n.language)
       .then(cities =>
         cities
           .filter(city => !props.invalidCities || !props.invalidCities.some(invalidCity => invalidCity.id === city.id))
