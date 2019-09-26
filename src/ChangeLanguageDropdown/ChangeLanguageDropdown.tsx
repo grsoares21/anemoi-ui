@@ -5,32 +5,26 @@ import React from 'react';
 import { Dropdown } from 'react-bootstrap';
 import moment from 'moment';
 import FlagIcon from '../Shared/FlagIcon';
-
-const languageToCountry = new Map<string, string>();
-languageToCountry.set('en', 'us');
-languageToCountry.set('pt', 'br');
+import { languageList } from './../i18n/i18n';
 
 const ChangeLanguageDropdown: React.FC = () => {
   const { i18n } = useTranslation();
 
-  const currentLanguage = i18n.language.split('-')[0].toLowerCase();
-  const currentCountry = languageToCountry.get(currentLanguage) || 'us';
-
-  if(moment.locale() !== `${currentLanguage}-${currentCountry}`) {
-    moment.locale(`${currentLanguage}-${currentCountry}`);
+  if(moment.locale() !== i18n.language) {
+    moment.locale(i18n.language);
   }
 
   return (
     <div className="ChangeLanguageDropdown">
       <Dropdown>
         <Dropdown.Toggle id="dropdown-basic">
-          <FlagIcon className="FlagIcon" code={currentCountry} />
+          <FlagIcon className="FlagIcon" code={i18n.language.split('-')[1].toLocaleLowerCase()} />
         </Dropdown.Toggle>
 
         <Dropdown.Menu>
-          {Array.from(languageToCountry).map(([language, country]: [string, string]) =>
-            <Dropdown.Item key={language+country} onSelect={() => i18n.changeLanguage(language)}>
-              <FlagIcon className="FlagIcon" code={country} />
+          {languageList.map(language =>
+            <Dropdown.Item key={language} onSelect={() => i18n.changeLanguage(language)}>
+              <FlagIcon className="FlagIcon" code={language.split('-')[1].toLocaleLowerCase()} />
             </Dropdown.Item>
           )}
         </Dropdown.Menu>
