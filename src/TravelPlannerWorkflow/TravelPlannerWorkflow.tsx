@@ -31,27 +31,30 @@ const reducer = (state: State, action: Action): State => {
   }
 }
 
-const sendTravelPlanRequest = (state: State) => AnemoiServices.calculateTravelPlan({
-  departureCities: state.departureCities.map(city => city.id),
-  arrivalCities: state.arrivalCities.map(city => city.id),
-  visitingCities: state.visitingCities.map(cityStayPeriod => {
-    return {cityId: cityStayPeriod.city.id, stayPeriod: [cityStayPeriod.minDays, cityStayPeriod.maxDays]}
-  }),
-  departureDateRange: {
-    startDate: (state.departureDateRange.startDate as Date).toISOString(),
-    endDate: (state.departureDateRange.endDate as Date).toISOString()
-  },
-  arrivalDateRange: {
-    startDate: (state.arrivalDateRange.startDate as Date).toISOString(),
-    endDate: (state.arrivalDateRange.endDate as Date).toISOString()
-  }
-});
-
 type TravelPlannerWorkflowProps = {
   launchWorkflow: boolean
 }
 
 const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
+  const { t, i18n } = useTranslation();
+
+  const sendTravelPlanRequest = (state: State) => AnemoiServices.calculateTravelPlan({
+    locale: i18n.language.split('-')[1].toLocaleLowerCase(),
+    departureCities: state.departureCities.map(city => city.id),
+    arrivalCities: state.arrivalCities.map(city => city.id),
+    visitingCities: state.visitingCities.map(cityStayPeriod => {
+      return {cityId: cityStayPeriod.city.id, stayPeriod: [cityStayPeriod.minDays, cityStayPeriod.maxDays]}
+    }),
+    departureDateRange: {
+      startDate: (state.departureDateRange.startDate as Date).toISOString(),
+      endDate: (state.departureDateRange.endDate as Date).toISOString()
+    },
+    arrivalDateRange: {
+      startDate: (state.arrivalDateRange.startDate as Date).toISOString(),
+      endDate: (state.arrivalDateRange.endDate as Date).toISOString()
+    }
+  });
+
   const [state, dispatch] =
     useReducer(reducer, {
       departureCities: [],
@@ -62,7 +65,6 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
     });
   const {departureCities, arrivalCities, visitingCities, departureDateRange, arrivalDateRange} = state;
 
-  const { t } = useTranslation();
   const submitButtonRef = useRef<any>(null);
 
   let [workflowStep, setWorkflowStep] = useState(0);

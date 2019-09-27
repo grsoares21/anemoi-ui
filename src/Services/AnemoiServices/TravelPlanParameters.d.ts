@@ -14,6 +14,8 @@ export default interface TravelPlanParameters {
 
     visitingCities: VisitingCity[];
 
+    locale: string;
+
     departureDateRange: DateRange;
     arrivalDateRange: DateRange;
 }
