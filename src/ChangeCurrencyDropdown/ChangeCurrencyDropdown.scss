@@ -1,0 +1,25 @@
+.ChangeCurrencyDropdown {
+  position: absolute;
+  top: 7px;
+  right: 75px;
+  z-index: 2;
+
+  & > .dropdown {
+    & > .dropdown-menu {
+      min-width: 0;
+    }
+
+    & > .dropdown-toggle {
+      background-color: rgba(0, 0, 0, 0);
+      border: 0px;
+    }
+
+    & > .dropdown-toggle::after {
+      margin-left: 0.5rem;
+    }
+
+    & > .btn:focus {
+      box-shadow: none;
+    }
+  }
+}
