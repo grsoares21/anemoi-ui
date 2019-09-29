@@ -10,6 +10,7 @@ import WelcomePageLogo from './WelcomePageLogo';
 import './WelcomePage.scss';
 import AnemoiTitle from './AnemoiTitle';
 import ChangeLanguageDropdown from '../ChangeLanguageDropdown/ChangeLanguageDropdown';
+import ChangeCurrencyDropdown from '../ChangeCurrencyDropdown/ChangeCurrencyDropdown';
 
 const collapseDuration = 500;
 
@@ -59,6 +60,7 @@ const WelcomePage: React.FC<WelcomePageProps> = props => {
 
   return (
     <PageAnimation className="WelcomePage" pose={poseString} onPoseComplete={onCollapseFinished}>
+      <ChangeCurrencyDropdown />
       <ChangeLanguageDropdown />
       <AnemoiTitle isVisible={collapseFinished} />
       <ContentAnimation pose={poseString} className="h-100">

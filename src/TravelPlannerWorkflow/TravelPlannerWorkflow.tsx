@@ -1,6 +1,6 @@
 import './TravelPlannerWorkflow.scss';
 
-import React, { useState, useRef, useReducer, useEffect } from 'react';
+import React, { useState, useRef, useReducer, useEffect, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Row, Col, Container, Button } from 'react-bootstrap';
 import { animateScroll } from 'react-scroll';
@@ -13,6 +13,7 @@ import TravelPeriodWorkflow from './TravelPeriodWorkflow/TravelPeriodWorkflow';
 
 import AnemoiServices from '../Services/AnemoiServices/AnemoiServices';
 import { Action, State } from './TravelPlannerWorkflow.d';
+import { CurrencyContext } from './../Shared/CurrecyContext';
 
 const reducer = (state: State, action: Action): State => {
   switch (action.type) {
@@ -37,8 +38,10 @@ type TravelPlannerWorkflowProps = {
 
 const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
   const { t, i18n } = useTranslation();
+  const { currency } = useContext(CurrencyContext);
 
   const sendTravelPlanRequest = (state: State) => AnemoiServices.calculateTravelPlan({
+    currency,
     locale: i18n.language.split('-')[1].toLocaleLowerCase(),
     departureCities: state.departureCities.map(city => city.id),
     arrivalCities: state.arrivalCities.map(city => city.id),

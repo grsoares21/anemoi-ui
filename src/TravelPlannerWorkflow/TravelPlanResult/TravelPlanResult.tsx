@@ -1,17 +1,20 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import TravelPlanResult from '../../Services/AnemoiServices/TravelPlanResult';
 
 import RouteResult from './RouteResult/RouteResult';
 import { Button } from 'react-bootstrap';
+import { CurrencyContext } from './../../Shared/CurrecyContext';
 
 interface TravelPlanResultProps {
   result: TravelPlanResult;
 }
 
 const TravelPlanResultComponent: React.FC<TravelPlanResultProps> = props => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const { currency } = useContext(CurrencyContext);
+  const priceFormatter = new Intl.NumberFormat(i18n.language, { style: 'currency', currency});
   return (
     <div>
       <h4><em>{t('BEST_ROUTE_FOUND')}</em></h4>
@@ -25,7 +28,7 @@ const TravelPlanResultComponent: React.FC<TravelPlanResultProps> = props => {
       )}
       <br />
       {/* TODO: localize currency */}
-      <h4><em>{t('TOTAL_PRICE')}</em> R$ {props.result.totalPrice.toFixed(2).replace('.', ',')}</h4>
+      <h4><em>{t('TOTAL_PRICE')}</em> {priceFormatter.format(props.result.totalPrice)}</h4>
       <Button block size="lg" variant="success" onClick={() => window.open(props.result.deepLink, '_blank')}>
         <b>{t('CLICK_HERE_TO_BOOK')}</b>
       </Button>
