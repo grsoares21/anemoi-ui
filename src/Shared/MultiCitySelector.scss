@@ -3,10 +3,21 @@
 .MultiCitySelector {
   line-height: 2;
 
+  &__InvalidMessage {
+    color: $red;
+    font-size: 10pt;
+    font-weight: 500;
+  }
+
   & > &__menu {
     margin-top: -1px;
     border-top-left-radius: 0px;
     border-top-right-radius: 0px;
+  }
+
+  &.invalid > .MultiCitySelector__control {
+    box-shadow: 0 0 2px $red;
+    border-color: $red;
   }
 
   & > &__control {

@@ -28,6 +28,9 @@
     "NOTED": "Noted!",
     "WHEN_ARE_PLANNING_THIS_TRIP_FOR": "When are you planning this trip for?",
     "START_DATE": "Start Date",
-    "END_DATE": "End Date"
+    "END_DATE": "End Date",
+    "PLEASE_SELECT_DEPARTURE_CITIES": "Please select at least one point of departure",
+    "PLEASE_SELECT_ARRIVAL_CITIES": "Please select at least one point of arrival",
+    "PLEASE_SELECT_VISITING_CITIES": "Please select at least one city to visit"
   }
 }

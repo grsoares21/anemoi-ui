@@ -39,6 +39,8 @@ const CitySelectionWorkflow: React.FC<CitySelectionWorkflowProps> = React.memo((
       </h4>
       <label>{t('POSSIBLE_DEPARTURE_POINTS')}</label>
       <MultiCitySelector
+        invalid={props.departureCities.length === 0}
+        invalidMessage={t('PLEASE_SELECT_DEPARTURE_CITIES')}
         inputRef={departuresSelectRef}
         placeholder={t('DEPARTURE_CITIES')}
         invalidCities={props.visitingCities}
@@ -54,6 +56,8 @@ const CitySelectionWorkflow: React.FC<CitySelectionWorkflowProps> = React.memo((
       <br />
       <label>{t('POSSIBLE_ARRIVAL_POINTS')}</label>
       <MultiCitySelector
+        invalid={props.arrivalCities.length === 0 && !sameDepartureArrival}
+        invalidMessage={t('PLEASE_SELECT_ARRIVAL_CITIES')}
         disabled={sameDepartureArrival}
         inputRef={arrivalsSelectRef}
         placeholder={t('ARRIVAL_CITIES')}
@@ -77,6 +81,8 @@ const CitySelectionWorkflow: React.FC<CitySelectionWorkflowProps> = React.memo((
       <br />
       <label>{t('CITIES_TO_VISIT')}:</label>
       <MultiCitySelector
+        invalid={props.visitingCities.length === 0}
+        invalidMessage={t('PLEASE_SELECT_VISITING_CITIES')}
         inputRef={visitingSelectRef}
         placeholder={t('CITIES_TO_VISIT')}
         invalidCities={props.arrivalCities.concat(props.departureCities)}
@@ -86,7 +92,15 @@ const CitySelectionWorkflow: React.FC<CitySelectionWorkflowProps> = React.memo((
         onClear={props.onClearVisitingCities}
         onConfirm={props.onComplete} />
       <br />
-      <Button className="float-right" size="lg" onClick={props.onComplete}>
+      <Button
+        disabled={
+          props.departureCities.length === 0 ||
+          props.arrivalCities.length === 0 ||
+          props.visitingCities.length === 0
+        }
+        className="float-right"
+        size="lg"
+        onClick={props.onComplete}>
         <b>↵</b>
       </Button>
     </span>
