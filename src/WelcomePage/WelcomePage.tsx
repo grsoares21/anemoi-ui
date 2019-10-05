@@ -12,6 +12,8 @@ import AnemoiTitle from './AnemoiTitle';
 import ChangeLanguageDropdown from '../ChangeLanguageDropdown/ChangeLanguageDropdown';
 import ChangeCurrencyDropdown from '../ChangeCurrencyDropdown/ChangeCurrencyDropdown';
 
+declare var gtag: Gtag.Gtag;
+
 const collapseDuration = 500;
 
 const PageAnimation = posed.div({
@@ -69,7 +71,14 @@ const WelcomePage: React.FC<WelcomePageProps> = props => {
             <Row className="h-100">
                 <Col xs={{ span: 10, offset: 1 }} className="my-auto">
                 <WelcomePhrase />
-                <Button ref={buttonRef} size="lg" variant="primary" onClick={() => setWelcomeCollapsed(true)}>
+                <Button ref={buttonRef} size="lg" variant="primary" onClick={() => {
+                    setWelcomeCollapsed(true);
+                    gtag('event', 'StartPlannerWorkflow', {
+                      event_label: 'User clicked YES button on homepage',
+                      event_category: 'workflow_navigation'
+                    });
+                  }
+                }>
                   <b>{t('YES')}!</b>
                 </Button>
               </Col>

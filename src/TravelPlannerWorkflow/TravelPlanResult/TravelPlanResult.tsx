@@ -7,6 +7,8 @@ import RouteResult from './RouteResult/RouteResult';
 import { Button } from 'react-bootstrap';
 import { CurrencyContext } from './../../Shared/CurrecyContext';
 
+declare var gtag: Gtag.Gtag;
+
 interface TravelPlanResultProps {
   result: TravelPlanResult;
 }
@@ -29,7 +31,14 @@ const TravelPlanResultComponent: React.FC<TravelPlanResultProps> = props => {
       <br />
       {/* TODO: localize currency */}
       <h4><em>{t('TOTAL_PRICE')}</em> {priceFormatter.format(props.result.totalPrice)}</h4>
-      <Button block size="lg" variant="success" onClick={() => window.open(props.result.deepLink, '_blank')}>
+      <Button block size="lg" variant="success" onClick={() => {
+        gtag('event', 'ClickedToBook', {
+          event_label: 'User clicked "Click Here to Book" button',
+          event_category: 'conversion',
+          value: props.result.totalPrice
+        });
+        window.open(props.result.deepLink, '_blank');
+      }}>
         <b>{t('CLICK_HERE_TO_BOOK')}</b>
       </Button>
     </div>
