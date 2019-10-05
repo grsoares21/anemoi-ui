@@ -63,7 +63,7 @@ const MultiCitySelector: React.FC<MultiCitySelectorProps> = (props) => {
     }
     debouncedFetchCityOptions(searchTerm, callback);
   }
-  console.log(props.invalid && touched);
+
   return (
     <>
       <Async
