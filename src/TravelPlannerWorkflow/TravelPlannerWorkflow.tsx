@@ -12,7 +12,7 @@ import TravelPlanResult from './TravelPlanResult/TravelPlanResult';
 import TravelPeriodWorkflow from './TravelPeriodWorkflow/TravelPeriodWorkflow';
 
 import AnemoiServices from '../Services/AnemoiServices/AnemoiServices';
-import { Action, State } from './TravelPlannerWorkflow.d';
+import { Action, State, WorkflowSection } from './TravelPlannerWorkflow.d';
 import { CurrencyContext } from './../Shared/CurrecyContext';
 
 const reducer = (state: State, action: Action): State => {
@@ -70,9 +70,9 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
 
   const submitButtonRef = useRef<any>(null);
 
-  let [workflowStep, setWorkflowStep] = useState(0);
-  let updateWorkflowStep = (step: number) => {
-    setWorkflowStep(step);
+  let [workflowSection, setWorkflowSection] = useState(WorkflowSection.Beginning);
+  let updateWorkflowSection = (newSection: WorkflowSection) => {
+    setWorkflowSection(newSection);
     setTimeout(() => animateScroll.scrollToBottom({
       containerId: "TravelPlannerWorkflow",
       isDynamic: true, duration: 500
@@ -82,17 +82,16 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
 
   useEffect(() => {
     if(!props.launchWorkflow) return;
-    // TODO: make workflowStep an union type with proper meaning into it
     let timeOutToClear: ReturnType<typeof setTimeout>;
-    switch(workflowStep) {
+    switch(workflowSection) {
       // defines the side effects for each workflow step
-      case 0:
-        timeOutToClear = setTimeout(() => updateWorkflowStep(1), 300);
+      case WorkflowSection.Beginning:
+        timeOutToClear = setTimeout(() => updateWorkflowSection(WorkflowSection.CitySelection), 300);
         break;
-      case 2:
-        timeOutToClear = setTimeout(() => updateWorkflowStep(3), 300);
+      case WorkflowSection.StayPeriodIntroduction:
+        timeOutToClear = setTimeout(() => updateWorkflowSection(WorkflowSection.StayPeriod), 300);
         break;
-      case 6:
+      case WorkflowSection.CalculateTravelPlan:
         submitButtonRef.current.focus();
         break;
       default:
@@ -100,7 +99,7 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
     }
     let cleanUpFunction = () => clearTimeout(timeOutToClear);
     return cleanUpFunction;
-  }, [workflowStep, props.launchWorkflow])
+  }, [workflowSection, props.launchWorkflow])
 
   let [loadingDots, setLoadingDots] = useState('.');
   return (
@@ -116,13 +115,13 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
               <h4>{t('GREAT_HERE_WE_GO')}</h4>
             </WorkflowStep>
             <WorkflowStep
-              isVisible={workflowStep >= 1}
+              isVisible={workflowSection >= WorkflowSection.CitySelection}
               uniqueKey="citySelectionWorkflow">
               <CitySelectionWorkflow
                 departureCities={departureCities}
                 arrivalCities={arrivalCities}
                 visitingCities={visitingCities.map(vc => vc.city)}
-                onComplete={() => updateWorkflowStep(2)}
+                onComplete={() => updateWorkflowSection(WorkflowSection.StayPeriodIntroduction)}
                 onSetDepartureCities={cities => dispatch({ type: 'setDepartureCities', cities: cities })}
                 onSetArrivalCities={cities => dispatch({ type: 'setArrivalCities', cities: cities })}
                 onClearVisitingCities={() => dispatch({ type: 'setVisitingCities', cities: [] })}
@@ -137,24 +136,24 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
             </WorkflowStep>
             <br />
             <WorkflowStep
-              isVisible={workflowStep >= 2}
+              isVisible={workflowSection >= WorkflowSection.StayPeriodIntroduction}
               uniqueKey="needStayPeriods">
               <h4>{t('SOUNDS_LIKE_A_GOOD_PLAN')}</h4>
               <h4>{t('HOW_MANY_DAYS_IN_EACH_CITY')}</h4>
             </WorkflowStep>
             <WorkflowStep
-              isVisible={workflowStep >= 3}
+              isVisible={workflowSection >= WorkflowSection.StayPeriod}
               uniqueKey="stayPeriodWorkflow">
               <StayPeriodWorkflow
                 cityStayPeriods={visitingCities}
                 onChange={cityStayPeriods => dispatch({type: 'setVisitingCities', cities: cityStayPeriods})}
-                onComplete={() => updateWorkflowStep(4)}
+                onComplete={() => updateWorkflowSection(WorkflowSection.TravelPeriod)}
                  />
             </WorkflowStep>
             <br />
             <br />
             <WorkflowStep
-              isVisible={workflowStep >= 4}
+              isVisible={workflowSection >= WorkflowSection.TravelPeriod}
               uniqueKey="travelPeriodWorkflow">
               <h4>{t('NOTED')}</h4>
               <h4><em>{t('WHEN_ARE_PLANNING_THIS_TRIP_FOR')}</em></h4>
@@ -167,7 +166,11 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
                 }, 0)}
                 departureDateRange={departureDateRange}
                 arrivalDateRange={arrivalDateRange}
-                onComplete={() => workflowStep < 6 && updateWorkflowStep(6)}
+                onComplete={() => {
+                  if(workflowSection < WorkflowSection.CalculateTravelPlan) {
+                    updateWorkflowSection(WorkflowSection.CalculateTravelPlan)
+                  }
+                }}
                 onChange={
                   (departureDateRange, arrivalDateRange) =>
                     dispatch({ type: 'setDateRanges', dateRanges: { departureDateRange, arrivalDateRange } })
@@ -175,11 +178,11 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
             </WorkflowStep>
             <br />
             <WorkflowStep
-              isVisible={workflowStep >= 6}
+              isVisible={workflowSection >= WorkflowSection.CalculateTravelPlan}
               uniqueKey="calculateRoute">
               <Button size="lg" block ref={submitButtonRef}
                 onClick={() => {
-                  updateWorkflowStep(7);
+                  updateWorkflowSection(WorkflowSection.CalculatingTravelPlan);
                   var loadingDotsInterval = setInterval(() => setLoadingDots(prevDots => prevDots + '.'), 800);
 
                   sendTravelPlanRequest(state)
@@ -189,7 +192,7 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
                     .catch(err => console.log(err))
                     .finally(() => {
                       clearInterval(loadingDotsInterval);
-                      updateWorkflowStep(8);
+                      updateWorkflowSection(WorkflowSection.TravelPlanResult);
                     });
               }}>
                 <b>{t('CALCULATE_TRAVEL_PLAN')}</b>
@@ -197,13 +200,13 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
             </WorkflowStep>
             <br />
             <WorkflowStep
-              isVisible={workflowStep >= 7}
-              uniqueKey="calculatingRoute">
+              isVisible={workflowSection >= WorkflowSection.CalculatingTravelPlan}
+              uniqueKey="calculatingTravelPlan">
               <h4><em>{t('PERFECT')}</em></h4>
               <h4>{t('WE_ARE_CALCULATING_THE_BEST_ROUTE', { loadingDots })}</h4>
             </WorkflowStep>
             <WorkflowStep
-              isVisible={workflowStep >= 8}
+              isVisible={workflowSection >= WorkflowSection.TravelPlanResult}
               uniqueKey="travelPlanResult">
               {state.travelPlanResult && <TravelPlanResult result={state.travelPlanResult} />}
               {!state.travelPlanResult && <h4><em>{t('SORRY_NO_ROUTE_FOUND')}</em></h4>}
