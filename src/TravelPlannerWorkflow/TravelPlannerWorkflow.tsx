@@ -14,6 +14,7 @@ import TravelPeriodWorkflow from './TravelPeriodWorkflow/TravelPeriodWorkflow';
 import AnemoiServices from '../Services/AnemoiServices/AnemoiServices';
 import { Action, State, WorkflowSection } from './TravelPlannerWorkflow.d';
 import { CurrencyContext } from './../Shared/CurrecyContext';
+import moment from 'moment';
 
 declare var gtag: Gtag.Gtag;
 
@@ -32,6 +33,34 @@ const reducer = (state: State, action: Action): State => {
     default:
       return { ...state };
   }
+}
+
+const areParametersValid = (state: State): boolean => {
+  let areDatesValid = false;
+
+  if(state.departureDateRange.startDate &&
+    state.departureDateRange.endDate &&
+    state.arrivalDateRange.startDate &&
+    state.arrivalDateRange.endDate) {
+    const minTravelDays = state.visitingCities.reduce((accumulator, cityStayPeriod) => {
+      return accumulator + cityStayPeriod.minDays;
+    }, 0);
+    const maxTravelDays = state.visitingCities.reduce((accumulator, cityStayPeriod) => {
+        return accumulator + cityStayPeriod.maxDays;
+    }, 0);
+
+    const minArrivalDate = moment(state.departureDateRange.startDate).add(minTravelDays, 'days');
+    const maxArrivalDate = moment(state.departureDateRange.endDate).add(maxTravelDays, 'days');
+
+    areDatesValid = moment(state.arrivalDateRange.startDate).isSameOrAfter(minArrivalDate) &&
+      moment(state.arrivalDateRange.endDate).isSameOrBefore(maxArrivalDate);
+  }
+
+  const areCitiesValid = state.departureCities.length !== 0 &&
+          state.arrivalCities.length !== 0 &&
+          state.visitingCities.length !== 0;
+
+  return areCitiesValid && areDatesValid;
 }
 
 type TravelPlannerWorkflowProps = {
@@ -185,7 +214,7 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
             <WorkflowStep
               isVisible={workflowSection >= WorkflowSection.CalculateTravelPlan}
               uniqueKey="calculateRoute">
-              <Button size="lg" block ref={submitButtonRef}
+              <Button size="lg" block ref={submitButtonRef} disabled={!areParametersValid(state)}
                 onClick={() => {
                   updateWorkflowSection(WorkflowSection.CalculatingTravelPlan);
                   var loadingDotsInterval = setInterval(() => setLoadingDots(prevDots => prevDots + '.'), 800);
