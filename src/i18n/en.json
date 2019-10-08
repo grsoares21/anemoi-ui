@@ -31,6 +31,7 @@
     "END_DATE": "End Date",
     "PLEASE_SELECT_DEPARTURE_CITIES": "Please select at least one point of departure",
     "PLEASE_SELECT_ARRIVAL_CITIES": "Please select at least one point of arrival",
-    "PLEASE_SELECT_VISITING_CITIES": "Please select at least one city to visit"
+    "PLEASE_SELECT_VISITING_CITIES": "Please select at least one city to visit",
+    "INVALID_ARRIVAL_DATE_RANGE": "The arrival period doesn't match the departure and stay periods"
   }
 }

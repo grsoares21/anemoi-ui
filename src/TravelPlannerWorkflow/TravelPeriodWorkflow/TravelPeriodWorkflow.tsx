@@ -28,6 +28,26 @@ const TravelPeriodWorkflow: React.FC<TravelPlanResultProps> = props => {
   const arrivalStartDate = props.arrivalDateRange.startDate;
   const arrivalEndDate = props.arrivalDateRange.endDate;
 
+  const areArrivalDatesOutsideRange = (date: Moment) => {
+    let [isBefore, isAfter] = [false, false];
+
+    if(departureStartDate) {
+      let minArrivalDate = moment(departureStartDate).add(props.minTravelDays, 'days');
+      isBefore = date.isBefore(minArrivalDate);
+    }
+    if(departureEndDate) {
+      let maxArrivalDate = moment(departureEndDate).add(props.maxTravelDays, 'days');
+      isAfter = date.isAfter(maxArrivalDate);
+    }
+
+    return isAfter || isBefore || date.isBefore(moment());
+  };
+
+  const isArrivalDateRangeInvalid = arrivalStartDate &&
+                                    arrivalEndDate &&
+                                    (areArrivalDatesOutsideRange(moment(arrivalStartDate)) ||
+                                    areArrivalDatesOutsideRange(moment(arrivalEndDate)));
+
   const { t } = useTranslation();
   useEffect(() => {
     if(departureStartDate && departureEndDate && arrivalStartDate && arrivalEndDate) {
@@ -39,7 +59,6 @@ const TravelPeriodWorkflow: React.FC<TravelPlanResultProps> = props => {
     <Row>
       <Col xs={12}>
         <label>{t('POSSIBLE_DEPARTURE_PERIOD')}</label>
-        <br />
         <DateRangePicker
           startDate={departureStartDate ? moment(departureStartDate) : null}
           endDate={departureEndDate ? moment(departureEndDate) : null}
@@ -63,40 +82,29 @@ const TravelPeriodWorkflow: React.FC<TravelPlanResultProps> = props => {
       <Col xs={12}>
         <br />
         <label>{t('POSSIBLE_ARRIVAL_PERIOD')}</label>
-        <br />
-        <DateRangePicker
-          startDate={arrivalStartDate ? moment(arrivalStartDate) : null}
-          endDate={arrivalEndDate ? moment(arrivalEndDate) : null}
-          onDatesChange={
-            ({startDate, endDate}) => props.onChange(
-              props.departureDateRange,
-              {startDate: startDate ? startDate.toDate() : null, endDate: endDate ? endDate.toDate() : null}
-            )
-          }
-          focusedInput={arrivalFocusedInput}
-          onFocusChange={setArrivalFocusedInput}
-          startDateId="arrivalStartDate"
-          endDateId="arrivalEndDate"
-          startDatePlaceholderText={t('START_DATE')}
-          endDatePlaceholderText={t('END_DATE')}
-          numberOfMonths={1}
-          openDirection="up"
-          weekDayFormat="ddd"
-          initialVisibleMonth={() => departureStartDate ? moment(departureStartDate).add(props.minTravelDays, 'days') : moment()}
-          isOutsideRange={(date: Moment) => {
-            let [isBefore, isAfter] = [false, false];
-
-            if(departureStartDate) {
-              let minArrivalDate = moment(departureStartDate).add(props.minTravelDays, 'days');
-              isBefore = date.isBefore(minArrivalDate);
+        <div className={isArrivalDateRangeInvalid ? 'invalid' : ''}>
+          <DateRangePicker
+            startDate={arrivalStartDate ? moment(arrivalStartDate) : null}
+            endDate={arrivalEndDate ? moment(arrivalEndDate) : null}
+            onDatesChange={
+              ({startDate, endDate}) => props.onChange(
+                props.departureDateRange,
+                {startDate: startDate ? startDate.toDate() : null, endDate: endDate ? endDate.toDate() : null}
+              )
             }
-            if(departureEndDate) {
-              let maxArrivalDate = moment(departureEndDate).add(props.maxTravelDays, 'days');
-              isAfter = date.isAfter(maxArrivalDate);
-            }
-
-            return isAfter || isBefore || date.isBefore(moment());
-          }} />
+            focusedInput={arrivalFocusedInput}
+            onFocusChange={setArrivalFocusedInput}
+            startDateId="arrivalStartDate"
+            endDateId="arrivalEndDate"
+            startDatePlaceholderText={t('START_DATE')}
+            endDatePlaceholderText={t('END_DATE')}
+            numberOfMonths={1}
+            openDirection="up"
+            weekDayFormat="ddd"
+            initialVisibleMonth={() => departureStartDate ? moment(departureStartDate).add(props.minTravelDays, 'days') : moment()}
+            isOutsideRange={areArrivalDatesOutsideRange} />
+          <span className="InvalidMessage">{t('INVALID_ARRIVAL_DATE_RANGE')}</span>  
+        </div>
       </Col>
     </Row>
   );

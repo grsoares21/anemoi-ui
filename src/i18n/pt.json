@@ -31,6 +31,7 @@
     "END_DATE": "Data de Fim",
     "PLEASE_SELECT_DEPARTURE_CITIES": "Por favor selecione pelo menos um ponto de partida",
     "PLEASE_SELECT_ARRIVAL_CITIES": "Por favor selecione pelo menos um ponto de partida",
-    "PLEASE_SELECT_VISITING_CITIES": "Por favor selecione pelo menos uma cidade para visitar"
+    "PLEASE_SELECT_VISITING_CITIES": "Por favor selecione pelo menos uma cidade para visitar",
+    "INVALID_ARRIVAL_DATE_RANGE": "O período de chegada não está de acordo com os períodos de partida e de estadia"
   }
 }

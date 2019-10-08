@@ -1,5 +1,20 @@
 @import '../../bootstrap-overrides.scss';
 
+.InvalidMessage {
+    visibility: hidden;
+
+    .invalid > & {
+        visibility: visible;
+        color: $red;
+        font-size: 10pt;
+        font-weight: 500;
+    }
+}
+
+.DateRangePicker {
+    width: 100%;
+}
+
 .DateRangePickerInput {
     &.DateRangePickerInput__withBorder {
         border: 2px solid $gray-400;
@@ -9,6 +24,11 @@
         &:focus-within, &:hover {
             box-shadow: 0 0 2px $cyan;
             border-color: $cyan;
+        }
+
+        .invalid & {
+            border-color: $red;
+            box-shadow: 0 0 2px $red;
         }
     }
 
