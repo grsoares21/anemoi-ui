@@ -139,6 +139,7 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
     if(workflowSection > WorkflowSection.CalculateTravelPlan) {
       updateWorkflowSection(WorkflowSection.CalculateTravelPlan);
     }
+    // eslint-disable-next-line
   }, [currency]);
 
   let [loadingDots, setLoadingDots] = useState('.');
