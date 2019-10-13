@@ -29,7 +29,6 @@ const TravelPlanResultComponent: React.FC<TravelPlanResultProps> = props => {
         )
       )}
       <br />
-      {/* TODO: localize currency */}
       <h4><em>{t('TOTAL_PRICE')}</em> {priceFormatter.format(props.result.totalPrice)}</h4>
       <Button block size="lg" variant="success" onClick={() => {
         gtag('event', 'ClickedToBook', {
