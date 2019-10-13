@@ -6,7 +6,7 @@
     "WHAT_ARE_THE_DEPARTURE_AND_ARRIVAL_POINTS": "Firstly, I'll need to know which are your possible points of departure and arrival as well as the cities you'd like to visit.",
     "DEPARTURE_CITIES": "Departure cities",
     "ARRIVAL_CITIES": "Arrival cities",
-    "USE_SAME_DEPARTURE_AND_ARRIVAL_POINTS": "Use the same points of departure and arrival",
+    "USE_DIFFERENT_DEPARTURE_AND_ARRIVAL_POINTS": "Use different points of departure and arrival",
     "CITIES_TO_VISIT": "Cities to visit",
     "POSSIBLE_DEPARTURE_POINTS": "Possible points of departure:",
     "POSSIBLE_ARRIVAL_POINTS": "Possible points of arrival:",
