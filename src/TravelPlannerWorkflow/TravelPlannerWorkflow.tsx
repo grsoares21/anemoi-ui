@@ -133,7 +133,13 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
     }
     let cleanUpFunction = () => clearTimeout(timeOutToClear);
     return cleanUpFunction;
-  }, [workflowSection, props.launchWorkflow])
+  }, [workflowSection, props.launchWorkflow]);
+
+  useEffect(() => {
+    if(workflowSection > WorkflowSection.CalculateTravelPlan) {
+      updateWorkflowSection(WorkflowSection.CalculateTravelPlan);
+    }
+  }, [currency]);
 
   let [loadingDots, setLoadingDots] = useState('.');
   return (
