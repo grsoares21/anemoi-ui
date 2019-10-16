@@ -4,7 +4,7 @@ import LocationServices, {City} from '../Services/LocationServices';
 
 import React, { useRef, useState } from 'react';
 import Async from 'react-select/async';
-import debounce from 'lodash/debounce';
+import debounce from 'lodash.debounce';
 import { ValueType, ActionMeta } from 'react-select/src/types';
 import { useTranslation } from 'react-i18next';
 
