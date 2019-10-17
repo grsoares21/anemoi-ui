@@ -1,4 +1,4 @@
-import './WorkflowStep.scss'
+import './WorkflowStep.scss';
 
 import React from 'react';
 import posed, { PoseGroup } from 'react-pose';
@@ -19,20 +19,17 @@ interface WorkflowStepProps {
 }
 
 const WorkflowStep: React.FC<WorkflowStepProps> = props => {
-
   return (
     <div className="WorkflowStep">
       <PoseGroup>
-        {props.isVisible &&
-          <WorkflowStepAnimation
-            key={props.uniqueKey}
-            onPoseComplete={props.onAnimationEnd}>
+        {props.isVisible && (
+          <WorkflowStepAnimation key={props.uniqueKey} onPoseComplete={props.onAnimationEnd}>
             {props.children}
           </WorkflowStepAnimation>
-        }
-        </PoseGroup>
-      </div>
+        )}
+      </PoseGroup>
+    </div>
   );
-}
+};
 
 export default WorkflowStep;

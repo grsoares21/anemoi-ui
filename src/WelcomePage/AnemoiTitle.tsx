@@ -11,20 +11,19 @@ const Title = posed.h3({
 });
 
 interface AnemoiTitleProps {
-  isVisible: boolean
+  isVisible: boolean;
 }
 
 const AnemoiTitle: React.FC<AnemoiTitleProps> = props => {
-
   return (
     <PoseGroup>
-      {props.isVisible &&
+      {props.isVisible && (
         <Title key="anemoiTitle">
           <span onClick={() => window.location.reload()}>Anemoi</span>
         </Title>
-      }
+      )}
     </PoseGroup>
-  )
-}
+  );
+};
 
 export default AnemoiTitle;

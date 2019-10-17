@@ -18,9 +18,9 @@ class LocationServices {
     let searchUrl = this.baseUrl + `location_types=city&locale=${locale}&limit=${limit}&term=${term}`;
 
     return fetch(searchUrl)
-            .then(result => result.json())
-            .then(data => data.locations)
-            .then(locations => locations as Array<City>)
+      .then(result => result.json())
+      .then(data => data.locations)
+      .then(locations => locations as Array<City>);
   }
 }
 

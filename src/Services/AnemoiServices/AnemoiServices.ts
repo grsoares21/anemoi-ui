@@ -9,21 +9,21 @@ class AnemoiServices {
     let searchUrl = this.baseUrl + 'calculateTravelPlan';
 
     return fetch(searchUrl, {
-          method: 'POST',
-          headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(parameters)
-        })
-        .then(result => {
-          if(!result.ok) {
-            throw Error(result.statusText);
-            // general treatment for every error
-          }
-          return result.json();
-        })
-        .then(data => data as TravelPlanResult);
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(parameters)
+    })
+      .then(result => {
+        if (!result.ok) {
+          throw Error(result.statusText);
+          // general treatment for every error
+        }
+        return result.json();
+      })
+      .then(data => data as TravelPlanResult);
   }
 }
 

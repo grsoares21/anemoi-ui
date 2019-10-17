@@ -10,7 +10,7 @@ import { languageList } from './../i18n/i18n';
 const ChangeLanguageDropdown: React.FC = () => {
   const { i18n } = useTranslation();
 
-  if(moment.locale() !== i18n.language) {
+  if (moment.locale() !== i18n.language) {
     moment.locale(i18n.language);
   }
 
@@ -22,15 +22,15 @@ const ChangeLanguageDropdown: React.FC = () => {
         </Dropdown.Toggle>
 
         <Dropdown.Menu>
-          {languageList.map(language =>
+          {languageList.map(language => (
             <Dropdown.Item key={language} onSelect={() => i18n.changeLanguage(language)}>
               <FlagIcon className="FlagIcon" code={language.split('-')[1].toLocaleLowerCase()} />
             </Dropdown.Item>
-          )}
+          ))}
         </Dropdown.Menu>
       </Dropdown>
     </div>
   );
-}
+};
 
 export default ChangeLanguageDropdown;

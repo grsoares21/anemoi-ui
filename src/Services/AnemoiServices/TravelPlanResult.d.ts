@@ -1,21 +1,21 @@
 interface RouteCity {
-    cityName: string; // cityId as per Kiwi's skypicker API
-    countryName: string;
-    countryCode: string;
+  cityName: string; // cityId as per Kiwi's skypicker API
+  countryName: string;
+  countryCode: string;
 }
 
 interface Route {
-    source: RouteCity;
-    destination: RouteCity;
+  source: RouteCity;
+  destination: RouteCity;
 
-    startTime: string; // datetime as per ISO 8601 specification
-    endTime: string; // datetime as per ISO 8601 specification
+  startTime: string; // datetime as per ISO 8601 specification
+  endTime: string; // datetime as per ISO 8601 specification
 }
 
 export default interface TravelPlanResult {
-    deepLink: string;
+  deepLink: string;
 
-    totalPrice: number;
+  totalPrice: number;
 
-    routes: Route[];
+  routes: Route[];
 }

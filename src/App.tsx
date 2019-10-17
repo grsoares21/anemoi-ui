@@ -14,7 +14,7 @@ const App: React.FC = () => {
   useEffect(() => {
     const detectedCurrency = LocaleCurrency.getCurrency(i18n.language);
     // if it's on our list of currencies
-    if(currencyList.some((curr) => curr === detectedCurrency)) {
+    if (currencyList.some(curr => curr === detectedCurrency)) {
       setCurrency(detectedCurrency);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -23,12 +23,12 @@ const App: React.FC = () => {
   let [welcomePageCollapsed, setWelcomePageCollapsed] = useState(false);
   return (
     <div className="App">
-      <CurrencyContext.Provider value={{currency, setCurrency}}>
+      <CurrencyContext.Provider value={{ currency, setCurrency }}>
         <WelcomePage collapseCallback={() => setWelcomePageCollapsed(true)} />
         <TravelPlannerWorkflow launchWorkflow={welcomePageCollapsed} />
       </CurrencyContext.Provider>
     </div>
   );
-}
+};
 
 export default App;

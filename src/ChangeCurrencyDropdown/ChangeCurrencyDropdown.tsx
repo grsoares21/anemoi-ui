@@ -7,11 +7,10 @@ import moment from 'moment';
 import { CurrencyContext } from '../Shared/CurrecyContext';
 import { currencyList } from '../Shared/CurrecyContext';
 
-
 const ChangeCurrencyDropdown: React.FC = () => {
   const { i18n } = useTranslation();
 
-  if(moment.locale() !== i18n.language) {
+  if (moment.locale() !== i18n.language) {
     moment.locale(i18n.language);
   }
 
@@ -20,20 +19,18 @@ const ChangeCurrencyDropdown: React.FC = () => {
   return (
     <div className="ChangeCurrencyDropdown">
       <Dropdown>
-        <Dropdown.Toggle id="dropdown-basic">
-          {currencyContext.currency}
-        </Dropdown.Toggle>
+        <Dropdown.Toggle id="dropdown-basic">{currencyContext.currency}</Dropdown.Toggle>
 
         <Dropdown.Menu>
-          {currencyList.map(currency =>
+          {currencyList.map(currency => (
             <Dropdown.Item key={currency} onSelect={() => currencyContext.setCurrency(currency)}>
               {currency}
             </Dropdown.Item>
-          )}
+          ))}
         </Dropdown.Menu>
       </Dropdown>
     </div>
   );
-}
+};
 
 export default ChangeCurrencyDropdown;

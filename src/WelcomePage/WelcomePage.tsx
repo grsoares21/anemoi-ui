@@ -21,7 +21,7 @@ const PageAnimation = posed.div({
   collapsed: {
     height: '50px',
     transition: {
-      ease: [0.455, 0.030, 0.515, 0.955],
+      ease: [0.455, 0.03, 0.515, 0.955],
       duration: collapseDuration
     }
   }
@@ -38,9 +38,8 @@ const ContentAnimation = posed.div({
   }
 });
 
-
 interface WelcomePageProps {
-  collapseCallback: Function
+  collapseCallback: Function;
 }
 
 const WelcomePage: React.FC<WelcomePageProps> = props => {
@@ -50,7 +49,7 @@ const WelcomePage: React.FC<WelcomePageProps> = props => {
   let onCollapseFinished = () => {
     setCollapseFinished(true);
     props.collapseCallback();
-  }
+  };
 
   const poseString = welcomeCollapsed ? 'collapsed' : 'open';
 
@@ -69,16 +68,20 @@ const WelcomePage: React.FC<WelcomePageProps> = props => {
         <Row className="h-100">
           <Col xs={{ span: 12, order: 2 }} md={{ span: 6, order: 1 }}>
             <Row className="h-100">
-                <Col xs={{ span: 10, offset: 1 }} className="my-auto">
+              <Col xs={{ span: 10, offset: 1 }} className="my-auto">
                 <WelcomePhrase />
-                <Button ref={buttonRef} size="lg" variant="primary" onClick={() => {
+                <Button
+                  ref={buttonRef}
+                  size="lg"
+                  variant="primary"
+                  onClick={() => {
                     setWelcomeCollapsed(true);
                     gtag('event', 'StartPlannerWorkflow', {
                       event_label: 'User clicked YES button on homepage',
                       event_category: 'workflow_navigation'
                     });
-                  }
-                }>
+                  }}
+                >
                   <b>{t('YES')}!</b>
                 </Button>
               </Col>
@@ -91,6 +94,6 @@ const WelcomePage: React.FC<WelcomePageProps> = props => {
       </ContentAnimation>
     </PageAnimation>
   );
-}
+};
 
 export default WelcomePage;
