@@ -33,6 +33,7 @@ const StayPeriodWorkflow: React.FC<StayPeriodWorkflowProps> = props => {
             <InputRange
               minValue={1}
               maxValue={30}
+              allowSameValues={true}
               value={{ min: minDays, max: maxDays }}
               onChange={value => {
                 var range = value as Range;
