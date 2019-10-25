@@ -25,7 +25,7 @@ const CitySelectionWorkflow: React.FC<CitySelectionWorkflowProps> = React.memo(
     let visitingSelectRef = useRef<any>(null);
     let arrivalsSelectRef = useRef<any>(null);
 
-    let [differentDepartureArrival, setDifferentDepartureArrival] = useState(false);
+    let [sameDepartureArrival, setSameDepartureArrival] = useState(true);
 
     useEffect(() => {
       departuresSelectRef.current.focus();
@@ -48,36 +48,11 @@ const CitySelectionWorkflow: React.FC<CitySelectionWorkflowProps> = React.memo(
           value={props.departureCities}
           onChange={cities => {
             props.onSetDepartureCities(cities);
-            !differentDepartureArrival && props.onSetArrivalCities(cities);
+            sameDepartureArrival && props.onSetArrivalCities(cities);
           }}
           onConfirm={() =>
-            !differentDepartureArrival ? visitingSelectRef.current.focus() : arrivalsSelectRef.current.focus()
+            sameDepartureArrival ? visitingSelectRef.current.focus() : arrivalsSelectRef.current.focus()
           }
-        />
-        <br />
-        <label>{t('POSSIBLE_ARRIVAL_POINTS')}</label>
-        <MultiCitySelector
-          invalid={props.arrivalCities.length === 0 && differentDepartureArrival}
-          invalidMessage={t('PLEASE_SELECT_ARRIVAL_CITIES')}
-          disabled={!differentDepartureArrival}
-          inputRef={arrivalsSelectRef}
-          placeholder={t('ARRIVAL_CITIES')}
-          invalidCities={props.visitingCities}
-          value={!differentDepartureArrival ? [] : props.arrivalCities}
-          onChange={cities => props.onSetArrivalCities(cities)}
-          onConfirm={() => visitingSelectRef.current.focus()}
-        />
-        <Form.Check
-          custom
-          type="checkbox"
-          className={differentDepartureArrival ? 'custom-checkbox-checked' : ''}
-          checked={differentDepartureArrival}
-          onChange={(e: ChangeEvent<HTMLInputElement>) => {
-            !e.target.checked ? props.onSetArrivalCities(props.departureCities) : props.onSetArrivalCities([]);
-            setDifferentDepartureArrival(e.target.checked);
-          }}
-          label={t('USE_DIFFERENT_DEPARTURE_AND_ARRIVAL_POINTS')}
-          id="different-departure-arrival-checkbox"
         />
         <br />
         <label>{t('CITIES_TO_VISIT')}:</label>
@@ -92,6 +67,31 @@ const CitySelectionWorkflow: React.FC<CitySelectionWorkflowProps> = React.memo(
           onRemoveCity={city => props.onRemoveVisitingCity(city)}
           onClear={props.onClearVisitingCities}
           onConfirm={props.onComplete}
+        />
+        <br />
+        <label>{t('POSSIBLE_ARRIVAL_POINTS')}</label>
+        <MultiCitySelector
+          invalid={props.arrivalCities.length === 0 && !sameDepartureArrival}
+          invalidMessage={t('PLEASE_SELECT_ARRIVAL_CITIES')}
+          disabled={sameDepartureArrival}
+          inputRef={arrivalsSelectRef}
+          placeholder={t('ARRIVAL_CITIES')}
+          invalidCities={props.visitingCities}
+          value={sameDepartureArrival ? [] : props.arrivalCities}
+          onChange={cities => props.onSetArrivalCities(cities)}
+          onConfirm={() => visitingSelectRef.current.focus()}
+        />
+        <Form.Check
+          custom
+          type="checkbox"
+          className={sameDepartureArrival ? 'custom-checkbox-checked' : ''}
+          checked={sameDepartureArrival}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => {
+            e.target.checked ? props.onSetArrivalCities(props.departureCities) : props.onSetArrivalCities([]);
+            setSameDepartureArrival(e.target.checked);
+          }}
+          label={t('USE_SAME_DEPARTURE_AND_ARRIVAL_POINTS')}
+          id="different-departure-arrival-checkbox"
         />
         <br />
         <Button
