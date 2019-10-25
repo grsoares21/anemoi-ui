@@ -68,6 +68,7 @@ const TravelPeriodWorkflow: React.FC<TravelPlanResultProps> = props => {
               props.arrivalDateRange
             )
           }
+          minimumNights={0}
           focusedInput={departureFocusedInput}
           onFocusChange={setDepartureFocusedInput}
           startDateId="departureStartDate"
@@ -93,6 +94,7 @@ const TravelPeriodWorkflow: React.FC<TravelPlanResultProps> = props => {
                 endDate: endDate ? endDate.toDate() : null
               })
             }
+            minimumNights={0}
             focusedInput={arrivalFocusedInput}
             onFocusChange={setArrivalFocusedInput}
             startDateId="arrivalStartDate"
