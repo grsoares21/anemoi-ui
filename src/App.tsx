@@ -22,7 +22,7 @@ const App: React.FC = () => {
 
   let [welcomePageCollapsed, setWelcomePageCollapsed] = useState(false);
   return (
-    <div className="App">
+    <div className="App" data-testid="app-container">
       <CurrencyContext.Provider value={{ currency, setCurrency }}>
         <WelcomePage collapseCallback={() => setWelcomePageCollapsed(true)} />
         <TravelPlannerWorkflow launchWorkflow={welcomePageCollapsed} />
