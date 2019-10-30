@@ -43,7 +43,11 @@ const TravelPlanResultComponent: React.FC<TravelPlanResultProps> = props => {
             event_category: 'conversion',
             value: props.result.totalPrice
           });
-          window.open(props.result.deepLink, '_blank');
+
+          const windowRef = window.open(props.result.deepLink, '_blank');
+          if (!windowRef) {
+            window.location.href = props.result.deepLink;
+          }
         }}
       >
         <b>{t('CLICK_HERE_TO_BOOK')}</b>
