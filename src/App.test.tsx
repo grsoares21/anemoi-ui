@@ -3,12 +3,14 @@ import App from './App';
 
 import { render, cleanup } from '@testing-library/react';
 
-afterEach(() => {
-  cleanup();
-});
+describe('Main App component', () => {
+  afterEach(() => {
+    cleanup();
+  });
 
-it('renders without crashing', () => {
-  const { asFragment, getByTestId } = render(<App />);
-  expect(asFragment()).toBeTruthy();
-  expect(getByTestId('app-container')).toBeTruthy();
+  it('renders without crashing', () => {
+    const { asFragment, getByTestId } = render(<App />);
+    expect(asFragment()).toBeTruthy();
+    expect(getByTestId('app-container')).toBeTruthy();
+  });
 });
