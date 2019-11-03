@@ -2,7 +2,7 @@ import './MultiCitySelector.scss';
 
 import LocationServices, { City } from '../Services/LocationServices';
 
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import Async from 'react-select/async';
 import debounce from 'lodash.debounce';
 import { ValueType, ActionMeta } from 'react-select/src/types';
@@ -43,6 +43,15 @@ const MultiCitySelector: React.FC<MultiCitySelectorProps> = props => {
 
   const { i18n } = useTranslation();
   const [touched, setTouched] = useState(false);
+
+  // workaround for refocusing when selecting a value on Firefox
+  const [shouldRefocus, setShouldRefocus] = useState(false);
+  useEffect(() => {
+    if (shouldRefocus) {
+      selectElement.current.focus();
+      setShouldRefocus(false);
+    }
+  }, [shouldRefocus, selectElement]);
 
   const debouncedFetchCityOptions = debounce(
     (searchTerm: string, callback: (values: MultiCitySelectorOptions[]) => void) => {
@@ -112,6 +121,7 @@ const MultiCitySelector: React.FC<MultiCitySelectorProps> = props => {
               break;
             case 'select-option':
               props.onAddCity && action.option && props.onAddCity((action.option as MultiCitySelectorOptions).data);
+              setShouldRefocus(true);
               break;
             case 'pop-value':
             case 'remove-value':

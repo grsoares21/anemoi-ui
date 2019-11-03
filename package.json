@@ -20,7 +20,7 @@
     "react-pose": "^4.0.8",
     "react-scripts": "3.0.1",
     "react-scroll": "^1.7.12",
-    "react-select": "^3.0.4",
+    "react-select": "^3.0.8",
     "typescript": "3.4.5"
   },
   "scripts": {
