@@ -65,7 +65,7 @@ const WelcomePage: React.FC<WelcomePageProps> = props => {
       <ChangeLanguageDropdown />
       <AnemoiTitle isVisible={collapseFinished} />
       <ContentAnimation pose={poseString} className="h-100">
-        <Row className="h-100">
+        <Row className="h-100" data-testid="page-content">
           <Col xs={{ span: 12, order: 2 }} md={{ span: 6, order: 1 }}>
             <Row className="h-100">
               <Col xs={{ span: 10, offset: 1 }} className="my-auto">
@@ -81,6 +81,7 @@ const WelcomePage: React.FC<WelcomePageProps> = props => {
                       event_category: 'workflow_navigation'
                     });
                   }}
+                  data-testid="yes-button"
                 >
                   <b>{t('YES')}!</b>
                 </Button>

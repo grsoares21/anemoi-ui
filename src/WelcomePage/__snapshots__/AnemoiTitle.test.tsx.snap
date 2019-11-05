@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AnemoiTitle component renders without crashing with visible = false 1`] = `<DocumentFragment />`;
+
+exports[`AnemoiTitle component renders without crashing with visible = true 1`] = `
+<DocumentFragment>
+  <h3
+    style="opacity: 1;"
+  >
+    <span
+      data-testid="anemoi-title"
+    >
+      Anemoi
+    </span>
+  </h3>
+</DocumentFragment>
+`;
