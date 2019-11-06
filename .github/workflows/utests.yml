@@ -11,20 +11,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@dev
-    - name: Run Install 
+      name: Run Checkout Dev 
     - uses: borales/actions-yarn@v2.0.0
+      name: Run Install
       with:
         cmd: install # will run `yarn install` command
-    - name: Run Build
     - uses: borales/actions-yarn@v2.0.0
+      name: Run Build
       with:
         cmd: build # will run `yarn build` command
-    - name: Run Test
     - uses: borales/actions-yarn@v2.0.0
+      name: Run Test
       with:
         cmd: test # will run `yarn test` command
-    - name: Run Local Rebase
-      run: |
+    - run: |
+      name: Run Install
         git checkout master
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Automerge Action"
