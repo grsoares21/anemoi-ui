@@ -3,7 +3,7 @@ name: Run Unit Tests
 on:
   push:
     branches: 
-      - dev
+      - 'dev'
 
 jobs:
   build:
@@ -23,5 +23,10 @@ jobs:
       name: Run Test
       with:
         cmd: test # will run `yarn test` command
+    - name: Run Checkout Mester and Rebase Dev
+      run: |
+        git status
+        git checkout master
+        git rebase dev
       env:
         CI: true
