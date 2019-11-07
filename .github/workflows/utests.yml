@@ -7,7 +7,6 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
@@ -24,8 +23,8 @@ jobs:
       name: Run Test
       with:
         cmd: test # will run `yarn test` command
-    - run: |
-      name: Run Install
+    - name: Run Rebase Dev In Master
+      run: |
         git checkout master
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Automerge Action"
