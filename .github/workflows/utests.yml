@@ -1,7 +1,7 @@
 name: Run Unit Tests
 
 on:
-  pull_request:
+  push:
     branches: 
       - dev
 
@@ -10,15 +10,26 @@ jobs:
 
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@dev
+      name: Run Checkout Dev 
     - uses: borales/actions-yarn@v2.0.0
+      name: Run Install
       with:
         cmd: install # will run `yarn install` command
     - uses: borales/actions-yarn@v2.0.0
+      name: Run Build
       with:
         cmd: build # will run `yarn build` command
     - uses: borales/actions-yarn@v2.0.0
+      name: Run Test
       with:
         cmd: test # will run `yarn test` command
+    - run: |
+      name: Run Install
+        git checkout master
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Automerge Action"
+        git rebase dev
+        git log
       env:
         CI: true
