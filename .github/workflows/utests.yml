@@ -11,18 +11,12 @@ jobs:
     steps:
     - uses: actions/checkout@v1
       name: Run Checkout Dev 
-    - uses: borales/actions-yarn@v2.0.0
-      name: Run Install
-      with:
-        cmd: install # will run `yarn install` command
-    - uses: borales/actions-yarn@v2.0.0
-      name: Run Build
-      with:
-        cmd: build # will run `yarn build` command
-    - uses: borales/actions-yarn@v2.0.0
-      name: Run Test
-      with:
-        cmd: test --ci --forceExit # will run `yarn test` command
+    - name: Run Install
+      run: yarn install
+    - name: Run Build
+      run: yarn build
+    - name: Run Test
+      run: yarn test
     - name: Run Checkout Mester and Rebase Dev
       run: |
         git status
