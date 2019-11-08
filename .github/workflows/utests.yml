@@ -22,7 +22,7 @@ jobs:
     - uses: borales/actions-yarn@v2.0.0
       name: Run Test
       with:
-        cmd: test # will run `yarn test` command
+        cmd: test --ci --forceExit # will run `yarn test` command
     - name: Run Checkout Mester and Rebase Dev
       run: |
         git status
