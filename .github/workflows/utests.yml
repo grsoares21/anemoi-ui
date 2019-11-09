@@ -18,7 +18,7 @@ jobs:
     - name: Run Build
       run: yarn build
     - name: Run Test
-      run: yarn test --watchAll=false
+      run: yarn test --watchAll=false --bail
     - name: Run Checkout Mester and Rebase Dev
       run: |
         git status
