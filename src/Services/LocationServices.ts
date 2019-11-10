@@ -1,13 +1,12 @@
 interface Location {
   id: string;
   name: string;
-  slug: string;
-  code: string;
+  slug?: string;
+  code?: string;
 }
 
 export interface City extends Location {
-  id: string;
-  active: boolean;
+  active?: boolean;
   country: Location;
 }
 

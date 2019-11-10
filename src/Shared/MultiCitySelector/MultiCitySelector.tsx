@@ -23,7 +23,7 @@ interface MultiCitySelectorProps {
   inputRef?: any;
   // using any here because the type definition in @types/react-select
   // are not compatible with the library for the state manager
-  placeholder: string;
+  placeholder?: string;
   onChange?: (selectedCities: City[]) => void;
   onAddCity?: (selectedCity: City) => void;
   onRemoveCity?: (removedCity: City) => void;
@@ -138,7 +138,7 @@ const MultiCitySelector: React.FC<MultiCitySelectorProps> = props => {
             : props.onChange && props.onChange([]);
         }}
       />
-      <span className="MultiCitySelector__InvalidMessage">
+      <span className="MultiCitySelector__InvalidMessage" data-testid="invalid-message">
         {props.invalid && touched && props.invalidMessage ? props.invalidMessage : ''}
       </span>
     </>
