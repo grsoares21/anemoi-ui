@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`WelcomePage component renders without crashing 1`] = `
+<DocumentFragment>
+  <div
+    class="WelcomePhrase"
+  >
+    <h1
+      class="WelcomePhraseIntroduction"
+    >
+      Welcome I am 
+      <em>
+        Anemoi.
+      </em>
+      <br />
+      Travel 
+      <em>
+        expert.
+      </em>
+      <br />
+    </h1>
+    <h1
+      class="WelcomePhraseCallToAction"
+    >
+      CAN_I_HELP_PLANNING_YOURS
+    </h1>
+  </div>
+</DocumentFragment>
+`;

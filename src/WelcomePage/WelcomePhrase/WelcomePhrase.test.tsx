@@ -12,6 +12,7 @@ describe('WelcomePage component', () => {
     const { asFragment } = render(<WelcomePhrase />);
 
     expect(asFragment()).toBeTruthy();
+    expect(asFragment()).toMatchSnapshot();
     expect(asFragment().querySelector('.WelcomePhrase')).toBeTruthy();
   });
 });
