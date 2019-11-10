@@ -8,7 +8,7 @@ import WelcomePhrase from './WelcomePhrase/WelcomePhrase';
 import WelcomePageLogo from './WelcomePageLogo';
 
 import './WelcomePage.scss';
-import AnemoiTitle from './AnemoiTitle';
+import AnemoiTitle from './AnemoiTitle/AnemoiTitle';
 import ChangeLanguageDropdown from '../ChangeLanguageDropdown/ChangeLanguageDropdown';
 import ChangeCurrencyDropdown from '../ChangeCurrencyDropdown/ChangeCurrencyDropdown';
 

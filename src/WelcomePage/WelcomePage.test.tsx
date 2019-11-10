@@ -5,7 +5,7 @@ import { render, cleanup } from '@testing-library/react';
 import WelcomePage from './WelcomePage';
 
 describe('WelcomePage component', () => {
-  jest.mock('./AnemoiTitle', () => ({
+  jest.mock('./AnemoiTitle/AnemoiTitle', () => ({
     default: (props: { isVisible: boolean }) => props.isVisible && <span data-testid="anemoi-title"></span>
   }));
 
