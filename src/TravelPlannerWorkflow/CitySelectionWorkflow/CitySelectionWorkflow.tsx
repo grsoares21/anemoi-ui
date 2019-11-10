@@ -1,7 +1,7 @@
 import './CitySelectionWorkflow.scss';
 
 import { City } from '../../Services/LocationServices';
-import MultiCitySelector from '../../Shared/MultiCitySelector';
+import MultiCitySelector from '../../Shared/MultiCitySelector/MultiCitySelector';
 
 import React, { useRef, useEffect, useState, ChangeEvent } from 'react';
 import { Button, Form } from 'react-bootstrap';
