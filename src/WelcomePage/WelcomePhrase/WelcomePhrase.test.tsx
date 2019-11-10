@@ -3,7 +3,7 @@ import React from 'react';
 import { render, cleanup } from '@testing-library/react';
 import WelcomePhrase from './WelcomePhrase';
 
-describe('WelcomePage component', () => {
+describe('WelcomePhrase component', () => {
   afterEach(() => {
     cleanup();
   });
