@@ -1,7 +1,7 @@
 import React from 'react';
 
 import '@testing-library/jest-dom/extend-expect';
-import { render, cleanup, fireEvent, waitForElement } from '@testing-library/react';
+import { render, cleanup, fireEvent, waitForElement, wait } from '@testing-library/react';
 import MultiCitySelector from './MultiCitySelector';
 import LocationServices, { City } from './../../Services/LocationServices';
 import i18n from '../../i18n/i18n';
@@ -73,17 +73,47 @@ describe('MultiCitySelector component', () => {
     expect(queryByText('Amsterdam, Netherlands')).not.toBeTruthy();
   });
 
-  it('correctly select, removes and clear cities', async () => {
+  it('correctly selects cities', async () => {
     i18n.changeLanguage('PT');
+    let selectedCities: City[] = [];
+    const onAddCity = jest.fn((city: City) => {
+      selectedCities.push(city);
+    });
+    const onChange = jest.fn();
 
-    const { getByText } = render(<MultiCitySelector />);
+    const { getByText, getByRole } = render(
+      <MultiCitySelector value={selectedCities} onAddCity={onAddCity} onChange={onChange} />
+    );
 
-    const input = document.querySelector('input') as Element;
-    fireEvent.change(input, { target: { value: 'Pa' } });
+    fireEvent.input(getByRole('textbox'), { target: { value: 'Pa' } });
 
     await waitForElement(() => getByText('Paris, França'));
     expect(getByText('Paris, França')).toBeInTheDocument();
+    getByText('Paris, França').click();
+    expect(getByText('Paris')).toBeInTheDocument();
+    await wait(() => expect(document.activeElement).toEqual(getByRole('textbox')));
+    expect(onAddCity).toHaveBeenCalledTimes(1);
+    expect(onChange).toHaveBeenCalledTimes(1);
+    // check that input keeps focused after selection
+  });
 
-    // TODO: continue interactions with the component
+  it('correctly removes cities', async () => {
+    let selectedCities: City[] = [...portugueseCities];
+    const onRemoveCity = jest.fn((_city: City) => {
+      selectedCities.pop();
+    });
+    const onChange = jest.fn();
+
+    const { asFragment, rerender } = render(
+      <MultiCitySelector value={selectedCities} onRemoveCity={onRemoveCity} onChange={onChange} />
+    );
+
+    expect(asFragment().querySelectorAll('.MultiCitySelector__multi-value').length).toEqual(3);
+    fireEvent.click(document.querySelector('.MultiCitySelector__multi-value__remove') as Element);
+    expect(onRemoveCity).toHaveBeenCalledTimes(1);
+    expect(onChange).toHaveBeenCalledTimes(1);
+
+    rerender(<MultiCitySelector value={selectedCities} />);
+    expect(asFragment().querySelectorAll('.MultiCitySelector__multi-value').length).toEqual(2);
   });
 });
