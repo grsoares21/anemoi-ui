@@ -11,8 +11,10 @@ import './WelcomePage.scss';
 import AnemoiTitle from './AnemoiTitle/AnemoiTitle';
 import ChangeLanguageDropdown from '../ChangeLanguageDropdown/ChangeLanguageDropdown';
 import ChangeCurrencyDropdown from '../ChangeCurrencyDropdown/ChangeCurrencyDropdown';
+import { CookieBot } from '../Shared/Cookiebot';
 
 declare var gtag: Gtag.Gtag;
+declare var Cookiebot: CookieBot;
 
 const collapseDuration = 500;
 
@@ -76,10 +78,12 @@ const WelcomePage: React.FC<WelcomePageProps> = props => {
                   variant="primary"
                   onClick={() => {
                     setWelcomeCollapsed(true);
-                    gtag('event', 'StartPlannerWorkflow', {
-                      event_label: 'User clicked YES button on homepage',
-                      event_category: 'workflow_navigation'
-                    });
+                    if (Cookiebot && Cookiebot.consent.statistics) {
+                      gtag('event', 'StartPlannerWorkflow', {
+                        event_label: 'User clicked YES button on homepage',
+                        event_category: 'workflow_navigation'
+                      });
+                    }
                   }}
                   data-testid="yes-button"
                 >

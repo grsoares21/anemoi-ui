@@ -6,8 +6,10 @@ import TravelPlanResult from '../../Services/AnemoiServices/TravelPlanResult';
 import RouteResult from './RouteResult/RouteResult';
 import { Button } from 'react-bootstrap';
 import { CurrencyContext } from './../../Shared/CurrecyContext';
+import { CookieBot } from './../../Shared/Cookiebot.d';
 
 declare var gtag: Gtag.Gtag;
+declare var Cookiebot: CookieBot;
 
 interface TravelPlanResultProps {
   result: TravelPlanResult;
@@ -38,11 +40,13 @@ const TravelPlanResultComponent: React.FC<TravelPlanResultProps> = props => {
         size="lg"
         variant="success"
         onClick={() => {
-          gtag('event', 'ClickedToBook', {
-            event_label: 'User clicked "Click Here to Book" button',
-            event_category: 'conversion',
-            value: props.result.totalPrice
-          });
+          if (Cookiebot && Cookiebot.consent.statistics) {
+            gtag('event', 'ClickedToBook', {
+              event_label: 'User clicked "Click Here to Book" button',
+              event_category: 'conversion',
+              value: props.result.totalPrice
+            });
+          }
 
           const windowRef = window.open(props.result.deepLink, '_blank');
           if (!windowRef) {

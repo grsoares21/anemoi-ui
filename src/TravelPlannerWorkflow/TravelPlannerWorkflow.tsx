@@ -15,8 +15,10 @@ import AnemoiServices from '../Services/AnemoiServices/AnemoiServices';
 import { Action, State, WorkflowSection } from './TravelPlannerWorkflow.d';
 import { CurrencyContext } from './../Shared/CurrecyContext';
 import moment from 'moment';
+import { CookieBot } from './../Shared/Cookiebot.d';
 
 declare var gtag: Gtag.Gtag;
+declare var Cookiebot: CookieBot;
 
 const reducer = (state: State, action: Action): State => {
   switch (action.type) {
@@ -105,9 +107,11 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
 
   let [workflowSection, setWorkflowSection] = useState(WorkflowSection.Beginning);
   let updateWorkflowSection = (newSection: WorkflowSection) => {
-    gtag('event', WorkflowSection[newSection], {
-      event_category: 'workflow_navigation'
-    });
+    if (Cookiebot && Cookiebot.consent.statistics) {
+      gtag('event', WorkflowSection[newSection], {
+        event_category: 'workflow_navigation'
+      });
+    }
     setWorkflowSection(newSection);
     setTimeout(
       () =>

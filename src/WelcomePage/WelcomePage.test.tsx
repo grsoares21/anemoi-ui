@@ -22,7 +22,9 @@ describe('WelcomePage component', () => {
 
   it('collapses when clicks the YES button', async () => {
     const gtag = jest.fn();
+    const Cookiebot = { consent: { statistics: true } };
     (global as any).gtag = gtag;
+    (global as any).Cookiebot = Cookiebot;
     const collapseCallback = jest.fn();
     const { getByTestId, queryByTestId, findByTestId } = render(<WelcomePage collapseCallback={collapseCallback} />);
 
