@@ -31,18 +31,24 @@
       type="text/javascript"
     ></script>
     <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-149381662-1"></script>
+    <script
+      async
+      data-cookieconsent="statistics"
+      src="https://www.googletagmanager.com/gtag/js?id=UA-149381662-1"
+    ></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag() {
         dataLayer.push(arguments);
       }
-      gtag('js', new Date());
-      gtag('config', 'UA-149381662-1', {
-        anonymize_ip: true,
-        allow_ad_personalization_signals: false,
-        cookie_expires: 0
-      });
+      if (Cookiebot && Cookiebot.consent.statistics) {
+        gtag('js', new Date());
+        gtag('config', 'UA-149381662-1', {
+          anonymize_ip: true,
+          allow_ad_personalization_signals: false,
+          cookie_expires: 0
+        });
+      }
       // The above configurations _should_ cover for GDPR compliancy
       // TODO: implement cookie consent banner in order to do better tracking and ads
     </script>
