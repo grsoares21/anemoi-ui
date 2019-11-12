@@ -26,7 +26,10 @@ i18n
     interpolation: {
       escapeValue: false
     },
-    whitelist: languageList
+    whitelist: languageList,
+    detection: {
+      caches: ['localstorage']
+    }
   });
 
 export default i18n;
