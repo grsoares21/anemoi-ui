@@ -41,14 +41,13 @@
       function gtag() {
         dataLayer.push(arguments);
       }
-      if (Cookiebot && Cookiebot.consent.statistics) {
+      window.addEventListener('CookiebotOnAccept', () => {
         gtag('js', new Date());
         gtag('config', 'UA-149381662-1', {
           anonymize_ip: true,
-          allow_ad_personalization_signals: false,
-          cookie_expires: 0
+          allow_ad_personalization_signals: Cookiebot.consent.marketing
         });
-      }
+      });
       // The above configurations _should_ cover for GDPR compliancy
       // TODO: implement cookie consent banner in order to do better tracking and ads
     </script>
