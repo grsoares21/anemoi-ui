@@ -21,6 +21,7 @@
     "react-scripts": "3.0.1",
     "react-scroll": "^1.7.12",
     "react-select": "^3.0.8",
+    "react-sidebar": "^3.0.2",
     "typescript": "3.4.5"
   },
   "scripts": {
@@ -56,6 +57,7 @@
     "@types/react-dom": "16.8.4",
     "@types/react-flag-icon-css": "^1.0.2",
     "@types/react-scroll": "^1.5.4",
-    "@types/react-select": "^3.0.0"
+    "@types/react-select": "^3.0.0",
+    "@types/react-sidebar": "^3.0.0"
   }
 }

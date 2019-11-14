@@ -16,6 +16,7 @@ import { Action, State, WorkflowSection } from './TravelPlannerWorkflow.d';
 import { CurrencyContext } from './../Shared/CurrecyContext';
 import moment from 'moment';
 import { CookieBot } from './../Shared/Cookiebot.d';
+import AdvancedFiltersSidebar from './AdvancedFiltersSidebar/AdvancedFiltersSidebar';
 
 declare var gtag: Gtag.Gtag;
 declare var Cookiebot: CookieBot;
@@ -156,6 +157,7 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
   let [loadingDots, setLoadingDots] = useState('.');
   return (
     <div id="TravelPlannerWorkflow" style={{ display: props.launchWorkflow ? 'block' : 'none' }}>
+      <AdvancedFiltersSidebar />
       <div className="FaderGradient"></div>
       <Container>
         <Row>
