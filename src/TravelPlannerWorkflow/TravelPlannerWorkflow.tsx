@@ -21,6 +21,7 @@ import {
   TravelPlannerWorkflowState,
   TravelPlannerWorkflowReducer
 } from './TravelPlannerWorkflow.state';
+import AdvancedFiltersSidebar from './AdvancedFiltersSidebar/AdvancedFiltersSidebar';
 
 declare var gtag: Gtag.Gtag;
 declare var Cookiebot: CookieBot;
@@ -143,6 +144,7 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
   let [loadingDots, setLoadingDots] = useState('.');
   return (
     <div id="TravelPlannerWorkflow" style={{ display: props.launchWorkflow ? 'block' : 'none' }}>
+      <AdvancedFiltersSidebar />
       <div className="FaderGradient"></div>
       <TravelPlannerWorkflowContext.Provider value={{ state, dispatch }}>
         <Container>
