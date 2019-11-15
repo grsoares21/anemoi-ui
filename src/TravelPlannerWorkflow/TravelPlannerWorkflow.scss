@@ -1,6 +1,7 @@
 #TravelPlannerWorkflow {
   flex: 1 1 auto;
   overflow-y: scroll;
+  position: relative;
 
   & > .FaderGradient {
     height: 100px;
