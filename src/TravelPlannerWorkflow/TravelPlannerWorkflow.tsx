@@ -21,6 +21,7 @@ import {
   TravelPlannerWorkflowState,
   TravelPlannerWorkflowReducer
 } from './TravelPlannerWorkflow.state';
+import AdvancedFiltersSidebar from './AdvancedFiltersSidebar/AdvancedFiltersSidebar';
 
 declare var gtag: Gtag.Gtag;
 declare var Cookiebot: CookieBot;
@@ -143,111 +144,116 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
   let [loadingDots, setLoadingDots] = useState('.');
   return (
     <div id="TravelPlannerWorkflow" style={{ display: props.launchWorkflow ? 'block' : 'none' }}>
-      <div id="WorkflowContent">
-        <div className="FaderGradient"></div>
-        <TravelPlannerWorkflowContext.Provider value={{ state, dispatch }}>
-          <Container>
-            <Row>
-              <Col xs={{ span: 12 }} md={{ span: 8, offset: 2 }}>
-                <br />
-                <br />
-                <br />
-                <WorkflowStep isVisible={props.launchWorkflow} uniqueKey="letsGo">
-                  <h4>{t('GREAT_HERE_WE_GO')}</h4>
-                </WorkflowStep>
-                <WorkflowStep
-                  isVisible={workflowSection >= WorkflowSection.CitySelection}
-                  uniqueKey="citySelectionWorkflow"
-                >
-                  <CitySelectionWorkflow
-                    onComplete={() => updateWorkflowSection(WorkflowSection.StayPeriodIntroduction)}
-                  />
-                </WorkflowStep>
-                <br />
-                <WorkflowStep
-                  isVisible={workflowSection >= WorkflowSection.StayPeriodIntroduction}
-                  uniqueKey="needStayPeriods"
-                >
-                  <h4>{t('SOUNDS_LIKE_A_GOOD_PLAN')}</h4>
-                  <h4>{t('HOW_MANY_DAYS_IN_EACH_CITY')}</h4>
-                </WorkflowStep>
-                <WorkflowStep isVisible={workflowSection >= WorkflowSection.StayPeriod} uniqueKey="stayPeriodWorkflow">
-                  <StayPeriodWorkflow onComplete={() => updateWorkflowSection(WorkflowSection.TravelPeriod)} />
-                </WorkflowStep>
-                <br />
-                <br />
-                <WorkflowStep
-                  isVisible={workflowSection >= WorkflowSection.TravelPeriod}
-                  uniqueKey="travelPeriodWorkflow"
-                >
-                  <h4>{t('NOTED')}</h4>
-                  <h4>
-                    <em>{t('WHEN_ARE_PLANNING_THIS_TRIP_FOR')}</em>
-                  </h4>
-                  <TravelPeriodWorkflow
-                    onComplete={() => {
-                      if (workflowSection < WorkflowSection.CalculateTravelPlan) {
-                        updateWorkflowSection(WorkflowSection.CalculateTravelPlan);
-                      }
-                    }}
-                  />
-                </WorkflowStep>
-                <br />
-                <WorkflowStep
-                  isVisible={workflowSection >= WorkflowSection.CalculateTravelPlan}
-                  uniqueKey="calculateRoute"
-                >
-                  <Button
-                    size="lg"
-                    block
-                    ref={submitButtonRef}
-                    disabled={!areParametersValid(state)}
-                    onClick={() => {
-                      updateWorkflowSection(WorkflowSection.CalculatingTravelPlan);
-                      var loadingDotsInterval = setInterval(() => setLoadingDots(prevDots => prevDots + '.'), 800);
-
-                      sendTravelPlanRequest(state)
-                        .then(result => {
-                          dispatch({ type: 'setTravelPlanResult', result });
-                        })
-                        .catch(err => console.log(err))
-                        .finally(() => {
-                          clearInterval(loadingDotsInterval);
-                          updateWorkflowSection(WorkflowSection.TravelPlanResult);
-                        });
-                    }}
+      <AdvancedFiltersSidebar>
+        <div id="WorkflowContent">
+          <div className="FaderGradient"></div>
+          <TravelPlannerWorkflowContext.Provider value={{ state, dispatch }}>
+            <Container>
+              <Row>
+                <Col xs={{ span: 12 }} md={{ span: 8, offset: 2 }}>
+                  <br />
+                  <br />
+                  <br />
+                  <WorkflowStep isVisible={props.launchWorkflow} uniqueKey="letsGo">
+                    <h4>{t('GREAT_HERE_WE_GO')}</h4>
+                  </WorkflowStep>
+                  <WorkflowStep
+                    isVisible={workflowSection >= WorkflowSection.CitySelection}
+                    uniqueKey="citySelectionWorkflow"
                   >
-                    <b>{t('CALCULATE_TRAVEL_PLAN')}</b>
-                  </Button>
-                </WorkflowStep>
-                <br />
-                <WorkflowStep
-                  isVisible={workflowSection >= WorkflowSection.CalculatingTravelPlan}
-                  uniqueKey="calculatingTravelPlan"
-                >
-                  <h4>
-                    <em>{t('PERFECT')}</em>
-                  </h4>
-                  <h4>{t('WE_ARE_CALCULATING_THE_BEST_ROUTE', { loadingDots })}</h4>
-                </WorkflowStep>
-                <WorkflowStep
-                  isVisible={workflowSection >= WorkflowSection.TravelPlanResult}
-                  uniqueKey="travelPlanResult"
-                >
-                  {state.travelPlanResult && <TravelPlanResult result={state.travelPlanResult} />}
-                  {!state.travelPlanResult && (
+                    <CitySelectionWorkflow
+                      onComplete={() => updateWorkflowSection(WorkflowSection.StayPeriodIntroduction)}
+                    />
+                  </WorkflowStep>
+                  <br />
+                  <WorkflowStep
+                    isVisible={workflowSection >= WorkflowSection.StayPeriodIntroduction}
+                    uniqueKey="needStayPeriods"
+                  >
+                    <h4>{t('SOUNDS_LIKE_A_GOOD_PLAN')}</h4>
+                    <h4>{t('HOW_MANY_DAYS_IN_EACH_CITY')}</h4>
+                  </WorkflowStep>
+                  <WorkflowStep
+                    isVisible={workflowSection >= WorkflowSection.StayPeriod}
+                    uniqueKey="stayPeriodWorkflow"
+                  >
+                    <StayPeriodWorkflow onComplete={() => updateWorkflowSection(WorkflowSection.TravelPeriod)} />
+                  </WorkflowStep>
+                  <br />
+                  <br />
+                  <WorkflowStep
+                    isVisible={workflowSection >= WorkflowSection.TravelPeriod}
+                    uniqueKey="travelPeriodWorkflow"
+                  >
+                    <h4>{t('NOTED')}</h4>
                     <h4>
-                      <em>{t('SORRY_NO_ROUTE_FOUND')}</em>
+                      <em>{t('WHEN_ARE_PLANNING_THIS_TRIP_FOR')}</em>
                     </h4>
-                  )}
-                </WorkflowStep>
-                <br />
-                <br />
-              </Col>
-            </Row>
-          </Container>
-        </TravelPlannerWorkflowContext.Provider>
-      </div>
+                    <TravelPeriodWorkflow
+                      onComplete={() => {
+                        if (workflowSection < WorkflowSection.CalculateTravelPlan) {
+                          updateWorkflowSection(WorkflowSection.CalculateTravelPlan);
+                        }
+                      }}
+                    />
+                  </WorkflowStep>
+                  <br />
+                  <WorkflowStep
+                    isVisible={workflowSection >= WorkflowSection.CalculateTravelPlan}
+                    uniqueKey="calculateRoute"
+                  >
+                    <Button
+                      size="lg"
+                      block
+                      ref={submitButtonRef}
+                      disabled={!areParametersValid(state)}
+                      onClick={() => {
+                        updateWorkflowSection(WorkflowSection.CalculatingTravelPlan);
+                        var loadingDotsInterval = setInterval(() => setLoadingDots(prevDots => prevDots + '.'), 800);
+
+                        sendTravelPlanRequest(state)
+                          .then(result => {
+                            dispatch({ type: 'setTravelPlanResult', result });
+                          })
+                          .catch(err => console.log(err))
+                          .finally(() => {
+                            clearInterval(loadingDotsInterval);
+                            updateWorkflowSection(WorkflowSection.TravelPlanResult);
+                          });
+                      }}
+                    >
+                      <b>{t('CALCULATE_TRAVEL_PLAN')}</b>
+                    </Button>
+                  </WorkflowStep>
+                  <br />
+                  <WorkflowStep
+                    isVisible={workflowSection >= WorkflowSection.CalculatingTravelPlan}
+                    uniqueKey="calculatingTravelPlan"
+                  >
+                    <h4>
+                      <em>{t('PERFECT')}</em>
+                    </h4>
+                    <h4>{t('WE_ARE_CALCULATING_THE_BEST_ROUTE', { loadingDots })}</h4>
+                  </WorkflowStep>
+                  <WorkflowStep
+                    isVisible={workflowSection >= WorkflowSection.TravelPlanResult}
+                    uniqueKey="travelPlanResult"
+                  >
+                    {state.travelPlanResult && <TravelPlanResult result={state.travelPlanResult} />}
+                    {!state.travelPlanResult && (
+                      <h4>
+                        <em>{t('SORRY_NO_ROUTE_FOUND')}</em>
+                      </h4>
+                    )}
+                  </WorkflowStep>
+                  <br />
+                  <br />
+                </Col>
+              </Row>
+            </Container>
+          </TravelPlannerWorkflowContext.Provider>
+        </div>
+      </AdvancedFiltersSidebar>
     </div>
   );
 };
