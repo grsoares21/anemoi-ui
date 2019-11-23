@@ -1,54 +1,49 @@
 import './CitySelectionWorkflow.scss';
 
-import { City } from '../../Services/LocationServices';
 import MultiCitySelector from '../../Shared/MultiCitySelector/MultiCitySelector';
 
-import React, { useRef, useEffect, useState, ChangeEvent } from 'react';
+import React, { useRef, useEffect, useState, useContext, useMemo, ChangeEvent } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
+import { TravelPlannerWorkflowContext } from '../TravelPlannerWorkflow.context';
 
 interface CitySelectionWorkflowProps {
-  onSetDepartureCities: (cities: City[]) => void;
-  onSetArrivalCities: (cities: City[]) => void;
-  onClearVisitingCities: () => void;
-  onAddVisitingCity: (city: City) => void;
-  onRemoveVisitingCity: (city: City) => void;
   onComplete: () => void;
-  departureCities: City[];
-  visitingCities: City[];
-  arrivalCities: City[];
 }
 
-const CitySelectionWorkflow: React.FC<CitySelectionWorkflowProps> = React.memo(
-  props => {
-    let departuresSelectRef = useRef<any>(null);
-    let visitingSelectRef = useRef<any>(null);
-    let arrivalsSelectRef = useRef<any>(null);
+const CitySelectionWorkflow: React.FC<CitySelectionWorkflowProps> = props => {
+  let departuresSelectRef = useRef<any>(null);
+  let visitingSelectRef = useRef<any>(null);
+  let arrivalsSelectRef = useRef<any>(null);
 
-    let [sameDepartureArrival, setSameDepartureArrival] = useState(true);
+  let [sameDepartureArrival, setSameDepartureArrival] = useState(true);
 
-    useEffect(() => {
-      departuresSelectRef.current.focus();
-    }, []);
+  const { state, dispatch } = useContext(TravelPlannerWorkflowContext);
 
-    const { t } = useTranslation();
+  useEffect(() => {
+    departuresSelectRef.current.focus();
+  }, []);
 
-    return (
+  const { t } = useTranslation();
+  const visitingCities = state.visitingCities.map(vc => vc.city);
+
+  return useMemo(
+    () => (
       <span>
         <h4>
           <em>{t('WHAT_ARE_THE_DEPARTURE_AND_ARRIVAL_POINTS')}</em>
         </h4>
         <label>{t('POSSIBLE_DEPARTURE_POINTS')}</label>
         <MultiCitySelector
-          invalid={props.departureCities.length === 0}
+          invalid={state.departureCities.length === 0}
           invalidMessage={t('PLEASE_SELECT_DEPARTURE_CITIES')}
           inputRef={departuresSelectRef}
           placeholder={t('DEPARTURE_CITIES')}
-          invalidCities={props.visitingCities}
-          value={props.departureCities}
+          invalidCities={visitingCities}
+          value={state.departureCities}
           onChange={cities => {
-            props.onSetDepartureCities(cities);
-            sameDepartureArrival && props.onSetArrivalCities(cities);
+            dispatch({ type: 'setDepartureCities', cities: cities });
+            sameDepartureArrival && dispatch({ type: 'setArrivalCities', cities: cities });
           }}
           onConfirm={() =>
             sameDepartureArrival ? visitingSelectRef.current.focus() : arrivalsSelectRef.current.focus()
@@ -57,28 +52,38 @@ const CitySelectionWorkflow: React.FC<CitySelectionWorkflowProps> = React.memo(
         <br />
         <label>{t('CITIES_TO_VISIT')}:</label>
         <MultiCitySelector
-          invalid={props.visitingCities.length === 0}
+          invalid={state.visitingCities.length === 0}
           invalidMessage={t('PLEASE_SELECT_VISITING_CITIES')}
           inputRef={visitingSelectRef}
           placeholder={t('CITIES_TO_VISIT')}
-          invalidCities={props.arrivalCities.concat(props.departureCities)}
-          value={props.visitingCities}
-          onAddCity={city => props.onAddVisitingCity(city)}
-          onRemoveCity={city => props.onRemoveVisitingCity(city)}
-          onClear={props.onClearVisitingCities}
+          invalidCities={state.arrivalCities.concat(state.departureCities)}
+          value={visitingCities}
+          onAddCity={city =>
+            dispatch({
+              type: 'setVisitingCities',
+              cities: [...state.visitingCities, { city: city, minDays: 3, maxDays: 5 }]
+            })
+          }
+          onRemoveCity={city =>
+            dispatch({
+              type: 'setVisitingCities',
+              cities: state.visitingCities.filter(cityPeriod => cityPeriod.city.id !== city.id)
+            })
+          }
+          onClear={() => dispatch({ type: 'setVisitingCities', cities: [] })}
           onConfirm={props.onComplete}
         />
         <br />
         <label>{t('POSSIBLE_ARRIVAL_POINTS')}</label>
         <MultiCitySelector
-          invalid={props.arrivalCities.length === 0 && !sameDepartureArrival}
+          invalid={state.arrivalCities.length === 0 && !sameDepartureArrival}
           invalidMessage={t('PLEASE_SELECT_ARRIVAL_CITIES')}
           disabled={sameDepartureArrival}
           inputRef={arrivalsSelectRef}
           placeholder={t('ARRIVAL_CITIES')}
-          invalidCities={props.visitingCities}
-          value={sameDepartureArrival ? [] : props.arrivalCities}
-          onChange={cities => props.onSetArrivalCities(cities)}
+          invalidCities={visitingCities}
+          value={sameDepartureArrival ? [] : state.arrivalCities}
+          onChange={cities => dispatch({ type: 'setArrivalCities', cities: cities })}
           onConfirm={() => visitingSelectRef.current.focus()}
         />
         <Form.Check
@@ -87,7 +92,9 @@ const CitySelectionWorkflow: React.FC<CitySelectionWorkflowProps> = React.memo(
           className={sameDepartureArrival ? 'custom-checkbox-checked' : ''}
           checked={sameDepartureArrival}
           onChange={(e: ChangeEvent<HTMLInputElement>) => {
-            e.target.checked ? props.onSetArrivalCities(props.departureCities) : props.onSetArrivalCities([]);
+            e.target.checked
+              ? dispatch({ type: 'setArrivalCities', cities: state.departureCities })
+              : dispatch({ type: 'setArrivalCities', cities: [] });
             setSameDepartureArrival(e.target.checked);
           }}
           label={t('USE_SAME_DEPARTURE_AND_ARRIVAL_POINTS')}
@@ -96,7 +103,7 @@ const CitySelectionWorkflow: React.FC<CitySelectionWorkflowProps> = React.memo(
         <br />
         <Button
           disabled={
-            props.departureCities.length === 0 || props.arrivalCities.length === 0 || props.visitingCities.length === 0
+            state.departureCities.length === 0 || state.arrivalCities.length === 0 || state.visitingCities.length === 0
           }
           className="float-right"
           size="lg"
@@ -105,15 +112,18 @@ const CitySelectionWorkflow: React.FC<CitySelectionWorkflowProps> = React.memo(
           <b>↵</b>
         </Button>
       </span>
-    );
-  },
-  (prevProps, nextProps) => {
-    return (
-      JSON.stringify(prevProps.arrivalCities) === JSON.stringify(nextProps.arrivalCities) &&
-      JSON.stringify(prevProps.departureCities) === JSON.stringify(nextProps.departureCities) &&
-      JSON.stringify(prevProps.visitingCities) === JSON.stringify(nextProps.visitingCities)
-    );
-  }
-);
+    ),
+    [
+      dispatch,
+      props.onComplete,
+      sameDepartureArrival,
+      state.arrivalCities,
+      state.departureCities,
+      state.visitingCities,
+      t,
+      visitingCities
+    ]
+  );
+};
 
 export default CitySelectionWorkflow;

@@ -105,7 +105,7 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
     departureDateRange: { startDate: null, endDate: null },
     arrivalDateRange: { startDate: null, endDate: null }
   });
-  const { departureCities, arrivalCities, visitingCities, departureDateRange, arrivalDateRange } = state;
+  const { visitingCities, departureDateRange, arrivalDateRange } = state;
 
   const submitButtonRef = useRef<any>(null);
 
@@ -176,25 +176,7 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
                 uniqueKey="citySelectionWorkflow"
               >
                 <CitySelectionWorkflow
-                  departureCities={departureCities}
-                  arrivalCities={arrivalCities}
-                  visitingCities={visitingCities.map(vc => vc.city)}
                   onComplete={() => updateWorkflowSection(WorkflowSection.StayPeriodIntroduction)}
-                  onSetDepartureCities={cities => dispatch({ type: 'setDepartureCities', cities: cities })}
-                  onSetArrivalCities={cities => dispatch({ type: 'setArrivalCities', cities: cities })}
-                  onClearVisitingCities={() => dispatch({ type: 'setVisitingCities', cities: [] })}
-                  onAddVisitingCity={city =>
-                    dispatch({
-                      type: 'setVisitingCities',
-                      cities: [...visitingCities, { city: city, minDays: 3, maxDays: 5 }]
-                    })
-                  }
-                  onRemoveVisitingCity={city =>
-                    dispatch({
-                      type: 'setVisitingCities',
-                      cities: visitingCities.filter(cityPeriod => cityPeriod.city.id !== city.id)
-                    })
-                  }
                 />
               </WorkflowStep>
               <br />

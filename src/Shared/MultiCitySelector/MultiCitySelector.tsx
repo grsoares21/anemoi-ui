@@ -2,7 +2,7 @@ import './MultiCitySelector.scss';
 
 import LocationServices, { City } from '../../Services/LocationServices';
 
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, useMemo } from 'react';
 import Async from 'react-select/async';
 import debounce from 'lodash.debounce';
 import { ValueType, ActionMeta } from 'react-select/src/types';
@@ -74,75 +74,77 @@ const MultiCitySelector: React.FC<MultiCitySelectorProps> = props => {
     500
   );
 
-  const fetchCityOptions = (searchTerm: string, callback: (values: MultiCitySelectorOptions[]) => void) => {
-    if (!searchTerm) {
-      return Promise.resolve({ options: [] });
-    }
-    debouncedFetchCityOptions(searchTerm, callback);
-  };
+  return useMemo(() => {
+    const fetchCityOptions = (searchTerm: string, callback: (values: MultiCitySelectorOptions[]) => void) => {
+      if (!searchTerm) {
+        return Promise.resolve({ options: [] });
+      }
+      debouncedFetchCityOptions(searchTerm, callback);
+    };
 
-  return (
-    <>
-      <Async
-        ref={selectElement}
-        className={`MultiCitySelector ${props.invalid && touched ? 'invalid' : ''}`}
-        classNamePrefix="MultiCitySelector"
-        isDisabled={props.disabled}
-        onBlur={() => setTouched(true)}
-        onFocus={() => setTouched(false)}
-        isMulti
-        value={
-          props.value &&
-          props.value.map(city => {
-            return { value: city.id, label: city.name, data: city };
-          })
-        }
-        onKeyDown={(e: KeyboardEventInit) => {
-          let stateManager = selectElement.current && selectElement.current.select.state;
-          if (stateManager != null && e.key === 'Enter') {
-            if (!stateManager.menuIsOpen && stateManager.value && stateManager.value.length > 0) {
-              // the confirm is executed when there is at least one value selected
-              // and the user is not selecting any values
-              props.onConfirm && props.onConfirm();
+    return (
+      <>
+        <Async
+          ref={selectElement}
+          className={`MultiCitySelector ${props.invalid && touched ? 'invalid' : ''}`}
+          classNamePrefix="MultiCitySelector"
+          isDisabled={props.disabled}
+          onBlur={() => setTouched(true)}
+          onFocus={() => setTouched(false)}
+          isMulti
+          value={
+            props.value &&
+            props.value.map(city => {
+              return { value: city.id, label: city.name, data: city };
+            })
+          }
+          onKeyDown={(e: KeyboardEventInit) => {
+            let stateManager = selectElement.current && selectElement.current.select.state;
+            if (stateManager != null && e.key === 'Enter') {
+              if (!stateManager.menuIsOpen && stateManager.value && stateManager.value.length > 0) {
+                // the confirm is executed when there is at least one value selected
+                // and the user is not selecting any values
+                props.onConfirm && props.onConfirm();
+              }
             }
-          }
-        }}
-        placeholder={props.placeholder}
-        loadOptions={fetchCityOptions}
-        components={{
-          // hides the dropdown arrow on the right of the select
-          DropdownIndicator: () => null,
-          IndicatorSeparator: () => null
-        }}
-        onChange={(value: ValueType<MultiCitySelectorOptions>, action: Action) => {
-          switch (action.action) {
-            case 'clear':
-              props.onClear && props.onClear();
-              break;
-            case 'select-option':
-              props.onAddCity && action.option && props.onAddCity((action.option as MultiCitySelectorOptions).data);
-              setShouldRefocus(true);
-              break;
-            case 'pop-value':
-            case 'remove-value':
-              props.onRemoveCity &&
-                action.removedValue &&
-                props.onRemoveCity((action.removedValue as MultiCitySelectorOptions).data);
-              break;
-            default:
-              break;
-          }
+          }}
+          placeholder={props.placeholder}
+          loadOptions={fetchCityOptions}
+          components={{
+            // hides the dropdown arrow on the right of the select
+            DropdownIndicator: () => null,
+            IndicatorSeparator: () => null
+          }}
+          onChange={(value: ValueType<MultiCitySelectorOptions>, action: Action) => {
+            switch (action.action) {
+              case 'clear':
+                props.onClear && props.onClear();
+                break;
+              case 'select-option':
+                props.onAddCity && action.option && props.onAddCity((action.option as MultiCitySelectorOptions).data);
+                setShouldRefocus(true);
+                break;
+              case 'pop-value':
+              case 'remove-value':
+                props.onRemoveCity &&
+                  action.removedValue &&
+                  props.onRemoveCity((action.removedValue as MultiCitySelectorOptions).data);
+                break;
+              default:
+                break;
+            }
 
-          value
-            ? props.onChange && props.onChange((value as MultiCitySelectorOptions[]).map(option => option.data))
-            : props.onChange && props.onChange([]);
-        }}
-      />
-      <span className="MultiCitySelector__InvalidMessage" data-testid="invalid-message">
-        {props.invalid && touched && props.invalidMessage ? props.invalidMessage : ''}
-      </span>
-    </>
-  );
+            value
+              ? props.onChange && props.onChange((value as MultiCitySelectorOptions[]).map(option => option.data))
+              : props.onChange && props.onChange([]);
+          }}
+        />
+        <span className="MultiCitySelector__InvalidMessage" data-testid="invalid-message">
+          {props.invalid && touched && props.invalidMessage ? props.invalidMessage : ''}
+        </span>
+      </>
+    );
+  }, [debouncedFetchCityOptions, props, selectElement, touched]);
 };
 
 export default MultiCitySelector;
