@@ -188,11 +188,7 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
                 <h4>{t('HOW_MANY_DAYS_IN_EACH_CITY')}</h4>
               </WorkflowStep>
               <WorkflowStep isVisible={workflowSection >= WorkflowSection.StayPeriod} uniqueKey="stayPeriodWorkflow">
-                <StayPeriodWorkflow
-                  cityStayPeriods={visitingCities}
-                  onChange={cityStayPeriods => dispatch({ type: 'setVisitingCities', cities: cityStayPeriods })}
-                  onComplete={() => updateWorkflowSection(WorkflowSection.TravelPeriod)}
-                />
+                <StayPeriodWorkflow onComplete={() => updateWorkflowSection(WorkflowSection.TravelPeriod)} />
               </WorkflowStep>
               <br />
               <br />
