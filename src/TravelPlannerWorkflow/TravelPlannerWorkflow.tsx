@@ -12,34 +12,18 @@ import TravelPlanResult from './TravelPlanResult/TravelPlanResult';
 import TravelPeriodWorkflow from './TravelPeriodWorkflow/TravelPeriodWorkflow';
 
 import AnemoiServices from '../Services/AnemoiServices/AnemoiServices';
-import { TravelPlannerWorkflowAction, TravelPlannerWorkflowState, WorkflowSection } from './TravelPlannerWorkflow.d';
+import { WorkflowSection } from './TravelPlannerWorkflow.d';
 import { CurrencyContext } from './../Shared/CurrecyContext';
 import moment from 'moment';
 import { CookieBot } from './../Shared/Cookiebot.d';
-import { TravelPlannerWorkflowContext } from './TravelPlannerWorkflow.context';
+import {
+  TravelPlannerWorkflowContext,
+  TravelPlannerWorkflowState,
+  TravelPlannerWorkflowReducer
+} from './TravelPlannerWorkflow.state';
 
 declare var gtag: Gtag.Gtag;
 declare var Cookiebot: CookieBot;
-
-const reducer = (
-  state: TravelPlannerWorkflowState,
-  action: TravelPlannerWorkflowAction
-): TravelPlannerWorkflowState => {
-  switch (action.type) {
-    case 'setArrivalCities':
-      return { ...state, arrivalCities: action.cities };
-    case 'setDepartureCities':
-      return { ...state, departureCities: action.cities };
-    case 'setVisitingCities':
-      return { ...state, visitingCities: action.cities };
-    case 'setDateRanges':
-      return { ...state, ...action.dateRanges };
-    case 'setTravelPlanResult':
-      return { ...state, travelPlanResult: action.result };
-    default:
-      return { ...state };
-  }
-};
 
 const areParametersValid = (state: TravelPlannerWorkflowState): boolean => {
   let areDatesValid = false;
@@ -98,7 +82,7 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
       }
     });
 
-  const [state, dispatch] = useReducer(reducer, {
+  const [state, dispatch] = useReducer(TravelPlannerWorkflowReducer, {
     departureCities: [],
     arrivalCities: [],
     visitingCities: [],

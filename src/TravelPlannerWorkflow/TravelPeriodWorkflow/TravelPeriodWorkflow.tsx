@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { Row, Col } from 'react-bootstrap';
 import { DateRangePicker } from 'react-dates';
 import moment, { Moment } from 'moment';
-import { TravelPlannerWorkflowContext } from '../TravelPlannerWorkflow.context';
+import { TravelPlannerWorkflowContext } from '../TravelPlannerWorkflow.state';
 
 type TravelPlanResultProps = {
   onComplete: () => void;

@@ -5,7 +5,7 @@ import MultiCitySelector from '../../Shared/MultiCitySelector/MultiCitySelector'
 import React, { useRef, useEffect, useState, useContext, useMemo, ChangeEvent } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import { TravelPlannerWorkflowContext } from '../TravelPlannerWorkflow.context';
+import { TravelPlannerWorkflowContext } from '../TravelPlannerWorkflow.state';
 
 interface CitySelectionWorkflowProps {
   onComplete: () => void;

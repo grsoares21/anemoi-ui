@@ -6,7 +6,7 @@ import InputRange, { Range } from 'react-input-range';
 import React, { useEffect, useRef, useContext, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from 'react-bootstrap';
-import { TravelPlannerWorkflowContext } from '../TravelPlannerWorkflow.context';
+import { TravelPlannerWorkflowContext } from '../TravelPlannerWorkflow.state';
 
 interface StayPeriodWorkflowProps {
   onComplete: () => void;
