@@ -3,11 +3,6 @@ import { CityStayPeriod, DateRange } from './TravelPlannerWorkflow.d';
 import { City } from '../Services/LocationServices';
 import TravelPlanResult from '../Services/AnemoiServices/TravelPlanResult';
 
-export type TravelPlannerWorkflowContext = {
-  state: TravelPlannerWorkflowState;
-  dispatch: (action: TravelPlannerWorkflowAction) => void;
-};
-
 export type TravelPlannerWorkflowState = {
   departureCities: City[];
   arrivalCities: City[];
@@ -42,6 +37,11 @@ export const TravelPlannerWorkflowReducer = (
     default:
       return { ...state };
   }
+};
+
+export type TravelPlannerWorkflowContext = {
+  state: TravelPlannerWorkflowState;
+  dispatch: (action: TravelPlannerWorkflowAction) => void;
 };
 
 export const TravelPlannerWorkflowContext = createContext<TravelPlannerWorkflowContext>({
