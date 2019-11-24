@@ -105,7 +105,6 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
     departureDateRange: { startDate: null, endDate: null },
     arrivalDateRange: { startDate: null, endDate: null }
   });
-  const { visitingCities, departureDateRange, arrivalDateRange } = state;
 
   const submitButtonRef = useRef<any>(null);
 
@@ -201,22 +200,11 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
                   <em>{t('WHEN_ARE_PLANNING_THIS_TRIP_FOR')}</em>
                 </h4>
                 <TravelPeriodWorkflow
-                  minTravelDays={visitingCities.reduce((accumulator, cityStayPeriod) => {
-                    return accumulator + cityStayPeriod.minDays;
-                  }, 0)}
-                  maxTravelDays={visitingCities.reduce((accumulator, cityStayPeriod) => {
-                    return accumulator + cityStayPeriod.maxDays;
-                  }, 0)}
-                  departureDateRange={departureDateRange}
-                  arrivalDateRange={arrivalDateRange}
                   onComplete={() => {
                     if (workflowSection < WorkflowSection.CalculateTravelPlan) {
                       updateWorkflowSection(WorkflowSection.CalculateTravelPlan);
                     }
                   }}
-                  onChange={(departureDateRange, arrivalDateRange) =>
-                    dispatch({ type: 'setDateRanges', dateRanges: { departureDateRange, arrivalDateRange } })
-                  }
                 />
               </WorkflowStep>
               <br />
