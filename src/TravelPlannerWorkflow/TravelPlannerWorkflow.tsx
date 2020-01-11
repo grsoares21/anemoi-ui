@@ -94,7 +94,7 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
 
   let [workflowSection, setWorkflowSection] = useState(WorkflowSection.Beginning);
   let updateWorkflowSection = (newSection: WorkflowSection) => {
-    if (Cookiebot && Cookiebot.consent.statistics) {
+    if (Cookiebot?.consent?.statistics) {
       gtag('event', WorkflowSection[newSection], {
         event_category: 'workflow_navigation'
       });

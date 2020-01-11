@@ -78,7 +78,7 @@ const WelcomePage: React.FC<WelcomePageProps> = props => {
                   variant="primary"
                   onClick={() => {
                     setWelcomeCollapsed(true);
-                    if (Cookiebot && Cookiebot.consent.statistics) {
+                    if (Cookiebot?.consent?.statistics) {
                       gtag('event', 'StartPlannerWorkflow', {
                         event_label: 'User clicked YES button on homepage',
                         event_category: 'workflow_navigation'

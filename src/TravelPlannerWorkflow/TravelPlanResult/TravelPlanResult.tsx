@@ -40,7 +40,7 @@ const TravelPlanResultComponent: React.FC<TravelPlanResultProps> = props => {
         size="lg"
         variant="success"
         onClick={() => {
-          if (Cookiebot && Cookiebot.consent.statistics) {
+          if (Cookiebot?.consent?.statistics) {
             gtag('event', 'ClickedToBook', {
               event_label: 'User clicked "Click Here to Book" button',
               event_category: 'conversion',
