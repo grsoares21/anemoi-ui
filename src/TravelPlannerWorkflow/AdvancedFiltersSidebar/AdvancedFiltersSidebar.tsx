@@ -3,8 +3,10 @@ import useMedia from 'use-media';
 //import { useTranslation } from 'react-i18next';
 import Sidebar from 'react-sidebar';
 import AdvancedFiltersSidebarStyles from './AdvancedFiltersSidebarStyles';
+import { GoSettings } from 'react-icons/go';
 
 import './AdvancedFiltersSidebar.scss';
+import { Button } from 'react-bootstrap';
 
 const AdvancedFiltersSidebar: React.FC = props => {
   //const { t } = useTranslation();
@@ -20,9 +22,9 @@ const AdvancedFiltersSidebar: React.FC = props => {
       docked={isWide && open}
       styles={AdvancedFiltersSidebarStyles}
     >
-      <button onClick={() => setOpen(!open)} className="AdvancedFiltersButton">
-        Open sidebar
-      </button>
+      <Button variant="outline-primary" className="AdvancedFiltersButton" onClick={() => setOpen(!open)}>
+        <GoSettings />
+      </Button>
       {props.children}
     </Sidebar>
   );
