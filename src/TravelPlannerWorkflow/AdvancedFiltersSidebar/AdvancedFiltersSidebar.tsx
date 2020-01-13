@@ -7,16 +7,16 @@ import { GoSettings } from 'react-icons/go';
 
 import './AdvancedFiltersSidebar.scss';
 import { Button } from 'react-bootstrap';
+import AdvancedFilters from './AdvancedFilters/AdvancedFilters';
 
 const AdvancedFiltersSidebar: React.FC = props => {
   //const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const isWide = useMedia({ minWidth: 800 });
 
-  const sidebarContent = <b>Sidebar content</b>;
   return (
     <Sidebar
-      sidebar={sidebarContent}
+      sidebar={<AdvancedFilters />}
       open={open}
       onSetOpen={setOpen}
       docked={isWide && open}
