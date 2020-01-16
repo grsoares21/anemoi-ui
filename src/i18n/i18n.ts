@@ -16,6 +16,10 @@ resources['pt-BR'] = pt;
 
 export const languageList = ['en-US', 'pt-BR'];
 
+i18n.on('languageChanged', (lng: string) => {
+  window.history.pushState(null, '', lng);
+});
+
 i18n
   .use(initReactI18next) // passes i18n down to react-i18next
   .use(LanguageDetector)
@@ -28,7 +32,8 @@ i18n
     },
     whitelist: languageList,
     detection: {
-      caches: ['localstorage']
+      order: ['path', 'localStorage'],
+      caches: ['localStorage']
     }
   });
 
