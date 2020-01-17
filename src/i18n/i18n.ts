@@ -17,7 +17,10 @@ resources['pt-BR'] = pt;
 export const languageList = ['en-US', 'pt-BR'];
 
 i18n.on('languageChanged', (lng: string) => {
-  window.history.pushState(null, '', lng);
+  const title = i18n.t('PAGE_TITLE');
+  window.history.pushState(null, title, lng);
+  document.title = title;
+  document.querySelector('meta[name="description"]')?.setAttribute('content', i18n.t('PAGE_DESCRIPTION'));
 });
 
 i18n
