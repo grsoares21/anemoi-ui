@@ -1,0 +1,12 @@
+button.AdvancedFiltersButton {
+  position: absolute;
+  z-index: 3;
+  left: 15px;
+  top: 15px;
+  border: none;
+
+  > svg {
+    height: 2em;
+    width: 2em;
+  }
+}
