@@ -143,7 +143,7 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
 
   let [loadingDots, setLoadingDots] = useState('.');
   return (
-    <div id="TravelPlannerWorkflow" style={{ display: props.launchWorkflow ? 'block' : 'none' }}>
+    <div className="TravelPlannerWorkflow" style={{ display: props.launchWorkflow ? 'block' : 'none' }}>
       <AdvancedFiltersSidebar>
         <div id="WorkflowContent">
           <div className="FaderGradient"></div>
