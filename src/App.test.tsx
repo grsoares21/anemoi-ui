@@ -1,4 +1,5 @@
 import React from 'react';
+import './Shared/Mocks/SharedMocks';
 import App from './App';
 
 import { render, cleanup } from '@testing-library/react';
