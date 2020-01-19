@@ -34,6 +34,13 @@
     "PLEASE_SELECT_DEPARTURE_CITIES": "Por favor selecione pelo menos um ponto de partida",
     "PLEASE_SELECT_ARRIVAL_CITIES": "Por favor selecione pelo menos um ponto de partida",
     "PLEASE_SELECT_VISITING_CITIES": "Por favor selecione pelo menos uma cidade para visitar",
-    "INVALID_ARRIVAL_DATE_RANGE": "O período de chegada não está de acordo com os períodos de partida e de estadia"
+    "INVALID_ARRIVAL_DATE_RANGE": "O período de chegada não está de acordo com os períodos de partida e de estadia",
+    "ADVANCED_FILTERS": "Filtros Avançados",
+    "MAX_STOPS_PER_ROUTE": "Número máximo de escalas por vôo",
+    "NUMBER_OF_TRAVELERS": "Número de viajantes",
+    "PREFERRED_CRITERIA": "Critério preferido",
+    "PRICE": "Preço",
+    "QUALITY": "Qualidade",
+    "DURATION": "Duração"
   }
 }

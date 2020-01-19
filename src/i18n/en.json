@@ -34,6 +34,13 @@
     "PLEASE_SELECT_DEPARTURE_CITIES": "Please select at least one starting point",
     "PLEASE_SELECT_ARRIVAL_CITIES": "Please select at least one point of arrival",
     "PLEASE_SELECT_VISITING_CITIES": "Please select at least one city to visit",
-    "INVALID_ARRIVAL_DATE_RANGE": "The arrival period doesn't match the departure and stay periods"
+    "INVALID_ARRIVAL_DATE_RANGE": "The arrival period doesn't match the departure and stay periods",
+    "ADVANCED_FILTERS": "Advanced Filters",
+    "MAX_STOPS_PER_ROUTE": "Maximum stops per route",
+    "NUMBER_OF_TRAVELERS": "Number of travelers",
+    "PREFERRED_CRITERIA": "Preferred criteria",
+    "PRICE": "Price",
+    "QUALITY": "Quality",
+    "DURATION": "Duration"
   }
 }
