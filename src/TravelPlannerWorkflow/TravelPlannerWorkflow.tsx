@@ -88,7 +88,10 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
     arrivalCities: [],
     visitingCities: [],
     departureDateRange: { startDate: null, endDate: null },
-    arrivalDateRange: { startDate: null, endDate: null }
+    arrivalDateRange: { startDate: null, endDate: null },
+    maxStopsPerRoute: 2,
+    noOfTravelers: 1,
+    preferredCriteria: 'price'
   });
 
   const submitButtonRef = useRef<any>(null);
@@ -144,10 +147,10 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
   let [loadingDots, setLoadingDots] = useState('.');
   return (
     <div className="TravelPlannerWorkflow" style={{ display: props.launchWorkflow ? 'block' : 'none' }}>
-      <AdvancedFiltersSidebar>
-        <div id="WorkflowContent">
-          <div className="FaderGradient"></div>
-          <TravelPlannerWorkflowContext.Provider value={{ state, dispatch }}>
+      <TravelPlannerWorkflowContext.Provider value={{ state, dispatch }}>
+        <AdvancedFiltersSidebar>
+          <div id="WorkflowContent">
+            <div className="FaderGradient"></div>
             <Container>
               <Row>
                 <Col xs={{ span: 12 }} md={{ span: 8, offset: 2 }}>
@@ -251,9 +254,9 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
                 </Col>
               </Row>
             </Container>
-          </TravelPlannerWorkflowContext.Provider>
-        </div>
-      </AdvancedFiltersSidebar>
+          </div>
+        </AdvancedFiltersSidebar>
+      </TravelPlannerWorkflowContext.Provider>
     </div>
   );
 };
