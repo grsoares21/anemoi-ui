@@ -13,8 +13,8 @@ const AdvancedFiltersSidebar: React.FC = props => {
   //const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const isWide = useMedia({ minWidth: 800 });
-  const sidebarFeatureFlag = false;
-  return sidebarFeatureFlag ? (
+
+  return (
     <Sidebar
       sidebar={<AdvancedFilters />}
       open={open}
@@ -27,8 +27,6 @@ const AdvancedFiltersSidebar: React.FC = props => {
       </Button>
       {props.children}
     </Sidebar>
-  ) : (
-    <span>{props.children}</span>
   );
 };
 

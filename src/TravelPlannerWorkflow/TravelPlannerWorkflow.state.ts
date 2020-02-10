@@ -63,7 +63,7 @@ export const TravelPlannerWorkflowContext = createContext<TravelPlannerWorkflowC
     visitingCities: [],
     departureDateRange: { startDate: null, endDate: null },
     arrivalDateRange: { startDate: null, endDate: null },
-    maxStopsPerRoute: 2,
+    maxStopsPerRoute: 5,
     noOfTravelers: 1,
     preferredCriteria: 'price'
   },

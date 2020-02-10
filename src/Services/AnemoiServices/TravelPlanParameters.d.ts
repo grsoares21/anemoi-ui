@@ -19,4 +19,8 @@ export default interface TravelPlanParameters {
 
   departureDateRange: DateRange;
   arrivalDateRange: DateRange;
+
+  preferredCriteria: 'price' | 'quality' | 'duration';
+  noOfTravelers: number;
+  maxStopsPerRoute: number;
 }

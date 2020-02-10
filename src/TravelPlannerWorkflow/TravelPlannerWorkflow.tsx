@@ -80,7 +80,10 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
       arrivalDateRange: {
         startDate: (state.arrivalDateRange.startDate as Date).toISOString(),
         endDate: (state.arrivalDateRange.endDate as Date).toISOString()
-      }
+      },
+      maxStopsPerRoute: state.maxStopsPerRoute,
+      noOfTravelers: state.noOfTravelers,
+      preferredCriteria: state.preferredCriteria
     });
 
   const [state, dispatch] = useReducer(TravelPlannerWorkflowReducer, {
@@ -89,7 +92,7 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
     visitingCities: [],
     departureDateRange: { startDate: null, endDate: null },
     arrivalDateRange: { startDate: null, endDate: null },
-    maxStopsPerRoute: 2,
+    maxStopsPerRoute: 5,
     noOfTravelers: 1,
     preferredCriteria: 'price'
   });
