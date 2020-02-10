@@ -1,4 +1,8 @@
 .AdvancedFilters {
   width: 350px;
   padding: 25px;
+
+  & .input-range__track--background {
+    margin-right: 30px;
+  }
 }
