@@ -1,0 +1,12 @@
+@import '../../bootstrap-overrides.scss';
+
+.RangeSliderHandle {
+  background-color: rgba(0, 15, 137, 0.5);
+  border: 1px solid #000f89;
+  border-radius: 100%;
+  cursor: pointer;
+  margin-left: -13px;
+  height: 24px;
+  width: 24px;
+  z-index: 3;
+}
