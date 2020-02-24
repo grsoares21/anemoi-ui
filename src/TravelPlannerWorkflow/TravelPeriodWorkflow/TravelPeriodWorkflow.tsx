@@ -1,6 +1,4 @@
 import './TravelPeriodWorkflow.scss';
-import 'react-dates/initialize';
-import 'react-dates/lib/css/_datepicker.css';
 
 import React, { useState, useEffect, useContext } from 'react';
 import { useTranslation } from 'react-i18next';

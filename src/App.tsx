@@ -1,4 +1,8 @@
 import './App.scss';
+import 'react-dates/initialize';
+import 'react-dates/lib/css/_datepicker.css';
+import 'rheostat/initialize';
+import 'rheostat/css/rheostat.css';
 
 import React, { useState } from 'react';
 import WelcomePage from './WelcomePage/WelcomePage';
