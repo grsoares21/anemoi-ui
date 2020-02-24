@@ -1,16 +1,13 @@
-import React, { useContext, useState } from 'react';
-import InputRange from 'react-input-range';
+import React, { useContext } from 'react';
 import './AdvancedFilters.scss';
 import { Form } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { TravelPlannerWorkflowContext } from '../../TravelPlannerWorkflow.state';
 import debounce from 'lodash.debounce';
+import RangeSlider from '../../../Shared/RangeSlider/RangeSlider';
 
 const AdvancedFilters: React.FC = () => {
   const { state, dispatch } = useContext(TravelPlannerWorkflowContext);
-
-  const [maxStopsPerRoute, setMaxStops] = useState(state.maxStopsPerRoute);
-  const [noOfTravelers, setNoOfTravelers] = useState(state.noOfTravelers);
 
   const dispatchSetMaxStops = debounce((maxStops: number) => dispatch({ type: 'setMaxStopsPerRoute', maxStops }), 500);
   const dispatchSetNoOfTravelers = debounce(
@@ -25,25 +22,21 @@ const AdvancedFilters: React.FC = () => {
       <h4>{t('ADVANCED_FILTERS')}:</h4>
       <br />
       <label>{t('MAX_STOPS_PER_ROUTE')}:</label>
-      <InputRange
-        minValue={0}
-        maxValue={5}
-        value={maxStopsPerRoute}
-        onChange={maxStops => {
-          setMaxStops(maxStops as number);
-          dispatchSetMaxStops(maxStops as number);
-        }}
+      <RangeSlider
+        snap
+        min={0}
+        max={5}
+        values={[state.maxStopsPerRoute]}
+        onChange={values => dispatchSetMaxStops(values[0])}
       />
       <br />
       <label>{t('NUMBER_OF_TRAVELERS')}:</label>
-      <InputRange
-        minValue={1}
-        maxValue={9}
-        value={noOfTravelers}
-        onChange={noOfTravelers => {
-          setNoOfTravelers(noOfTravelers as number);
-          dispatchSetNoOfTravelers(noOfTravelers as number);
-        }}
+      <RangeSlider
+        snap
+        min={1}
+        max={9}
+        values={[state.noOfTravelers]}
+        onChange={values => dispatchSetNoOfTravelers(values[0])}
       />
       <br />
       <label>{t('PREFERRED_CRITERIA')}:</label>
