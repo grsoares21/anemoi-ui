@@ -14,7 +14,7 @@ const SliderHandle: React.FC<{ handleRef: any; 'aria-valuenow': any }> = ({ hand
   const value = passProps['aria-valuenow'];
   return (
     <div className="RangeSliderHandle" ref={handleRef} {...passProps}>
-      {value}
+      <span>{value}</span>
     </div>
   );
 };

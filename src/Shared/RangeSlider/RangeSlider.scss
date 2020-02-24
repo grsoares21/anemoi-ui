@@ -1,12 +1,43 @@
 @import '../../bootstrap-overrides.scss';
 
 .RangeSliderHandle {
-  background-color: rgba(0, 15, 137, 0.5);
-  border: 1px solid #000f89;
+  background-color: $indigo;
+  color: white;
+  text-align: center;
+  font-weight: bold;
   border-radius: 100%;
   cursor: pointer;
   margin-left: -13px;
   height: 24px;
   width: 24px;
   z-index: 3;
+  top: -4px;
+}
+
+
+.DefaultBackground {
+  background-color: $gray-300;
+  border: none;
+  border-radius: 1rem;
+
+  &_background {
+    &__horizontal {
+      height: 10px;
+      left: 0px;
+      top: 0px;
+    }
+  }
+}
+
+.DefaultProgressBar {
+  &_progressBar {
+  background-color: $indigo;
+  border-radius: 1rem;
+  }
+
+  &_background {
+    &__horizontal {
+      height: 100%;
+    }
+  }
 }
