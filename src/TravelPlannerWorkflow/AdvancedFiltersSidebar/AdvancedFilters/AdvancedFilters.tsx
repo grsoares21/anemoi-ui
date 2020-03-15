@@ -3,18 +3,10 @@ import './AdvancedFilters.scss';
 import { Form } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { TravelPlannerWorkflowContext } from '../../TravelPlannerWorkflow.state';
-import debounce from 'lodash.debounce';
 import RangeSlider from '../../../Shared/RangeSlider/RangeSlider';
 
 const AdvancedFilters: React.FC = () => {
   const { state, dispatch } = useContext(TravelPlannerWorkflowContext);
-
-  const dispatchSetMaxStops = debounce((maxStops: number) => dispatch({ type: 'setMaxStopsPerRoute', maxStops }), 500);
-  const dispatchSetNoOfTravelers = debounce(
-    (noOfTravelers: number) => dispatch({ type: 'setNoOfTravelers', noOfTravelers }),
-    500
-  );
-
   const { t } = useTranslation();
 
   return (
@@ -27,7 +19,7 @@ const AdvancedFilters: React.FC = () => {
         min={0}
         max={5}
         values={[state.maxStopsPerRoute]}
-        onChange={values => dispatchSetMaxStops(values[0])}
+        onChange={values => dispatch({ type: 'setMaxStopsPerRoute', maxStops: values[0] })}
       />
       <br />
       <label>{t('NUMBER_OF_TRAVELERS')}:</label>
@@ -36,7 +28,7 @@ const AdvancedFilters: React.FC = () => {
         min={1}
         max={9}
         values={[state.noOfTravelers]}
-        onChange={values => dispatchSetNoOfTravelers(values[0])}
+        onChange={values => dispatch({ type: 'setNoOfTravelers', noOfTravelers: values[0] })}
       />
       <br />
       <label>{t('PREFERRED_CRITERIA')}:</label>

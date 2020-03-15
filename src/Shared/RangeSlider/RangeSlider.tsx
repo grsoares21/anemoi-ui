@@ -1,6 +1,7 @@
 import React from 'react';
 import Rheostat from 'rheostat';
 import './RangeSlider.scss';
+import debounce from 'lodash.debounce';
 
 interface RangeSliderProps {
   snap: boolean;
@@ -27,7 +28,7 @@ const RangeSlider: React.FC<RangeSliderProps> = props => {
       min={props.min}
       max={props.max}
       values={props.values}
-      onValuesUpdated={({ values }) => props.onChange(values)}
+      onValuesUpdated={debounce(({ values }) => props.onChange(values), 300)}
     />
   );
 };
