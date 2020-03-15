@@ -1,12 +1,10 @@
-import 'react-input-range/lib/css/index.css';
 import './StayPeriodWorkflow.scss';
-
-import InputRange, { Range } from 'react-input-range';
 
 import React, { useEffect, useRef, useContext, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from 'react-bootstrap';
 import { TravelPlannerWorkflowContext } from '../TravelPlannerWorkflow.state';
+import RangeSlider from '../../Shared/RangeSlider/RangeSlider';
 
 interface StayPeriodWorkflowProps {
   onComplete: () => void;
@@ -31,19 +29,16 @@ const StayPeriodWorkflow: React.FC<StayPeriodWorkflowProps> = props => {
                 </em>
               </h4>
               <br />
-              <InputRange
-                minValue={1}
-                maxValue={30}
-                allowSameValues={true}
-                value={{ min: minDays, max: maxDays }}
-                onChange={value => {
-                  var range = value as Range;
+              <RangeSlider
+                snap
+                min={1}
+                max={30}
+                values={[minDays, maxDays]}
+                onChange={([minDays, maxDays]: number[]) => {
                   dispatch({
                     type: 'setVisitingCities',
                     cities: state.visitingCities.map(cityPeriod =>
-                      cityPeriod.city.id === city.id
-                        ? { city: city, minDays: range.min, maxDays: range.max }
-                        : cityPeriod
+                      cityPeriod.city.id === city.id ? { city, minDays, maxDays } : cityPeriod
                     )
                   });
                 }}

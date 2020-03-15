@@ -28,7 +28,7 @@ const RangeSlider: React.FC<RangeSliderProps> = props => {
       min={props.min}
       max={props.max}
       values={props.values}
-      onValuesUpdated={debounce(({ values }) => props.onChange(values), 300)}
+      onValuesUpdated={debounce(({ values }) => props.onChange(values), 0)}
     />
   );
 };
