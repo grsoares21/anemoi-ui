@@ -29,5 +29,5 @@ Anemoi's back-end is under a private repository, therefore you can't run it loca
 However, you can run Anemoi locally against it's production public API. To do that, change the default export variable of the `src/config.ts` file to the `prod` variable.
 
 ## License
-![Creative Commons License](https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png)
+![Creative Commons License](https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png)  
 This work is licensed under a [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](http://creativecommons.org/licenses/by-nc-nd/4.0/ "License").
