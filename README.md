@@ -1,5 +1,5 @@
 # Anemoi
-![logo_anemoi](./public/logo_anemoi.png)
+![Anemoi Logo](./public/anemoi_logo.png)
 
 [Anemoi](https://anemoi.app/) is a multi-city flight travel expert. It helps you plan your trip path targeting the best option.
 
