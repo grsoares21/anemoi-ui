@@ -3,8 +3,8 @@ import './ChangeCurrencyDropdown.scss';
 import { useTranslation } from 'react-i18next';
 import React, { useContext, useEffect } from 'react';
 import { Dropdown } from 'react-bootstrap';
-import { CurrencyContext } from '../Shared/CurrecyContext';
-import { currencyList } from '../Shared/CurrecyContext';
+import { CurrencyContext } from '../../Shared/CurrecyContext';
+import { currencyList } from '../../Shared/CurrecyContext';
 import LocaleCurrency from 'locale-currency';
 
 const ChangeCurrencyDropdown: React.FC = () => {

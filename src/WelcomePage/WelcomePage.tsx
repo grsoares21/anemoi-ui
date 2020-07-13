@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Row, Col, Button } from 'react-bootstrap';
@@ -9,9 +9,11 @@ import WelcomePageLogo from './WelcomePageLogo';
 
 import './WelcomePage.scss';
 import AnemoiTitle from './AnemoiTitle/AnemoiTitle';
-import ChangeLanguageDropdown from '../ChangeLanguageDropdown/ChangeLanguageDropdown';
-import ChangeCurrencyDropdown from '../ChangeCurrencyDropdown/ChangeCurrencyDropdown';
+import ChangeLanguageDropdown from './ChangeLanguageDropdown/ChangeLanguageDropdown';
+import ChangeCurrencyDropdown from './ChangeCurrencyDropdown/ChangeCurrencyDropdown';
+import ThemeContextCheckbox from './ThemeContextCheckbox/ThemeContextCheckbox';
 import { CookieBot } from '../Shared/Cookiebot';
+import { ThemeContext } from '../Shared/ThemeContext';
 
 declare var gtag: Gtag.Gtag;
 declare var Cookiebot: CookieBot;
@@ -48,6 +50,8 @@ const WelcomePage: React.FC<WelcomePageProps> = props => {
   let [welcomeCollapsed, setWelcomeCollapsed] = useState(false);
   let [collapseFinished, setCollapseFinished] = useState(false);
 
+  const themeContext = useContext(ThemeContext);
+
   let onCollapseFinished = () => {
     setCollapseFinished(true);
     props.collapseCallback();
@@ -62,9 +66,10 @@ const WelcomePage: React.FC<WelcomePageProps> = props => {
   // focus on "yes" button on first load
 
   return (
-    <PageAnimation className="WelcomePage" pose={poseString} onPoseComplete={onCollapseFinished}>
+    <PageAnimation className={`WelcomePage ${themeContext.theme === "DARK" ? "Dark" : ""}`} pose={poseString} onPoseComplete={onCollapseFinished}>
       <ChangeCurrencyDropdown />
       <ChangeLanguageDropdown />
+      {/* {<ThemeContextCheckbox />} */}
       <AnemoiTitle isVisible={collapseFinished} />
       <ContentAnimation pose={poseString} className="h-100">
         <Row className="h-100" data-testid="page-content">

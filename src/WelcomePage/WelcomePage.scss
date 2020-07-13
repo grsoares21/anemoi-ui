@@ -2,7 +2,11 @@
 
 .WelcomePage {
     width: 100vw;
-	background: linear-gradient(135deg, $blue 0%, $cyan 100%);
+	background: rgb(24,44,97);
+	background: linear-gradient(135deg, $indigo 5%, $purple 15%, $pink 25%, $blue 66%, $cyan 100%);
+	background-position: 100% 100%;
+	background-size: 400% 600%;
+	transition: background-position 2.5s ease-in-out;
 	overflow: hidden;
 
 	& h3 {
@@ -10,5 +14,9 @@
 		text-align: center;
 		line-height: 50px;
 		cursor: pointer;
+	}
+
+	&.Dark {
+		background-position: 0% 0%;
 	}
 }

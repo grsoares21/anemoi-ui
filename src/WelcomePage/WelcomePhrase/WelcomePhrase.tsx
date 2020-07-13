@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import './WelcomePhrase.scss';
 import { useTranslation, Trans } from 'react-i18next';
+import { ThemeContext } from '../../Shared/ThemeContext';
 
 const WelcomePhrase: React.FC = () => {
   const { t } = useTranslation();
+  const themeContext = useContext(ThemeContext);
 
   return (
-    <div className="WelcomePhrase">
+    <div className={`WelcomePhrase ${themeContext.theme === "DARK" ? "Dark" : ""}`}>
       <h1 className="WelcomePhraseIntroduction">
         <Trans i18nKey="WELCOME_IM_ANEMOI">
           Welcome I am <em>Anemoi.</em>

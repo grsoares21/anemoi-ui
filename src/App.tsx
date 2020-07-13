@@ -8,17 +8,21 @@ import React, { useState } from 'react';
 import WelcomePage from './WelcomePage/WelcomePage';
 import TravelPlannerWorkflow from './TravelPlannerWorkflow/TravelPlannerWorkflow';
 import { CurrencyContext } from './Shared/CurrecyContext';
+import { ThemeContext, Theme } from './Shared/ThemeContext';
 
 const App: React.FC = () => {
   const [currency, setCurrency] = useState('USD');
+  const [theme, setTheme] = useState<Theme>("LIGHT");
 
   let [welcomePageCollapsed, setWelcomePageCollapsed] = useState(false);
   return (
     <div className="App" data-testid="app-container">
-      <CurrencyContext.Provider value={{ currency, setCurrency }}>
-        <WelcomePage collapseCallback={() => setWelcomePageCollapsed(true)} />
-        <TravelPlannerWorkflow launchWorkflow={welcomePageCollapsed} />
-      </CurrencyContext.Provider>
+      <ThemeContext.Provider value={{ theme, setTheme }}>
+        <CurrencyContext.Provider value={{ currency, setCurrency }}>
+          <WelcomePage collapseCallback={() => setWelcomePageCollapsed(true)} />
+          <TravelPlannerWorkflow launchWorkflow={welcomePageCollapsed} />
+        </CurrencyContext.Provider>
+      </ThemeContext.Provider>
     </div>
   );
 };

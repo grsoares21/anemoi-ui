@@ -4,8 +4,8 @@ import { useTranslation } from 'react-i18next';
 import React from 'react';
 import { Dropdown } from 'react-bootstrap';
 import moment from 'moment';
-import FlagIcon from '../Shared/FlagIcon';
-import { languageList } from './../i18n/i18n';
+import FlagIcon from '../../Shared/FlagIcon';
+import { languageList } from '../../i18n/i18n';
 
 const ChangeLanguageDropdown: React.FC = () => {
   const { i18n } = useTranslation();
