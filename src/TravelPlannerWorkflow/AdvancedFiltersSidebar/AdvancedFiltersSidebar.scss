@@ -1,12 +1,24 @@
+@import '../../bootstrap-overrides.scss';
+
 button.AdvancedFiltersButton {
   position: absolute;
   z-index: 3;
   left: 15px;
   top: 15px;
   border: none;
+  transition: background-color 1.5 ease-in-out, color 1.5 ease-in-out;
 
   > svg {
     height: 2em;
     width: 2em;
+  }
+
+  &.Dark {
+    color: $blue-dark;
+  }
+
+  &.Dark:hover, &.Dark:active {
+    background-color: $blue-dark;
+    color: $white-dark;
   }
 }

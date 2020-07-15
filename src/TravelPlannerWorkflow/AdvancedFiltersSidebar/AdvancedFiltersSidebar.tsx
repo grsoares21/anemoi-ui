@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import useMedia from 'use-media';
 
 import Sidebar from 'react-sidebar';
@@ -8,10 +8,12 @@ import { GoSettings } from 'react-icons/go';
 import './AdvancedFiltersSidebar.scss';
 import { Button } from 'react-bootstrap';
 import AdvancedFilters from './AdvancedFilters/AdvancedFilters';
+import { ThemeContext } from '../../Shared/ThemeContext';
 
 const AdvancedFiltersSidebar: React.FC = props => {
   const [open, setOpen] = useState(false);
   const isWide = useMedia({ minWidth: 800 });
+  const { theme } = useContext(ThemeContext);
   return (
     <Sidebar
       sidebar={<AdvancedFilters />}
@@ -20,7 +22,7 @@ const AdvancedFiltersSidebar: React.FC = props => {
       docked={isWide && open}
       styles={AdvancedFiltersSidebarStyles}
     >
-      <Button variant="outline-primary" className="AdvancedFiltersButton" onClick={() => setOpen(!open)}>
+      <Button variant="outline-primary" className={`AdvancedFiltersButton ${theme === "DARK" ? "Dark" : ""}`} onClick={() => setOpen(!open)}>
         <GoSettings />
       </Button>
       {props.children}

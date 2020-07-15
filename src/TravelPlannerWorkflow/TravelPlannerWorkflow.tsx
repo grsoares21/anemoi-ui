@@ -22,6 +22,7 @@ import {
   TravelPlannerWorkflowReducer
 } from './TravelPlannerWorkflow.state';
 import AdvancedFiltersSidebar from './AdvancedFiltersSidebar/AdvancedFiltersSidebar';
+import { ThemeContext } from '../Shared/ThemeContext';
 
 declare var gtag: Gtag.Gtag;
 declare var Cookiebot: CookieBot;
@@ -63,6 +64,7 @@ type TravelPlannerWorkflowProps = {
 const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
   const { t, i18n } = useTranslation();
   const { currency } = useContext(CurrencyContext);
+  const { theme } = useContext(ThemeContext);
 
   const sendTravelPlanRequest = (state: TravelPlannerWorkflowState) =>
     AnemoiServices.calculateTravelPlan({
@@ -153,7 +155,7 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
       <TravelPlannerWorkflowContext.Provider value={{ state, dispatch }}>
         <AdvancedFiltersSidebar>
           <div id="WorkflowContent">
-            <div className="FaderGradient"></div>
+            <div className={`FaderGradient ${theme === "DARK" ? "Dark" : ""}`}></div>
             <Container>
               <Row>
                 <Col xs={{ span: 12 }} md={{ span: 8, offset: 2 }}>

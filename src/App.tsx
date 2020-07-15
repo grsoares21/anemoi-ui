@@ -16,7 +16,7 @@ const App: React.FC = () => {
 
   let [welcomePageCollapsed, setWelcomePageCollapsed] = useState(false);
   return (
-    <div className="App" data-testid="app-container">
+    <div className={`App ${theme === "DARK" ? "Dark" : ""}`} data-testid="app-container">
       <ThemeContext.Provider value={{ theme, setTheme }}>
         <CurrencyContext.Provider value={{ currency, setCurrency }}>
           <WelcomePage collapseCallback={() => setWelcomePageCollapsed(true)} />

@@ -1,7 +1,8 @@
 import './WorkflowStep.scss';
 
-import React from 'react';
+import React, { useContext } from 'react';
 import posed, { PoseGroup } from 'react-pose';
+import { ThemeContext } from '../../Shared/ThemeContext';
 
 const WorkflowStepAnimation = posed.div({
   exit: { opacity: 0, marginTop: '-10px' },
@@ -19,8 +20,10 @@ interface WorkflowStepProps {
 }
 
 const WorkflowStep: React.FC<WorkflowStepProps> = props => {
+  const { theme } = useContext(ThemeContext);
+
   return (
-    <div className="WorkflowStep">
+    <div className={`WorkflowStep ${theme === "DARK" ? "Dark" : ""}`}>
       <PoseGroup>
         {props.isVisible && (
           <WorkflowStepAnimation key={props.uniqueKey} onPoseComplete={props.onAnimationEnd}>
