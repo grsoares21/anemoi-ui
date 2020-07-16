@@ -2,6 +2,7 @@ import React from 'react';
 import Rheostat from 'rheostat';
 import './RangeSlider.scss';
 import debounce from 'lodash.debounce';
+import useTheme from '../useTheme';
 
 interface RangeSliderProps {
   snap: boolean;
@@ -21,6 +22,7 @@ const SliderHandle: React.FC<{ handleRef: any; 'aria-valuenow': any }> = ({ hand
 };
 
 const RangeSlider: React.FC<RangeSliderProps> = props => {
+  const themeClass = useTheme();
   return (
     <Rheostat
       handle={SliderHandle}

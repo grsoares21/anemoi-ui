@@ -14,10 +14,13 @@
   }
 
   &.Dark {
-    & > em {
-      font-style: normal;
-      color: $blue-dark;
-    }
     color: $white-dark;
+    & h4 {
+      & > em {
+        font-style: normal;
+        color: $blue-dark;
+      }    
+      color: $white-dark;
+    }
   }
 }

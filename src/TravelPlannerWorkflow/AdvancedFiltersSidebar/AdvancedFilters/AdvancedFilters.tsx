@@ -4,13 +4,15 @@ import { Form } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { TravelPlannerWorkflowContext } from '../../TravelPlannerWorkflow.state';
 import RangeSlider from '../../../Shared/RangeSlider/RangeSlider';
+import useTheme from '../../../Shared/useTheme';
 
 const AdvancedFilters: React.FC = () => {
   const { state, dispatch } = useContext(TravelPlannerWorkflowContext);
   const { t } = useTranslation();
+  const themeClass = useTheme();
 
   return (
-    <div className="AdvancedFilters">
+    <div className={`AdvancedFilters ${themeClass}`}>
       <h4>{t('ADVANCED_FILTERS')}:</h4>
       <br />
       <label>{t('MAX_STOPS_PER_ROUTE')}:</label>

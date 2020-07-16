@@ -7,6 +7,7 @@ import Async from 'react-select/async';
 import debounce from 'lodash.debounce';
 import { ValueType, ActionMeta } from 'react-select/src/types';
 import { useTranslation } from 'react-i18next';
+import useTheme from '../useTheme';
 
 interface MultiCitySelectorOptions {
   label: string;
@@ -74,6 +75,8 @@ const MultiCitySelector: React.FC<MultiCitySelectorProps> = props => {
     500
   );
 
+  const themeClass = useTheme();
+
   return useMemo(() => {
     const fetchCityOptions = (searchTerm: string, callback: (values: MultiCitySelectorOptions[]) => void) => {
       if (!searchTerm) {
@@ -86,7 +89,7 @@ const MultiCitySelector: React.FC<MultiCitySelectorProps> = props => {
       <>
         <Async
           ref={selectElement}
-          className={`MultiCitySelector ${props.invalid && touched ? 'invalid' : ''}`}
+          className={`MultiCitySelector ${props.invalid && touched ? 'invalid' : ''} ${themeClass}`}
           classNamePrefix="MultiCitySelector"
           isDisabled={props.disabled}
           onBlur={() => setTouched(true)}

@@ -3,21 +3,45 @@
 .MultiCitySelector {
   line-height: 2;
 
+  &.Dark {
+    background-color: darken($indigo, 10%) !important;
+    color: $white-dark !important;
+
+    & .MultiCitySelector__placeholder {
+      color: $gray-dark !important;
+    }
+    & .MultiCitySelector__input {
+      color: $white-dark !important;
+    }
+    & .MultiCitySelector__option--is-focused {
+      background-color: $indigo;
+    }
+  }
+
   &__InvalidMessage {
     color: $red;
     font-size: 10pt;
     font-weight: 500;
   }
 
+
   & > &__menu {
     margin-top: -1px;
     border-top-left-radius: 0px;
     border-top-right-radius: 0px;
   }
+  
+  &.Dark > .MultiCitySelector__menu {
+    background-color: darken($indigo, 10%) !important;
+  }
 
   &.invalid > .MultiCitySelector__control {
     box-shadow: 0 0 2px $red;
     border-color: $red;
+  }
+
+  &.Dark > .MultiCitySelector__control {
+    background-color: darken($indigo, 10%) !important;
   }
 
   & > &__control {

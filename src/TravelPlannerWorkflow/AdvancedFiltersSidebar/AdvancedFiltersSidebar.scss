@@ -1,5 +1,16 @@
 @import '../../bootstrap-overrides.scss';
 
+
+.AdvancedFiltersSidebar {
+  z-index: 4 !important;
+  background: white;
+
+  &.Dark {
+    background: darken($indigo, 10%);
+    color: $white-dark;
+  }
+}
+
 button.AdvancedFiltersButton {
   position: absolute;
   z-index: 3;
@@ -15,10 +26,20 @@ button.AdvancedFiltersButton {
 
   &.Dark {
     color: $blue-dark;
-  }
 
-  &.Dark:hover, &.Dark:active {
-    background-color: $blue-dark;
-    color: $white-dark;
+    &:hover {
+      background-color: $blue-dark;
+      color: darken($indigo, 15%);
+    }
+
+    &:active {
+      background-color: $blue-dark !important;
+      color: darken($indigo, 15%) !important;
+      box-shadow: 0 0 0 0.2rem rgba($blue-dark, 0.5) !important;
+    }
+
+    &:focus {
+      box-shadow: 0 0 0 0.2rem rgba($blue-dark, 0.5);
+    }
   }
 }
