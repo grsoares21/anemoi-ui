@@ -37,7 +37,7 @@ interface MultiCitySelectorProps {
   disabled?: boolean;
 }
 
-const MultiCitySelector: React.FC<MultiCitySelectorProps> = props => {
+const MultiCitySelector: React.FC<MultiCitySelectorProps> = (props) => {
   const ownRef = useRef<any>(null);
   // same reason as above
   const selectElement = props.inputRef ? props.inputRef : ownRef;
@@ -57,18 +57,18 @@ const MultiCitySelector: React.FC<MultiCitySelectorProps> = props => {
   const debouncedFetchCityOptions = debounce(
     (searchTerm: string, callback: (values: MultiCitySelectorOptions[]) => void) => {
       LocationServices.searchCities(searchTerm, i18n.language)
-        .then(cities =>
+        .then((cities) =>
           cities
             .filter(
-              city => !props.invalidCities || !props.invalidCities.some(invalidCity => invalidCity.id === city.id)
+              (city) => !props.invalidCities || !props.invalidCities.some((invalidCity) => invalidCity.id === city.id)
             )
             // filter invalid options out if there are any
-            .map(city => {
+            .map((city) => {
               return { label: `${city.name}, ${city.country.name}`, value: city.id, data: city };
             })
         )
-        .then(cities => callback(cities))
-        .catch(error => {
+        .then((cities) => callback(cities))
+        .catch((error) => {
           console.log(error);
         });
     },
@@ -97,7 +97,7 @@ const MultiCitySelector: React.FC<MultiCitySelectorProps> = props => {
           isMulti
           value={
             props.value &&
-            props.value.map(city => {
+            props.value.map((city) => {
               return { value: city.id, label: city.name, data: city };
             })
           }
@@ -116,7 +116,7 @@ const MultiCitySelector: React.FC<MultiCitySelectorProps> = props => {
           components={{
             // hides the dropdown arrow on the right of the select
             DropdownIndicator: () => null,
-            IndicatorSeparator: () => null
+            IndicatorSeparator: () => null,
           }}
           onChange={(value: ValueType<MultiCitySelectorOptions>, action: Action) => {
             switch (action.action) {
@@ -138,7 +138,7 @@ const MultiCitySelector: React.FC<MultiCitySelectorProps> = props => {
             }
 
             value
-              ? props.onChange && props.onChange((value as MultiCitySelectorOptions[]).map(option => option.data))
+              ? props.onChange && props.onChange((value as MultiCitySelectorOptions[]).map((option) => option.data))
               : props.onChange && props.onChange([]);
           }}
         />
@@ -147,7 +147,7 @@ const MultiCitySelector: React.FC<MultiCitySelectorProps> = props => {
         </span>
       </>
     );
-  }, [debouncedFetchCityOptions, props, selectElement, touched]);
+  }, [debouncedFetchCityOptions, props, selectElement, touched, themeClass]);
 };
 
 export default MultiCitySelector;

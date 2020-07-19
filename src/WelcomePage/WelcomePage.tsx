@@ -26,9 +26,9 @@ const PageAnimation = posed.div({
     height: '50px',
     transition: {
       ease: [0.455, 0.03, 0.515, 0.955],
-      duration: collapseDuration
-    }
-  }
+      duration: collapseDuration,
+    },
+  },
 });
 
 const ContentAnimation = posed.div({
@@ -37,16 +37,16 @@ const ContentAnimation = posed.div({
     opacity: 0,
     transition: {
       ease: 'linear',
-      duration: 200
-    }
-  }
+      duration: 200,
+    },
+  },
 });
 
 interface WelcomePageProps {
   collapseCallback: Function;
 }
 
-const WelcomePage: React.FC<WelcomePageProps> = props => {
+const WelcomePage: React.FC<WelcomePageProps> = (props) => {
   let [welcomeCollapsed, setWelcomeCollapsed] = useState(false);
   let [collapseFinished, setCollapseFinished] = useState(false);
 
@@ -86,7 +86,7 @@ const WelcomePage: React.FC<WelcomePageProps> = props => {
                     if (Cookiebot?.consent?.statistics) {
                       gtag('event', 'StartPlannerWorkflow', {
                         event_label: 'User clicked YES button on homepage',
-                        event_category: 'workflow_navigation'
+                        event_category: 'workflow_navigation',
                       });
                     }
                   }}
