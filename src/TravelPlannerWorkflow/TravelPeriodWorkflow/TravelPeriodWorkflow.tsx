@@ -7,12 +7,13 @@ import { Row, Col } from 'react-bootstrap';
 import { DateRangePicker } from 'react-dates';
 import moment, { Moment } from 'moment';
 import { TravelPlannerWorkflowContext } from '../TravelPlannerWorkflow.state';
+import useTheme from '../../Shared/useTheme';
 
 type TravelPlanResultProps = {
   onComplete: () => void;
 };
 
-const TravelPeriodWorkflow: React.FC<TravelPlanResultProps> = props => {
+const TravelPeriodWorkflow: React.FC<TravelPlanResultProps> = (props) => {
   const [departureFocusedInput, setDepartureFocusedInput] = useState<'startDate' | 'endDate' | null>(null);
   const [arrivalFocusedInput, setArrivalFocusedInput] = useState<'startDate' | 'endDate' | null>(null);
 
@@ -57,72 +58,78 @@ const TravelPeriodWorkflow: React.FC<TravelPlanResultProps> = props => {
     }
   }, [props, departureStartDate, departureEndDate, arrivalStartDate, arrivalEndDate]);
 
+  const themeClass = useTheme();
+
   return (
     <Row>
       <Col xs={12}>
         <label>{t('POSSIBLE_DEPARTURE_PERIOD')}</label>
-        <DateRangePicker
-          startDate={departureStartDate ? moment(departureStartDate) : null}
-          endDate={departureEndDate ? moment(departureEndDate) : null}
-          onDatesChange={({ startDate, endDate }) =>
-            dispatch({
-              type: 'setDateRanges',
-              dateRanges: {
-                departureDateRange: {
-                  startDate: startDate ? startDate.toDate() : null,
-                  endDate: endDate ? endDate.toDate() : null
+        <span className={themeClass}>
+          <DateRangePicker
+            startDate={departureStartDate ? moment(departureStartDate) : null}
+            endDate={departureEndDate ? moment(departureEndDate) : null}
+            onDatesChange={({ startDate, endDate }) =>
+              dispatch({
+                type: 'setDateRanges',
+                dateRanges: {
+                  departureDateRange: {
+                    startDate: startDate ? startDate.toDate() : null,
+                    endDate: endDate ? endDate.toDate() : null,
+                  },
+                  arrivalDateRange: state.arrivalDateRange,
                 },
-                arrivalDateRange: state.arrivalDateRange
-              }
-            })
-          }
-          minimumNights={0}
-          focusedInput={departureFocusedInput}
-          onFocusChange={setDepartureFocusedInput}
-          startDateId="departureStartDate"
-          endDateId="departureEndDate"
-          startDatePlaceholderText={t('START_DATE')}
-          endDatePlaceholderText={t('END_DATE')}
-          numberOfMonths={1}
-          openDirection="up"
-          weekDayFormat="ddd"
-        />
+              })
+            }
+            minimumNights={0}
+            focusedInput={departureFocusedInput}
+            onFocusChange={setDepartureFocusedInput}
+            startDateId="departureStartDate"
+            endDateId="departureEndDate"
+            startDatePlaceholderText={t('START_DATE')}
+            endDatePlaceholderText={t('END_DATE')}
+            numberOfMonths={1}
+            openDirection="up"
+            weekDayFormat="ddd"
+          />
+        </span>
         <br />
       </Col>
       <Col xs={12}>
         <br />
         <label>{t('POSSIBLE_ARRIVAL_PERIOD')}</label>
         <div className={isArrivalDateRangeInvalid ? 'invalid' : ''}>
-          <DateRangePicker
-            startDate={arrivalStartDate ? moment(arrivalStartDate) : null}
-            endDate={arrivalEndDate ? moment(arrivalEndDate) : null}
-            onDatesChange={({ startDate, endDate }) =>
-              dispatch({
-                type: 'setDateRanges',
-                dateRanges: {
-                  departureDateRange: state.departureDateRange,
-                  arrivalDateRange: {
-                    startDate: startDate ? startDate.toDate() : null,
-                    endDate: endDate ? endDate.toDate() : null
-                  }
-                }
-              })
-            }
-            minimumNights={0}
-            focusedInput={arrivalFocusedInput}
-            onFocusChange={setArrivalFocusedInput}
-            startDateId="arrivalStartDate"
-            endDateId="arrivalEndDate"
-            startDatePlaceholderText={t('START_DATE')}
-            endDatePlaceholderText={t('END_DATE')}
-            numberOfMonths={1}
-            openDirection="up"
-            weekDayFormat="ddd"
-            initialVisibleMonth={() =>
-              departureStartDate ? moment(departureStartDate).add(minTravelDays, 'days') : moment()
-            }
-            isOutsideRange={areArrivalDatesOutsideRange}
-          />
+          <span className={themeClass}>
+            <DateRangePicker
+              startDate={arrivalStartDate ? moment(arrivalStartDate) : null}
+              endDate={arrivalEndDate ? moment(arrivalEndDate) : null}
+              onDatesChange={({ startDate, endDate }) =>
+                dispatch({
+                  type: 'setDateRanges',
+                  dateRanges: {
+                    departureDateRange: state.departureDateRange,
+                    arrivalDateRange: {
+                      startDate: startDate ? startDate.toDate() : null,
+                      endDate: endDate ? endDate.toDate() : null,
+                    },
+                  },
+                })
+              }
+              minimumNights={0}
+              focusedInput={arrivalFocusedInput}
+              onFocusChange={setArrivalFocusedInput}
+              startDateId="arrivalStartDate"
+              endDateId="arrivalEndDate"
+              startDatePlaceholderText={t('START_DATE')}
+              endDatePlaceholderText={t('END_DATE')}
+              numberOfMonths={1}
+              openDirection="up"
+              weekDayFormat="ddd"
+              initialVisibleMonth={() =>
+                departureStartDate ? moment(departureStartDate).add(minTravelDays, 'days') : moment()
+              }
+              isOutsideRange={areArrivalDatesOutsideRange}
+            />
+          </span>
           <span className="InvalidMessage">{t('INVALID_ARRIVAL_DATE_RANGE')}</span>
         </div>
       </Col>

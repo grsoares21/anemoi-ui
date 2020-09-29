@@ -15,6 +15,45 @@
     width: 100%;
 }
 
+.Dark {
+    &
+        .DateRangePickerInput,
+        .DateInput_input__focused,
+        .DateInput_input,
+        .CalendarMonthGrid,
+        .CalendarMonth,
+        .DayPickerNavigation_button__default,
+        .DayPicker,
+        .CalendarDay__default
+    {
+        background-color: darken($indigo, 10%);
+        transition: background-color 1s ease-in-out;
+        color: $white-dark;
+    }
+
+    & .DateInput_input::placeholder {
+        color: $gray-dark;
+    }
+
+    & .CalendarDay__blocked_out_of_range {
+        color: $gray-700;
+        background-color: shade($indigo, 70%);
+    }
+
+    & .CalendarDay__selected_span,
+      .CalendarDay__selected,
+      .CalendarDay__selected:active,
+      .CalendarDay__selected:hover {
+        color: $teal-dark !important;
+        border-color: $teal-dark !important;
+    }
+    & .CalendarDay__selected,
+      .CalendarDay__selected:active,
+      .CalendarDay__selected:hover {
+        font-weight: 900;
+      }
+}
+
 .DateRangePickerInput {
     &.DateRangePickerInput__withBorder {
         border: 2px solid $gray-400;

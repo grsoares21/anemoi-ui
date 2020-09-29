@@ -4,13 +4,13 @@
 	color: white;
 
 	& em {
-		transition: color 1.5s ease-in;
+		transition: color 1s ease-in;
 		color: $indigo;
 		font-style: normal;
 	}
 
 	&.Dark em {
-		transition: color 1.5s ease-in;
+		transition: color 1s ease-in;
 		color: $blue;
 	}
 }
