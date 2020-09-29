@@ -23,6 +23,10 @@
     margin-top: -0.78rem;
     width: 1.2rem;
     height: 1.2rem;
+
+    &.Dark {
+      background-color: $blue-dark;
+    }
   }
 
   &__track {

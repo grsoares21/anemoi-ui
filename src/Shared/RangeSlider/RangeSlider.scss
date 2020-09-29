@@ -12,6 +12,10 @@
   width: 24px;
   z-index: 1;
   top: -4px;
+
+  &.Dark {
+    background-color: $blue-dark;
+  }
 }
 
 
@@ -31,9 +35,13 @@
 
 .DefaultProgressBar {
   &_progressBar {
-  background-color: $indigo;
-  border-radius: 1rem;
+    background-color: $indigo;
+    border-radius: 1rem;
+    &.Dark {
+      background-color: $blue-dark;
+    }
   }
+
 
   &_background {
     &__horizontal {

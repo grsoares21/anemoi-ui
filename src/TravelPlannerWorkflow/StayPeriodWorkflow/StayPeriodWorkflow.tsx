@@ -10,7 +10,7 @@ interface StayPeriodWorkflowProps {
   onComplete: () => void;
 }
 
-const StayPeriodWorkflow: React.FC<StayPeriodWorkflowProps> = props => {
+const StayPeriodWorkflow: React.FC<StayPeriodWorkflowProps> = (props) => {
   const confirmButtonRef = useRef<any>(null);
 
   const { t } = useTranslation();
@@ -37,9 +37,9 @@ const StayPeriodWorkflow: React.FC<StayPeriodWorkflowProps> = props => {
                 onChange={([minDays, maxDays]: number[]) => {
                   dispatch({
                     type: 'setVisitingCities',
-                    cities: state.visitingCities.map(cityPeriod =>
+                    cities: state.visitingCities.map((cityPeriod) =>
                       cityPeriod.city.id === city.id ? { city, minDays, maxDays } : cityPeriod
-                    )
+                    ),
                   });
                 }}
               />

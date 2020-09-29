@@ -69,7 +69,7 @@ const WelcomePage: React.FC<WelcomePageProps> = (props) => {
     <PageAnimation className={`WelcomePage ${themeClass}`} pose={poseString} onPoseComplete={onCollapseFinished}>
       <ChangeCurrencyDropdown />
       <ChangeLanguageDropdown />
-      {/* {<ThemeContextCheckbox />} */}
+      {/* <ThemeContextCheckbox /> */}
       <AnemoiTitle isVisible={collapseFinished} />
       <ContentAnimation pose={poseString} className="h-100">
         <Row className="h-100" data-testid="page-content">
