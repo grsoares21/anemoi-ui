@@ -52,6 +52,22 @@
       .CalendarDay__selected:hover {
         font-weight: 900;
       }
+
+    & .CalendarMonth_caption {
+        color: $white-dark;
+    }
+
+    & .DayPickerNavigation_svg__horizontal {
+        fill: $white-dark;
+    }
+
+    & .DayPicker_weekHeader {
+        color: $white-dark;
+    }
+
+    & .DateRangePicker_picker {
+        background-color: transparent;
+    }
 }
 
 .DateRangePickerInput {
