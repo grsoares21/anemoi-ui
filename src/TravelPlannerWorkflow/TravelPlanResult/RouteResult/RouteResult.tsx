@@ -7,6 +7,7 @@ import { Route } from '../../../Services/AnemoiServices/TravelPlanResult';
 import FlagIcon from '../../../Shared/FlagIcon';
 
 import AirPlaneTravelIcon from './airplane-travel-icon.svg';
+import AirPlaneTravelIconDark from './airplane-travel-icon-dark.svg';
 import { useTranslation } from 'react-i18next';
 import useTheme from '../../../Shared/useTheme';
 
@@ -49,7 +50,7 @@ const RouteResult: React.FC<RouteResultProps> = (props) => {
         </span>
       </Col>
       <Col xs={4} className="RouteSign my-auto">
-        <img src={AirPlaneTravelIcon} alt="Airplane Travel" />
+        <img src={themeClass === 'Dark' ? AirPlaneTravelIconDark : AirPlaneTravelIcon} alt="Airplane Travel" />
       </Col>
       <Col xs={4} className="RouteCity">
         <FlagIcon
