@@ -8,12 +8,13 @@ import FlagIcon from '../../../Shared/FlagIcon';
 
 import AirPlaneTravelIcon from './airplane-travel-icon.svg';
 import { useTranslation } from 'react-i18next';
+import useTheme from '../../../Shared/useTheme';
 
 interface RouteResultProps {
   route: Route;
 }
 
-const RouteResult: React.FC<RouteResultProps> = props => {
+const RouteResult: React.FC<RouteResultProps> = (props) => {
   // TODO: get locale context
   const { i18n } = useTranslation();
   const locale = i18n.language;
@@ -24,15 +25,22 @@ const RouteResult: React.FC<RouteResultProps> = props => {
     year: 'numeric',
     hour: '2-digit',
     minute: '2-digit',
-    timeZoneName: 'short'
+    timeZoneName: 'short',
   };
 
+  const themeClass = useTheme();
+
   return (
-    <Row className="RouteResult">
+    <Row className={`RouteResult ${themeClass}`}>
       <Col xs={4} className="RouteCity">
-        <FlagIcon className="FlagIcon" size="3x" squared code={props.route.source.countryCode.toLowerCase()} />
+        <FlagIcon
+          className={`FlagIcon ${themeClass}`}
+          size="3x"
+          squared
+          code={props.route.source.countryCode.toLowerCase()}
+        />
         <br />
-        <span className="CityLabel">
+        <span className={`CityLabel ${themeClass}`}>
           {props.route.source.cityName}, {props.route.source.countryName}
         </span>
         <br />
@@ -44,9 +52,14 @@ const RouteResult: React.FC<RouteResultProps> = props => {
         <img src={AirPlaneTravelIcon} alt="Airplane Travel" />
       </Col>
       <Col xs={4} className="RouteCity">
-        <FlagIcon className="FlagIcon" size="3x" squared code={props.route.destination.countryCode.toLowerCase()} />
+        <FlagIcon
+          className={`FlagIcon ${themeClass}`}
+          size="3x"
+          squared
+          code={props.route.destination.countryCode.toLowerCase()}
+        />
         <br />
-        <span className="CityLabel">
+        <span className={`CityLabel ${themeClass}`}>
           {props.route.destination.cityName}, {props.route.destination.countryName}
         </span>
         <br />

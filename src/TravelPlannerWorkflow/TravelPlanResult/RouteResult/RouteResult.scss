@@ -6,17 +6,29 @@
     border-radius: 1rem;
     padding: 10px;
 
+    &.Dark {
+        background-color: darken($indigo, 10%);
+    }
+
     & .RouteCity {
 
         & .FlagIcon {
             border-radius: 50%;
             box-shadow: 0 0px 4px 3px $cyan;
             margin: 7px;
+
+            &.Dark {
+                box-shadow: 0 0px 4px 3px darken($indigo, 10%);
+            }
         }
 
         & .CityLabel {
             font-weight: 700;
             color: $indigo;
+
+            &.Dark {
+                color: $white-dark;
+            }
         }
 
         & .DateLabel {
