@@ -4,6 +4,7 @@
 .AdvancedFiltersSidebar {
   z-index: 4 !important;
   background: white;
+  transition: transform 0.3s ease-out, background-color 1s ease-in-out !important;
 
   &.Dark {
     background: darken($indigo, 10%);
@@ -17,7 +18,7 @@ button.AdvancedFiltersButton {
   left: 15px;
   top: 15px;
   border: none;
-  transition: background-color 1.5 ease-in-out, color 1.5 ease-in-out;
+  transition: background-color 1 ease-in-out, color 1 ease-in-out;
 
   > svg {
     height: 2em;

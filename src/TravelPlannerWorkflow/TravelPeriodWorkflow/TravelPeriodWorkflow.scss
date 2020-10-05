@@ -68,6 +68,10 @@
     & .DateRangePicker_picker {
         background-color: transparent;
     }
+
+    & .DateInput_fangShape  {
+        fill: darken($indigo, 10%);
+    }
 }
 
 .DateRangePickerInput {
