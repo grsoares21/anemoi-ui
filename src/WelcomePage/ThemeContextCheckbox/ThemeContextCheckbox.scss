@@ -1,7 +1,18 @@
 .ThemeContextCheckbox {
   position: absolute;
   top: 10px;
-  right: 145px;
+  right: 155px;
   z-index: 2;
   cursor: pointer;
+}
+
+.ThemeContextCheckboxBackground {
+  width: 30px;
+  height: 30px;
+  background-color: white;
+  mix-blend-mode: overlay;
+  position: absolute;
+  top: 10px;
+  right: 155px;
+  opacity: 0.5;
 }
