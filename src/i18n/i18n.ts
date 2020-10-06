@@ -31,13 +31,13 @@ i18n
     fallbackLng: 'en-US',
     keySeparator: false,
     interpolation: {
-      escapeValue: false
+      escapeValue: false,
     },
     whitelist: languageList,
     detection: {
-      order: ['path', 'localStorage'],
-      caches: ['localStorage']
-    }
+      order: ['path', 'localStorage', 'navigator'],
+      caches: ['localStorage'],
+    },
   });
 
 export default i18n;
