@@ -1,0 +1,9 @@
+@import "../../variables";
+
+.AnemoiTitle {
+	color: white;
+	&:hover {
+		text-decoration: none;
+		color: white;
+	}
+}

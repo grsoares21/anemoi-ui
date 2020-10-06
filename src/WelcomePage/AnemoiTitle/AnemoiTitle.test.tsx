@@ -21,16 +21,4 @@ describe('AnemoiTitle component', () => {
     expect(asFragment()).toMatchSnapshot();
     expect(queryByTestId('anemoi-title')).not.toBeTruthy();
   });
-
-  it('reloads the page when clicked', () => {
-    const { reload } = window.location;
-    delete window.location.reload;
-    window.location.reload = jest.fn();
-
-    const { getByTestId } = render(<AnemoiTitle isVisible={true} />);
-    getByTestId('anemoi-title').click();
-    expect(window.location.reload).toHaveBeenCalled();
-
-    window.location.reload = reload;
-  });
 });

@@ -1,4 +1,5 @@
 import React from 'react';
+import './AnemoiTitle.scss';
 
 import posed, { PoseGroup } from 'react-pose';
 
@@ -19,10 +20,8 @@ const AnemoiTitle: React.FC<AnemoiTitleProps> = (props) => {
     <PoseGroup>
       {props.isVisible && (
         <Title key="anemoiTitle">
-          <a>
-            <span onClick={() => window.location.reload()} data-testid="anemoi-title">
-              Anemoi
-            </span>
+          <a href="/" data-testid="anemoi-title" className="AnemoiTitle">
+            Anemoi
           </a>
         </Title>
       )}
