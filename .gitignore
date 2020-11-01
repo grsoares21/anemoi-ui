@@ -9,6 +9,20 @@
 # testing
 /coverage
 
+# expo
+mobile/.expo/*
+mobile/npm-debug.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.orig.*
+mobile/web-build/
+
+# macOS
+.DS_Store
+
 # production
 /build
 
