@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TextInput } from 'react-native';
+import MultiCitySelector from '../shared/MultiCitySelector/MultiCitySelector';
 import { WorkflowSection } from './TravelPlanneWorkflow.d';
 import WorkflowStep from './WorkflowStep/WorkflowStep';
 
@@ -49,7 +50,7 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = (props) => {
           <Text style={styles.inputLabel}>
             Possíveis pontos de partida:
           </Text>
-          <TextInput style={{ height: 40, borderColor: 'gray', borderWidth: 1, borderRadius: 5 }} />
+          <MultiCitySelector />
           <Text style={styles.inputLabel}>
             Cidades para visitar:
           </Text>
