@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { ReactElement, ReactNode, useState } from 'react';
 import Modal from 'react-native-modal';
-import { StyleSheet, TouchableOpacity, View, Text, TextInput, Platform, FlatList, KeyboardAvoidingView } from 'react-native'
+import { StyleSheet, TouchableOpacity, View, Text, TextInput, Platform, FlatList, KeyboardAvoidingView, ActivityIndicator, ScrollView } from 'react-native'
 import { FontAwesome5 } from '@expo/vector-icons';
 import Button from '../Button/Button';
 
@@ -9,12 +9,13 @@ type Option = { id: string, name: string }
 interface MultiSelectorOptionProps {
   option: Option,
   selected: boolean,
-  onSelect: () => void
+  onSelect: () => void,
+  onRemove: () => void
 }
 
-const MultiSelectorOption: React.FC<MultiSelectorOptionProps> = ({ option, onSelect, selected }) => (
+const MultiSelectorOption: React.FC<MultiSelectorOptionProps> = ({ option, onSelect, onRemove, selected }) => (
   <TouchableOpacity
-    onPress={onSelect}
+    onPress={() => selected ? onRemove() : onSelect()}
     activeOpacity={0.7}
     style={styles.itemWrapper}>
     <Text style={styles.itemText}>
@@ -27,30 +28,33 @@ const MultiSelectorOption: React.FC<MultiSelectorOptionProps> = ({ option, onSel
 )
 
 interface MultiSelectorProps {
-  popupTitle: string,
-  title: string,
+  popupTitle: ReactElement,
+  inputContent: ReactElement,
   showSearchBox: boolean,
   searchPlaceHolderText: string,
   selectedItems: Option[],
   options: Option[],
   onSelectItem: (option: Option) => void,
+  onRemoveItem: (option: Option) => void,
   onCancel: () => void,
-  onSubmit: () => void
+  onSubmit: () => void,
+  onTextChange: (text: string) => void
 }
 
 const MultiSelector: React.FC<MultiSelectorProps> = ({
   popupTitle,
-  title,
+  inputContent,
   showSearchBox,
   searchPlaceHolderText,
   options,
   selectedItems,
   onSelectItem,
+  onRemoveItem,
   onSubmit,
-  onCancel
+  onCancel,
+  onTextChange
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [keyword, setKeyword] = useState('');
 
   return (
     <TouchableOpacity
@@ -71,10 +75,8 @@ const MultiSelector: React.FC<MultiSelectorProps> = ({
         <KeyboardAvoidingView
           behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
           style={[styles.modalContainer, { height: 500 }]}>
-          <View>
-            <Text style={styles.title}>
-              {popupTitle || title}
-            </Text>
+          <View style={styles.modalTitle}>
+            {popupTitle}
           </View>
           <View style={styles.line} />
           {
@@ -83,21 +85,27 @@ const MultiSelector: React.FC<MultiSelectorProps> = ({
                 underlineColorAndroid='transparent'
                 returnKeyType='done'
                 style={[styles.inputKeyword]}
+                blurOnSubmit={false}
                 placeholder={searchPlaceHolderText}
-                onChangeText={setKeyword}
+                onChangeText={(text: string) => {
+                  onTextChange(text);
+                }}
               />
               : null
           }
           <FlatList
             style={styles.listOption}
-            data={options.filter(opt => opt.name.includes(keyword))}
+            data={options}
+            keyboardShouldPersistTaps="always"
             keyExtractor={opt => opt.id}
             renderItem={({ item, index }) => (
               <MultiSelectorOption
                 option={item}
                 key={index}
                 selected={selectedItems.some(selectedItem => selectedItem.id === item.id)}
-                onSelect={() => onSelectItem(item)} />
+                onSelect={() => onSelectItem(item)}
+                onRemove={() => onRemoveItem(item)}
+              />
             )}
           />
           <View style={styles.buttonWrapper}>
@@ -110,7 +118,7 @@ const MultiSelector: React.FC<MultiSelectorProps> = ({
           </View>
         </KeyboardAvoidingView>
       </Modal>
-      <Text style={styles.selectedTitlte}>{title}</Text>
+      <View>{inputContent}</View>
     </TouchableOpacity>
   );
 }
@@ -119,6 +127,10 @@ const MultiSelector: React.FC<MultiSelectorProps> = ({
 
 // define your styles
 const styles = StyleSheet.create({
+  modalTitle: {
+    paddingBottom: 10,
+    alignItems: "center"
+  },
   container: {
     width: '100%', minHeight: 45, borderRadius: 2, paddingHorizontal: 16,
     flexDirection: 'row', alignItems: 'center', borderWidth: 1,
@@ -142,9 +154,6 @@ const styles = StyleSheet.create({
   },
   button: {
     height: 36, flex: 1
-  },
-  selectedTitlte: {
-    fontSize: 14, color: 'gray', flex: 1
   },
   tagWrapper: {
     flexDirection: 'row', flexWrap: 'wrap'
