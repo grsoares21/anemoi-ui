@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
+    "@anemoi-ui/services": "*",
     "bootstrap": "^4.3.1",
     "i18next": "^17.0.16",
     "i18next-browser-languagedetector": "^3.0.3",
@@ -18,7 +19,6 @@
     "react-i18next": "^10.12.5",
     "react-icons": "^3.8.0",
     "react-pose": "^4.0.8",
-    "react-scripts": "3.4.0",
     "react-scroll": "^1.7.12",
     "react-select": "^3.0.8",
     "react-sidebar": "^3.0.2",
@@ -26,10 +26,10 @@
     "use-media": "^1.4.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test",
+    "eject": "react-app-rewired eject"
   },
   "browserslist": {
     "production": [
@@ -57,6 +57,9 @@
     "@types/react-scroll": "^1.5.4",
     "@types/react-select": "^3.0.0",
     "@types/react-sidebar": "^3.0.0",
-    "@types/rheostat": "^3.0.0"
+    "@types/rheostat": "^3.0.0",
+    "customize-cra": "^1.0.0",
+    "react-app-rewired": "^2.1.6",
+    "react-scripts": "3.4.1"
   }
 }

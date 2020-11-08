@@ -1,7 +1,6 @@
 import { createContext } from 'react';
 import { CityStayPeriod, DateRange } from './TravelPlannerWorkflow.d';
-import { City } from '../Services/LocationServices';
-import TravelPlanResult from '../Services/AnemoiServices/TravelPlanResult';
+import { City, TravelPlanResult } from '@anemoi-ui/services';
 
 export type TravelPlannerWorkflowState = {
   departureCities: City[];

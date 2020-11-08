@@ -3,7 +3,7 @@ import './RouteResult.scss';
 import React from 'react';
 import { Row, Col } from 'react-bootstrap';
 
-import { Route } from '../../../Services/AnemoiServices/TravelPlanResult';
+import { Route } from '@anemoi-ui/services';
 import FlagIcon from '../../../Shared/FlagIcon';
 
 import AirPlaneTravelIcon from './airplane-travel-icon.svg';
@@ -15,7 +15,7 @@ interface RouteResultProps {
   route: Route;
 }
 
-const RouteResult: React.FC<RouteResultProps> = (props) => {
+const RouteResult: React.FC<RouteResultProps> = props => {
   // TODO: get locale context
   const { i18n } = useTranslation();
   const locale = i18n.language;
@@ -26,7 +26,7 @@ const RouteResult: React.FC<RouteResultProps> = (props) => {
     year: 'numeric',
     hour: '2-digit',
     minute: '2-digit',
-    timeZoneName: 'short',
+    timeZoneName: 'short'
   };
 
   const themeClass = useTheme();
@@ -46,11 +46,19 @@ const RouteResult: React.FC<RouteResultProps> = (props) => {
         </span>
         <br />
         <span className="DateLabel">
-          {new Date(props.route.startTime).toLocaleDateString(locale, dateStringOptions)}
+          {new Date(props.route.startTime).toLocaleDateString(
+            locale,
+            dateStringOptions
+          )}
         </span>
       </Col>
       <Col xs={4} className="RouteSign my-auto">
-        <img src={themeClass === 'Dark' ? AirPlaneTravelIconDark : AirPlaneTravelIcon} alt="Airplane Travel" />
+        <img
+          src={
+            themeClass === 'Dark' ? AirPlaneTravelIconDark : AirPlaneTravelIcon
+          }
+          alt="Airplane Travel"
+        />
       </Col>
       <Col xs={4} className="RouteCity">
         <FlagIcon
@@ -61,10 +69,16 @@ const RouteResult: React.FC<RouteResultProps> = (props) => {
         />
         <br />
         <span className={`CityLabel ${themeClass}`}>
-          {props.route.destination.cityName}, {props.route.destination.countryName}
+          {props.route.destination.cityName},{' '}
+          {props.route.destination.countryName}
         </span>
         <br />
-        <span className="DateLabel">{new Date(props.route.endTime).toLocaleDateString(locale, dateStringOptions)}</span>
+        <span className="DateLabel">
+          {new Date(props.route.endTime).toLocaleDateString(
+            locale,
+            dateStringOptions
+          )}
+        </span>
       </Col>
     </Row>
   );

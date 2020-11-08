@@ -1,6 +1,6 @@
 import TravelPlanResult from './TravelPlanResult';
 import TravelPlanParameters from './TravelPlanParameters';
-import config from '../../config';
+import config from './config';
 
 class AnemoiServices {
   private readonly baseUrl = config.anemoiServicesUrl;

@@ -1,7 +1,7 @@
 import React, { Fragment, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import TravelPlanResult from '../../Services/AnemoiServices/TravelPlanResult';
+import { TravelPlanResult } from '@anemoi-ui/services';
 
 import RouteResult from './RouteResult/RouteResult';
 import { Button } from 'react-bootstrap';
@@ -18,7 +18,10 @@ interface TravelPlanResultProps {
 const TravelPlanResultComponent: React.FC<TravelPlanResultProps> = props => {
   const { t, i18n } = useTranslation();
   const { currency } = useContext(CurrencyContext);
-  const priceFormatter = new Intl.NumberFormat(i18n.language, { style: 'currency', currency });
+  const priceFormatter = new Intl.NumberFormat(i18n.language, {
+    style: 'currency',
+    currency
+  });
   return (
     <div>
       <h4>
@@ -26,14 +29,17 @@ const TravelPlanResultComponent: React.FC<TravelPlanResultProps> = props => {
       </h4>
       <h4>{t('HERE_IS_YOUR_TRAVEL_PLAN')}</h4>
       {props.result.routes.map(route => (
-        <Fragment key={`${route.source.cityName}-${route.destination.cityName}`}>
+        <Fragment
+          key={`${route.source.cityName}-${route.destination.cityName}`}
+        >
           <br />
           <RouteResult route={route} />
         </Fragment>
       ))}
       <br />
       <h4>
-        <em>{t('TOTAL_PRICE')}</em> {priceFormatter.format(props.result.totalPrice)}
+        <em>{t('TOTAL_PRICE')}</em>{' '}
+        {priceFormatter.format(props.result.totalPrice)}
       </h4>
       <Button
         block

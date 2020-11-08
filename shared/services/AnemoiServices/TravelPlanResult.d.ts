@@ -4,7 +4,7 @@ interface RouteCity {
   countryCode: string;
 }
 
-interface Route {
+export interface Route {
   source: RouteCity;
   destination: RouteCity;
 
