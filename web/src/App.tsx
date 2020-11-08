@@ -12,11 +12,14 @@ import { ThemeContext, Theme } from './Shared/ThemeContext';
 
 const App: React.FC = () => {
   const [currency, setCurrency] = useState('USD');
-  const [theme, setTheme] = useState<Theme>("LIGHT");
+  const [theme, setTheme] = useState<Theme>('LIGHT');
 
   let [welcomePageCollapsed, setWelcomePageCollapsed] = useState(false);
   return (
-    <div className={`App ${theme === "DARK" ? "Dark" : ""}`} data-testid="app-container">
+    <div
+      className={`App ${theme === 'DARK' ? 'Dark' : ''}`}
+      data-testid="app-container"
+    >
       <ThemeContext.Provider value={{ theme, setTheme }}>
         <CurrencyContext.Provider value={{ currency, setCurrency }}>
           <WelcomePage collapseCallback={() => setWelcomePageCollapsed(true)} />

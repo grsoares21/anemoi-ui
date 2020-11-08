@@ -54,8 +54,7 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = (props) => {
           <Text style={styles.inputLabel}>
             Cidades para visitar:
           </Text>
-          <TextInput style={{ height: 40, borderColor: 'gray', borderWidth: 1, borderRadius: 5 }} />
-          <Text style={styles.inputLabel}>
+          <TextInput style={{ height: 40, borderColor: "gray", borderWidth: 1, borderRadius: 5 }} />          <Text style={styles.inputLabel}>
             Possíveis destinos finais:
           </Text>
           <TextInput style={{ height: 40, borderColor: 'gray', borderWidth: 1, borderRadius: 5 }} />
