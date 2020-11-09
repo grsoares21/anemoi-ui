@@ -36,8 +36,7 @@ interface MultiSelectorProps {
   options: Option[],
   onSelectItem: (option: Option) => void,
   onRemoveItem: (option: Option) => void,
-  onCancel: () => void,
-  onSubmit: () => void,
+  onSubmit?: () => void,
   onTextChange: (text: string) => void
 }
 
@@ -51,7 +50,6 @@ const MultiSelector: React.FC<MultiSelectorProps> = ({
   onSelectItem,
   onRemoveItem,
   onSubmit,
-  onCancel,
   onTextChange
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -109,10 +107,10 @@ const MultiSelector: React.FC<MultiSelectorProps> = ({
             )}
           />
           <View style={styles.buttonWrapper}>
-            <Button onPress={onCancel}>
-              Cancelar
-            </Button>
-            <Button onPress={onSubmit}>
+            <Button onPress={() => {
+              onSubmit?.call(this);
+              setIsModalOpen(false)
+            }}>
               Ok
             </Button>
           </View>
