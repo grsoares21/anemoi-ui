@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TextInput } from 'react-native';
 import MultiCitySelector from '../shared/MultiCitySelector/MultiCitySelector';
+import CitySelectionWorkflow from './CitySelectionWorkflow/CitySelectionWorkflow';
 import { WorkflowSection } from './TravelPlanneWorkflow.d';
 import WorkflowStep from './WorkflowStep/WorkflowStep';
 
@@ -46,31 +47,7 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
       )}
       {workflowSection >= WorkflowSection.CitySelection && (
         <WorkflowStep>
-          <Text style={styles.highlightedTitle}>
-            Primeiramente, eu preciso saber quais são seus possíveis pontos de
-            partida, quais cidades você deseja visitar e os possíveis destinos
-            finais.
-          </Text>
-          <Text style={styles.inputLabel}>Possíveis pontos de partida:</Text>
-          <MultiCitySelector />
-          <Text style={styles.inputLabel}>Cidades para visitar:</Text>
-          <TextInput
-            style={{
-              height: 40,
-              borderColor: 'gray',
-              borderWidth: 1,
-              borderRadius: 5
-            }}
-          />
-          <Text style={styles.inputLabel}>Possíveis destinos finais:</Text>
-          <TextInput
-            style={{
-              height: 40,
-              borderColor: 'gray',
-              borderWidth: 1,
-              borderRadius: 5
-            }}
-          />
+          <CitySelectionWorkflow />
         </WorkflowStep>
       )}
     </View>
@@ -82,14 +59,6 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontWeight: 'bold',
     color: '#6c757d'
-  },
-  highlightedTitle: {
-    fontSize: 25,
-    fontWeight: 'bold',
-    color: '#FC427B'
-  },
-  inputLabel: {
-    marginVertical: 5
   }
 });
 

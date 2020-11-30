@@ -6,14 +6,12 @@ import {
   ActivityIndicator
 } from 'react-native';
 import MultiSelector from '../MultiSelector/MultiSelector';
-import { LocationServices } from '@anemoi-ui/services';
+import { City, LocationServices } from '@anemoi-ui/services';
 import debounce from 'lodash.debounce';
 import { FontAwesome } from '@expo/vector-icons';
 
 const searchCities = (searchText: string) => {
-  return LocationServices.searchCities(searchText, 'PT-BR', 50).then(results =>
-    results.map(({ id, name }) => ({ id, name }))
-  );
+  return LocationServices.searchCities(searchText, 'PT-BR', 50);
 };
 
 interface CityChipProps {
@@ -40,12 +38,19 @@ const CityChip: React.FC<CityChipProps> = ({ name, onRemove }) => (
   </View>
 );
 
-const MultiCitySelector: React.FC = () => {
-  const [items, setItems] = useState<{ id: string; name: string }[]>([]);
+interface MultiCitySelectorProps {
+  setCities: (cities: City[]) => void;
+  cities: City[];
+  disabled?: boolean;
+}
+
+const MultiCitySelector: React.FC<MultiCitySelectorProps> = ({
+  setCities,
+  cities,
+  disabled
+}) => {
+  const [items, setItems] = useState<City[]>([]);
   const [searchText, setSearchText] = useState<string>('');
-  const [selectedItems, setSelectedItems] = useState<
-    { id: string; name: string }[]
-  >([]);
   const [loadingCities, setLoadingCities] = useState(false);
 
   useEffect(() => {
@@ -67,11 +72,13 @@ const MultiCitySelector: React.FC = () => {
   return (
     <View>
       <MultiSelector
+        disabled={disabled}
         showSearchBox
-        onCancel={() => {}}
-        onSelectItem={item => setSelectedItems([...selectedItems, item])}
+        onSelectItem={item =>
+          setCities([...cities, items.find(it => it.id === item.id) as City])
+        }
         onRemoveItem={item =>
-          setSelectedItems([...selectedItems.filter(opt => opt.id !== item.id)])
+          setCities([...cities.filter(opt => opt.id !== item.id)])
         }
         onTextChange={debounce(setSearchText, 500)}
         onSubmit={() => {}}
@@ -81,13 +88,11 @@ const MultiCitySelector: React.FC = () => {
           <View
             style={{ flexDirection: 'row', flexWrap: 'wrap', width: '100%' }}
           >
-            {selectedItems.map((item, i) => (
+            {cities.map((item, i) => (
               <CityChip
                 name={item.name}
                 onRemove={() =>
-                  setSelectedItems([
-                    ...selectedItems.filter(opt => opt.id !== item.id)
-                  ])
+                  setCities([...cities.filter(opt => opt.id !== item.id)])
                 }
                 key={i}
               />
@@ -95,7 +100,7 @@ const MultiCitySelector: React.FC = () => {
           </View>
         }
         searchPlaceHolderText="Search"
-        selectedItems={selectedItems}
+        selectedItems={cities}
       />
     </View>
   );
