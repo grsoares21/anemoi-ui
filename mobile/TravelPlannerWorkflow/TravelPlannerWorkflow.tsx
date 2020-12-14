@@ -4,6 +4,7 @@ import { Text, StyleSheet, ScrollView } from 'react-native';
 import Button from '../shared/Button/Button';
 import CitySelectionWorkflow from './CitySelectionWorkflow/CitySelectionWorkflow';
 import StayPeriodWorkflow from './StayPeriodWorfklow/StayPeriodWorkflow';
+import TravelPeriodWorkflow from './TravelPeriodWorkflow/TravelPeriodWorkflow';
 import { CityStayPeriod, WorkflowSection } from './TravelPlannerWorkflow.d';
 import WorkflowStep from './WorkflowStep/WorkflowStep';
 
@@ -56,15 +57,15 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
             arrivalCities={arrivalCities}
             setArrivalCities={setArrivalCities}
           />
+          <Button
+            onPress={() => {
+              updateWorkflowSection(WorkflowSection.StayPeriodIntroduction);
+            }}
+          >
+            Next
+          </Button>
         </WorkflowStep>
       )}
-      <Button
-        onPress={() => {
-          updateWorkflowSection(WorkflowSection.StayPeriodIntroduction);
-        }}
-      >
-        Next
-      </Button>
       {workflowSection >= WorkflowSection.StayPeriodIntroduction && (
         <WorkflowStep>
           <Text style={styles.title}>
@@ -76,6 +77,20 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
       {workflowSection >= WorkflowSection.StayPeriod && (
         <WorkflowStep>
           <StayPeriodWorkflow visitingCities={visitingCities} onSetVisitingCities={setVisitingCities} />
+          <Button
+            onPress={() => {
+              updateWorkflowSection(WorkflowSection.TravelPeriod);
+            }}
+          >
+            Next
+          </Button>
+        </WorkflowStep>
+      )}
+      {workflowSection >= WorkflowSection.TravelPeriod && (
+        <WorkflowStep>
+          <Text style={styles.title}>Anotado!</Text>
+          <Text style={styles.highlightedTitle}>Para quando você está planejando esta viagem?</Text>
+          <TravelPeriodWorkflow />
         </WorkflowStep>
       )}
     </ScrollView>
@@ -87,6 +102,11 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontWeight: 'bold',
     color: '#6c757d'
+  },
+  highlightedTitle: {
+    fontSize: 25,
+    fontWeight: 'bold',
+    color: '#FC427B'
   }
 });
 
