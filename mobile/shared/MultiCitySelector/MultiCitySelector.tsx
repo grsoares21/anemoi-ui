@@ -39,13 +39,17 @@ const CityChip: React.FC<CityChipProps> = ({ name, onRemove }) => (
 );
 
 interface MultiCitySelectorProps {
-  setCities: (cities: City[]) => void;
+  setCities?: (cities: City[]) => void;
+  onRemoveCity?: (city: City) => void;
+  onAddCity?: (city: City) => void;
   cities: City[];
   disabled?: boolean;
 }
 
 const MultiCitySelector: React.FC<MultiCitySelectorProps> = ({
   setCities,
+  onAddCity,
+  onRemoveCity,
   cities,
   disabled
 }) => {
@@ -74,12 +78,16 @@ const MultiCitySelector: React.FC<MultiCitySelectorProps> = ({
       <MultiSelector
         disabled={disabled}
         showSearchBox
-        onSelectItem={item =>
-          setCities([...cities, items.find(it => it.id === item.id) as City])
-        }
-        onRemoveItem={item =>
-          setCities([...cities.filter(opt => opt.id !== item.id)])
-        }
+        onSelectItem={item => {
+          setCities &&
+            setCities([...cities, items.find(it => it.id === item.id) as City]);
+          onAddCity && onAddCity(items.find(it => it.id === item.id) as City);
+        }}
+        onRemoveItem={item => {
+          setCities && setCities([...cities.filter(opt => opt.id !== item.id)]);
+          onRemoveCity &&
+            onRemoveCity(cities.find(opt => opt.id === item.id) as City);
+        }}
         onTextChange={debounce(setSearchText, 500)}
         onSubmit={() => {}}
         options={items}
@@ -91,9 +99,14 @@ const MultiCitySelector: React.FC<MultiCitySelectorProps> = ({
             {cities.map((item, i) => (
               <CityChip
                 name={item.name}
-                onRemove={() =>
-                  setCities([...cities.filter(opt => opt.id !== item.id)])
-                }
+                onRemove={() => {
+                  setCities &&
+                    setCities([...cities.filter(opt => opt.id !== item.id)]);
+                  onRemoveCity &&
+                    onRemoveCity(
+                      cities.find(opt => opt.id === item.id) as City
+                    );
+                }}
                 key={i}
               />
             ))}

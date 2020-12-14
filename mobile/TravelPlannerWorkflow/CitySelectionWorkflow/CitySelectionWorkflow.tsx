@@ -2,30 +2,42 @@ import { City } from '@anemoi-ui/services';
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, Switch } from 'react-native';
 import MultiCitySelector from '../../shared/MultiCitySelector/MultiCitySelector';
+import { CityStayPeriod } from '../TravelPlannerWorkflow.d';
 
-const CitySelectionWorkflow: React.FC = () => {
-  const [departureCities, setDepartureCities] = useState<City[]>([]);
-  const [visitingCities, setVisitingCities] = useState<City[]>([]);
-  const [arrivalCities, setArrivalCities] = useState<City[]>([]);
+interface CitySelectionWorkflowProps {
+  departureCities: City[];
+  setDepartureCities: (cities: City[]) => void;
+  visitingCities: CityStayPeriod[];
+  setVisitingCities: (cities: CityStayPeriod[]) => void;
+  arrivalCities: City[];
+  setArrivalCities: (cities: City[]) => void;
+}
 
+const CitySelectionWorkflow: React.FC<CitySelectionWorkflowProps> = ({
+  departureCities,
+  setDepartureCities,
+  visitingCities,
+  setVisitingCities,
+  arrivalCities,
+  setArrivalCities
+}) => {
   const [sameDepartureArrival, setSameDepartureArrival] = useState(false);
 
   return (
     <>
       <Text style={styles.highlightedTitle}>
-        Primeiramente, eu preciso saber quais são seus possíveis pontos de
-        partida, quais cidades você deseja visitar e os possíveis destinos
-        finais.
+        Primeiramente, eu preciso saber quais são seus possíveis pontos de partida, quais cidades você deseja visitar e
+        os possíveis destinos finais.
       </Text>
       <Text style={styles.inputLabel}>Possíveis pontos de partida:</Text>
-      <MultiCitySelector
-        setCities={cities => setDepartureCities(cities)}
-        cities={departureCities}
-      />
+      <MultiCitySelector setCities={cities => setDepartureCities(cities)} cities={departureCities} />
       <Text style={styles.inputLabel}>Cidades para visitar:</Text>
       <MultiCitySelector
-        setCities={cities => setVisitingCities(cities)}
-        cities={visitingCities}
+        onAddCity={city => setVisitingCities([...visitingCities, { city, minDays: 3, maxDays: 5 }])}
+        onRemoveCity={city =>
+          setVisitingCities(visitingCities.filter(visitingCity => visitingCity.city.id !== city.id))
+        }
+        cities={visitingCities.map(cityStayPeriod => cityStayPeriod.city)}
       />
       <Text style={styles.inputLabel}>Possíveis destinos finais:</Text>
       <MultiCitySelector

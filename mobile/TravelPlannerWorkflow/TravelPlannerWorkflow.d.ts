@@ -1,3 +1,10 @@
+import { City } from '@anemoi-ui/services';
+
+export type CityStayPeriod = {
+  city: City;
+  minDays: number;
+  maxDays: number;
+};
 
 export enum WorkflowSection {
   Beginning = 0,
