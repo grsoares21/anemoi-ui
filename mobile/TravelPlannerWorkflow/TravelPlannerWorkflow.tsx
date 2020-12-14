@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TextInput } from 'react-native';
-import MultiCitySelector from '../shared/MultiCitySelector/MultiCitySelector';
+import { Text, StyleSheet, ScrollView } from 'react-native';
+import Button from '../shared/Button/Button';
 import CitySelectionWorkflow from './CitySelectionWorkflow/CitySelectionWorkflow';
+import StayPeriodWorkflow from './StayPeriodWorfklow/StayPeriodWorkflow';
 import { WorkflowSection } from './TravelPlanneWorkflow.d';
 import WorkflowStep from './WorkflowStep/WorkflowStep';
 
@@ -25,10 +26,13 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
           300
         );
         break;
-      /*case WorkflowSection.StayPeriodIntroduction:
-        timeOutToClear = setTimeout(() => updateWorkflowSection(WorkflowSection.StayPeriod), 300);
+      case WorkflowSection.StayPeriodIntroduction:
+        timeOutToClear = setTimeout(
+          () => updateWorkflowSection(WorkflowSection.StayPeriod),
+          300
+        );
         break;
-      case WorkflowSection.CalculateTravelPlan:
+      /*case WorkflowSection.CalculateTravelPlan:
         submitButtonRef.current.focus();
         break;*/
       default:
@@ -39,7 +43,7 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
   }, [workflowSection, props.launchWorkflow]);
 
   return (
-    <View>
+    <ScrollView>
       {props.launchWorkflow && (
         <WorkflowStep>
           <Text style={styles.title}>Ótimo, então vamos lá!</Text>
@@ -50,7 +54,27 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
           <CitySelectionWorkflow />
         </WorkflowStep>
       )}
-    </View>
+      <Button
+        onPress={() => {
+          updateWorkflowSection(WorkflowSection.StayPeriodIntroduction);
+        }}
+      >
+        Next
+      </Button>
+      {workflowSection >= WorkflowSection.StayPeriodIntroduction && (
+        <WorkflowStep>
+          <Text style={styles.title}>
+            Soa como um bom plano! Para te ajudar a planejar ele, vou precisar
+            saber por volta de quantos dias você deseja ficar em cada cidade:
+          </Text>
+        </WorkflowStep>
+      )}
+      {workflowSection >= WorkflowSection.StayPeriod && (
+        <WorkflowStep>
+          <StayPeriodWorkflow cities={['Porto Alegre', 'Amsterdã']} />
+        </WorkflowStep>
+      )}
+    </ScrollView>
   );
 };
 
