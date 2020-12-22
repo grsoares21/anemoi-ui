@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import InputSpinner from 'react-native-input-spinner';
 import { TravelPlannerWorkflowContext } from '../TravelPlannerWorkflow.state';
 
@@ -10,7 +10,11 @@ const StayPeriodWorkflow: React.FC = () => {
   } = useContext(TravelPlannerWorkflowContext);
 
   return (
-    <View>
+    <View style={{ backgroundColor: 'white', flex: 1, padding: 10 }}>
+      <Text style={styles.title}>
+        Soa como um bom plano! Para te ajudar a planejar ele, vou precisar saber por volta de quantos dias você deseja
+        ficar em cada cidade:
+      </Text>
       {visitingCities.map(({ city, maxDays, minDays }, i) => (
         <View key={i}>
           <Text>{`Eu gostaria de ficar em ${city.name} entre ${minDays} e ${maxDays} dias.`}</Text>
@@ -73,3 +77,11 @@ const StayPeriodWorkflow: React.FC = () => {
 };
 
 export default StayPeriodWorkflow;
+
+const styles = StyleSheet.create({
+  title: {
+    fontSize: 25,
+    fontWeight: 'bold',
+    color: '#6c757d'
+  }
+});

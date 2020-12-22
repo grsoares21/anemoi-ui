@@ -10,7 +10,8 @@ const CitySelectionWorkflow: React.FC = () => {
   const { departureCities, visitingCities, arrivalCities } = state;
 
   return (
-    <>
+    <View style={{ backgroundColor: 'white', flex: 1, padding: 10 }}>
+      <Text style={styles.title}>Ótimo, então vamos lá!</Text>
       <Text style={styles.highlightedTitle}>
         Primeiramente, eu preciso saber quais são seus possíveis pontos de partida, quais cidades você deseja visitar e
         os possíveis destinos finais.
@@ -61,13 +62,18 @@ const CitySelectionWorkflow: React.FC = () => {
           Usar os mesmos pontos de partida e destinos finais (ida e volta)
         </Text>
       </View>
-    </>
+    </View>
   );
 };
 
 export default CitySelectionWorkflow;
 
 const styles = StyleSheet.create({
+  title: {
+    fontSize: 25,
+    fontWeight: 'bold',
+    color: '#6c757d'
+  },
   highlightedTitle: {
     fontSize: 25,
     fontWeight: 'bold',
