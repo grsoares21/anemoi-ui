@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { View, Text } from 'react-native';
 import InputSpinner from 'react-native-input-spinner';
-import { CityStayPeriod } from '../TravelPlannerWorkflow.d';
+import { TravelPlannerWorkflowContext } from '../TravelPlannerWorkflow.state';
 
-interface StayPeriodWorkflowProps {
-  visitingCities: CityStayPeriod[];
-  onSetVisitingCities: (visitingCities: CityStayPeriod[]) => void;
-}
+const StayPeriodWorkflow: React.FC = () => {
+  const {
+    state: { visitingCities },
+    dispatch
+  } = useContext(TravelPlannerWorkflowContext);
 
-const StayPeriodWorkflow: React.FC<StayPeriodWorkflowProps> = ({ visitingCities, onSetVisitingCities }) => {
   return (
     <View>
       {visitingCities.map(({ city, maxDays, minDays }, i) => (
@@ -33,7 +33,10 @@ const StayPeriodWorkflow: React.FC<StayPeriodWorkflowProps> = ({ visitingCities,
 
                   newVisitingCities[cityIndex] = { city, maxDays, minDays: value };
 
-                  onSetVisitingCities(newVisitingCities);
+                  dispatch({
+                    type: 'setVisitingCities',
+                    cities: newVisitingCities
+                  });
                 }}
               />
             </View>
@@ -55,7 +58,10 @@ const StayPeriodWorkflow: React.FC<StayPeriodWorkflowProps> = ({ visitingCities,
 
                   newVisitingCities[cityIndex] = { city, maxDays: value, minDays };
 
-                  onSetVisitingCities(newVisitingCities);
+                  dispatch({
+                    type: 'setVisitingCities',
+                    cities: newVisitingCities
+                  });
                 }}
               />
             </View>

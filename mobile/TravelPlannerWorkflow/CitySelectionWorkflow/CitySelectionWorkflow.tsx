@@ -1,27 +1,13 @@
-import { City } from '@anemoi-ui/services';
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, Switch } from 'react-native';
+import React, { useContext, useState } from 'react';
+import { View, Text, StyleSheet, Switch } from 'react-native';
 import MultiCitySelector from '../../shared/MultiCitySelector/MultiCitySelector';
-import { CityStayPeriod } from '../TravelPlannerWorkflow.d';
+import { TravelPlannerWorkflowContext } from '../TravelPlannerWorkflow.state';
 
-interface CitySelectionWorkflowProps {
-  departureCities: City[];
-  setDepartureCities: (cities: City[]) => void;
-  visitingCities: CityStayPeriod[];
-  setVisitingCities: (cities: CityStayPeriod[]) => void;
-  arrivalCities: City[];
-  setArrivalCities: (cities: City[]) => void;
-}
-
-const CitySelectionWorkflow: React.FC<CitySelectionWorkflowProps> = ({
-  departureCities,
-  setDepartureCities,
-  visitingCities,
-  setVisitingCities,
-  arrivalCities,
-  setArrivalCities
-}) => {
+const CitySelectionWorkflow: React.FC = () => {
   const [sameDepartureArrival, setSameDepartureArrival] = useState(false);
+
+  const { state, dispatch } = useContext(TravelPlannerWorkflowContext);
+  const { departureCities, visitingCities, arrivalCities } = state;
 
   return (
     <>
@@ -30,28 +16,44 @@ const CitySelectionWorkflow: React.FC<CitySelectionWorkflowProps> = ({
         os possíveis destinos finais.
       </Text>
       <Text style={styles.inputLabel}>Possíveis pontos de partida:</Text>
-      <MultiCitySelector setCities={cities => setDepartureCities(cities)} cities={departureCities} />
+      <MultiCitySelector
+        setCities={cities => {
+          dispatch({ type: 'setDepartureCities', cities: cities });
+          sameDepartureArrival && dispatch({ type: 'setArrivalCities', cities: cities });
+        }}
+        cities={departureCities}
+      />
       <Text style={styles.inputLabel}>Cidades para visitar:</Text>
       <MultiCitySelector
-        onAddCity={city => setVisitingCities([...visitingCities, { city, minDays: 3, maxDays: 5 }])}
+        onAddCity={city =>
+          dispatch({
+            type: 'setVisitingCities',
+            cities: [...visitingCities, { city: city, minDays: 3, maxDays: 5 }]
+          })
+        }
         onRemoveCity={city =>
-          setVisitingCities(visitingCities.filter(visitingCity => visitingCity.city.id !== city.id))
+          dispatch({
+            type: 'setVisitingCities',
+            cities: state.visitingCities.filter(cityPeriod => cityPeriod.city.id !== city.id)
+          })
         }
         cities={visitingCities.map(cityStayPeriod => cityStayPeriod.city)}
       />
       <Text style={styles.inputLabel}>Possíveis destinos finais:</Text>
       <MultiCitySelector
         disabled={sameDepartureArrival}
-        setCities={cities => setArrivalCities(cities)}
-        cities={arrivalCities}
+        setCities={cities => dispatch({ type: 'setArrivalCities', cities: cities })}
+        cities={sameDepartureArrival ? [] : arrivalCities}
       />
       <View style={{ flexDirection: 'row', marginTop: 5 }}>
         <Switch
           trackColor={{ false: '#767577', true: '#FC427B' }}
           thumbColor={'#f4f3f4'}
           onValueChange={value => {
+            value
+              ? dispatch({ type: 'setArrivalCities', cities: state.departureCities })
+              : dispatch({ type: 'setArrivalCities', cities: [] });
             setSameDepartureArrival(value);
-            setArrivalCities([]);
           }}
           value={sameDepartureArrival}
         />

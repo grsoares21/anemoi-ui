@@ -6,6 +6,11 @@ export type CityStayPeriod = {
   maxDays: number;
 };
 
+export type DateRange = {
+  startDate: Date | null;
+  endDate: Date | null;
+};
+
 export enum WorkflowSection {
   Beginning = 0,
   CitySelection = 1,

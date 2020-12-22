@@ -1,11 +1,12 @@
 import { City } from '@anemoi-ui/services/LocationServices';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 import { Text, StyleSheet, ScrollView } from 'react-native';
 import Button from '../shared/Button/Button';
 import CitySelectionWorkflow from './CitySelectionWorkflow/CitySelectionWorkflow';
 import StayPeriodWorkflow from './StayPeriodWorfklow/StayPeriodWorkflow';
 import TravelPeriodWorkflow from './TravelPeriodWorkflow/TravelPeriodWorkflow';
 import { CityStayPeriod, WorkflowSection } from './TravelPlannerWorkflow.d';
+import { TravelPlannerWorkflowContext, TravelPlannerWorkflowReducer } from './TravelPlannerWorkflow.state';
 import WorkflowStep from './WorkflowStep/WorkflowStep';
 
 interface TravelPlannerWorkflowProps {
@@ -13,11 +14,18 @@ interface TravelPlannerWorkflowProps {
 }
 
 const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
-  const [workflowSection, updateWorkflowSection] = useState(WorkflowSection.Beginning);
+  const [workflowSection, updateWorkflowSection] = useState(WorkflowSection.StayPeriod);
 
-  const [departureCities, setDepartureCities] = useState<City[]>([]);
-  const [visitingCities, setVisitingCities] = useState<CityStayPeriod[]>([]);
-  const [arrivalCities, setArrivalCities] = useState<City[]>([]);
+  const [state, dispatch] = useReducer(TravelPlannerWorkflowReducer, {
+    departureCities: [],
+    arrivalCities: [],
+    visitingCities: [],
+    departureDateRange: { startDate: null, endDate: null },
+    arrivalDateRange: { startDate: null, endDate: null },
+    maxStopsPerRoute: 5,
+    noOfTravelers: 1,
+    preferredCriteria: 'price'
+  });
 
   useEffect(() => {
     if (!props.launchWorkflow) return;
@@ -41,59 +49,40 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
   }, [workflowSection, props.launchWorkflow]);
 
   return (
-    <ScrollView>
-      {props.launchWorkflow && (
-        <WorkflowStep>
-          <Text style={styles.title}>Ótimo, então vamos lá!</Text>
-        </WorkflowStep>
-      )}
-      {workflowSection >= WorkflowSection.CitySelection && (
-        <WorkflowStep>
-          <CitySelectionWorkflow
-            departureCities={departureCities}
-            setDepartureCities={setDepartureCities}
-            visitingCities={visitingCities}
-            setVisitingCities={setVisitingCities}
-            arrivalCities={arrivalCities}
-            setArrivalCities={setArrivalCities}
-          />
-          <Button
-            onPress={() => {
-              updateWorkflowSection(WorkflowSection.StayPeriodIntroduction);
-            }}
-          >
-            Next
-          </Button>
-        </WorkflowStep>
-      )}
-      {workflowSection >= WorkflowSection.StayPeriodIntroduction && (
-        <WorkflowStep>
-          <Text style={styles.title}>
-            Soa como um bom plano! Para te ajudar a planejar ele, vou precisar saber por volta de quantos dias você
-            deseja ficar em cada cidade:
-          </Text>
-        </WorkflowStep>
-      )}
-      {workflowSection >= WorkflowSection.StayPeriod && (
-        <WorkflowStep>
-          <StayPeriodWorkflow visitingCities={visitingCities} onSetVisitingCities={setVisitingCities} />
-          <Button
-            onPress={() => {
-              updateWorkflowSection(WorkflowSection.TravelPeriod);
-            }}
-          >
-            Next
-          </Button>
-        </WorkflowStep>
-      )}
-      {workflowSection >= WorkflowSection.TravelPeriod && (
-        <WorkflowStep>
-          <Text style={styles.title}>Anotado!</Text>
-          <Text style={styles.highlightedTitle}>Para quando você está planejando esta viagem?</Text>
-          <TravelPeriodWorkflow />
-        </WorkflowStep>
-      )}
-    </ScrollView>
+    <TravelPlannerWorkflowContext.Provider value={{ state, dispatch }}>
+      <ScrollView>
+        {props.launchWorkflow && (
+          <WorkflowStep>
+            <Text style={styles.title}>Ótimo, então vamos lá!</Text>
+          </WorkflowStep>
+        )}
+        {workflowSection >= WorkflowSection.CitySelection && (
+          <WorkflowStep>
+            <CitySelectionWorkflow />
+          </WorkflowStep>
+        )}
+        {workflowSection >= WorkflowSection.StayPeriodIntroduction && (
+          <WorkflowStep>
+            <Text style={styles.title}>
+              Soa como um bom plano! Para te ajudar a planejar ele, vou precisar saber por volta de quantos dias você
+              deseja ficar em cada cidade:
+            </Text>
+          </WorkflowStep>
+        )}
+        {workflowSection >= WorkflowSection.StayPeriod && (
+          <WorkflowStep>
+            <StayPeriodWorkflow />
+          </WorkflowStep>
+        )}
+        {workflowSection >= WorkflowSection.TravelPeriod && (
+          <WorkflowStep>
+            <Text style={styles.title}>Anotado!</Text>
+            <Text style={styles.highlightedTitle}>Para quando você está planejando esta viagem?</Text>
+            <TravelPeriodWorkflow />
+          </WorkflowStep>
+        )}
+      </ScrollView>
+    </TravelPlannerWorkflowContext.Provider>
   );
 };
 
