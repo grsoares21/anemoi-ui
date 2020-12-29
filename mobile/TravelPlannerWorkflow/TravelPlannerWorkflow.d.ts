@@ -12,12 +12,8 @@ export type DateRange = {
 };
 
 export enum WorkflowSection {
-  Beginning = 0,
-  CitySelection = 1,
-  StayPeriodIntroduction = 2,
-  StayPeriod = 3,
-  TravelPeriod = 4,
-  CalculateTravelPlan = 5,
-  CalculatingTravelPlan = 6,
-  TravelPlanResult = 7
+  CitySelection = 0,
+  StayPeriod = 1,
+  TravelPeriod = 2,
+  TravelPlanResult = 3
 }

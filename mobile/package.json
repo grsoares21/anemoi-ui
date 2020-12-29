@@ -34,6 +34,7 @@
     "react-native-safe-area-context": "3.1.4",
     "react-native-screens": "~2.10.1",
     "react-native-tab-view": "^2.15.2",
+    "react-native-tab-view-viewpager-adapter": "^1.1.0",
     "react-native-web": "~0.13.12",
     "styled-components": "^5.2.1"
   },

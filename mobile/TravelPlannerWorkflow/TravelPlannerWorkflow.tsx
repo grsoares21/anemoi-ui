@@ -6,6 +6,8 @@ import { WorkflowSection } from './TravelPlannerWorkflow.d';
 import { TravelPlannerWorkflowContext, TravelPlannerWorkflowReducer } from './TravelPlannerWorkflow.state';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { NavigationContainer } from '@react-navigation/native';
+import NavigationTabBar from './NavigationTabBar/NavigationTabBar';
+import { View } from 'react-native';
 
 interface TravelPlannerWorkflowProps {
   launchWorkflow: boolean;
@@ -27,34 +29,17 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
     preferredCriteria: 'price'
   });
 
-  useEffect(() => {
-    if (!props.launchWorkflow) return;
-    let timeOutToClear: ReturnType<typeof setTimeout>;
-    switch (workflowSection) {
-      // defines the side effects for each workflow step
-      case WorkflowSection.Beginning:
-        timeOutToClear = setTimeout(() => updateWorkflowSection(WorkflowSection.CitySelection), 300);
-        break;
-      case WorkflowSection.StayPeriodIntroduction:
-        timeOutToClear = setTimeout(() => updateWorkflowSection(WorkflowSection.StayPeriod), 300);
-        break;
-      /*case WorkflowSection.CalculateTravelPlan:
-        submitButtonRef.current.focus();
-        break;*/
-      default:
-        break;
-    }
-    let cleanUpFunction = () => clearTimeout(timeOutToClear);
-    return cleanUpFunction;
-  }, [workflowSection, props.launchWorkflow]);
-
   return (
     <TravelPlannerWorkflowContext.Provider value={{ state, dispatch }}>
       <NavigationContainer>
-        <Navigation.Navigator>
-          <Navigation.Screen name="euzeruz" component={CitySelectionWorkflow} />
+        <Navigation.Navigator
+          swipeEnabled={false}
+          tabBar={props => <NavigationTabBar {...props} currentWorkflowSection={workflowSection} />}
+        >
+          <Navigation.Screen name="CitySelection" component={CitySelectionWorkflow} />
           <Navigation.Screen name="StayPeriod" component={StayPeriodWorkflow} />
           <Navigation.Screen name="TravelPeriod" component={TravelPeriodWorkflow} />
+          <Navigation.Screen name="TravelPlanResult" component={() => <View></View>} />
         </Navigation.Navigator>
       </NavigationContainer>
     </TravelPlannerWorkflowContext.Provider>
