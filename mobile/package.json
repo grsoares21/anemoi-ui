@@ -39,7 +39,8 @@
     "styled-components": "^5.2.1"
   },
   "devDependencies": {
-    "@babel/core": "~7.9.0",
+    "@babel/core": "~7.12.0",
+    "@expo/webpack-config": "^0.12.52",
     "@types/react": "~16.9.35",
     "@types/react-dom": "~16.9.8",
     "@types/react-native": "~0.63.2",
