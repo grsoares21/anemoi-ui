@@ -1,4 +1,5 @@
 import { FontAwesome5 } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 import React, { useContext, useState } from 'react';
 import { View, Text, StyleSheet, Switch } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -10,6 +11,8 @@ const CitySelectionWorkflow: React.FC = () => {
 
   const { state, dispatch } = useContext(TravelPlannerWorkflowContext);
   const { departureCities, visitingCities, arrivalCities } = state;
+
+  const navigation = useNavigation();
 
   return (
     <View style={{ flex: 1, backgroundColor: 'white' }}>
@@ -68,7 +71,12 @@ const CitySelectionWorkflow: React.FC = () => {
       </View>
       <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
         <View style={{ flex: 0.5 }}>
-          <TouchableOpacity style={{ paddingVertical: 20, alignItems: 'center' }}>
+          <TouchableOpacity
+            style={{ paddingVertical: 20, alignItems: 'center' }}
+            onPress={() => {
+              navigation.navigate('StayPeriod');
+            }}
+          >
             <FontAwesome5 name="chevron-right" size={24} color="#FC427B" />
           </TouchableOpacity>
         </View>

@@ -8,6 +8,7 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import { NavigationContainer } from '@react-navigation/native';
 import NavigationTabBar from './NavigationTabBar/NavigationTabBar';
 import { View } from 'react-native';
+import TravelPlanResult from './TravelPlanResult/TravelPlanResult';
 
 interface TravelPlannerWorkflowProps {
   launchWorkflow: boolean;
@@ -31,7 +32,13 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
 
   return (
     <TravelPlannerWorkflowContext.Provider value={{ state, dispatch }}>
-      <NavigationContainer>
+      <NavigationContainer
+        onStateChange={navigationState => {
+          if (navigationState && navigationState.index + 1 > workflowSection) {
+            updateWorkflowSection(navigationState.index + 1);
+          }
+        }}
+      >
         <Navigation.Navigator
           swipeEnabled={false}
           tabBar={props => <NavigationTabBar {...props} currentWorkflowSection={workflowSection} />}
@@ -39,7 +46,7 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
           <Navigation.Screen name="CitySelection" component={CitySelectionWorkflow} />
           <Navigation.Screen name="StayPeriod" component={StayPeriodWorkflow} />
           <Navigation.Screen name="TravelPeriod" component={TravelPeriodWorkflow} />
-          <Navigation.Screen name="TravelPlanResult" component={() => <View></View>} />
+          <Navigation.Screen name="TravelPlanResult" component={TravelPlanResult} />
         </Navigation.Navigator>
       </NavigationContainer>
     </TravelPlannerWorkflowContext.Provider>
