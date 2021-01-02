@@ -14,7 +14,7 @@
     "@anemoi-ui/services": "*",
     "@expo/vector-icons": "^10.0.0",
     "@jesster2k10/react-native-range-slider": "^0.3.1",
-    "@react-native-community/masked-view": "0.1.10",
+    "@react-native-masked-view/masked-view": "^0.2.0",
     "@react-navigation/material-top-tabs": "^5.3.10",
     "@react-navigation/native": "^5.8.10",
     "@types/lodash.debounce": "^4.0.6",
