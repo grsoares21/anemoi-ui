@@ -72,6 +72,53 @@ const NavigationTabBar: React.FC<NavigationTabBarProps> = ({
           zIndex: 2
         }}
       />
+      {state.routes.map((route, index) => {
+        const { options } = descriptors[route.key];
+        const isFocused = state.index === index;
+
+        const onPress = () => {
+          const event = navigation.emit({
+            type: 'tabPress',
+            target: route.key,
+            canPreventDefault: true
+          });
+
+          if (!isFocused && !event.defaultPrevented) {
+            navigation.navigate(route.name);
+          }
+        };
+
+        const onLongPress = () => {
+          navigation.emit({
+            type: 'tabLongPress',
+            target: route.key
+          });
+        };
+
+        const isDisabled = index >= currentWorkflowSection;
+        return (
+          <TouchableOpacity
+            accessibilityRole="button"
+            accessibilityState={isFocused ? { selected: true } : {}}
+            accessibilityLabel={options.tabBarAccessibilityLabel}
+            key={index}
+            disabled={isDisabled}
+            style={{
+              opacity: 0,
+              backgroundColor: 'white',
+              height: 43,
+              width: '25%',
+              zIndex: 3,
+              position: 'absolute',
+              left: index * 25 + '%'
+            }}
+            activeOpacity={0.7}
+            onPress={onPress}
+            onLongPress={onLongPress}
+          />
+        );
+      })}
+
       <View style={{ flex: 1, height: 28, backgroundColor: '#e1e1e1' }} />
     </MaskedView>
   );

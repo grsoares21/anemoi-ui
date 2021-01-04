@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useState } from 'react';
+import React, { useReducer, useState } from 'react';
 import CitySelectionWorkflow from './CitySelectionWorkflow/CitySelectionWorkflow';
 import StayPeriodWorkflow from './StayPeriodWorfklow/StayPeriodWorkflow';
 import TravelPeriodWorkflow from './TravelPeriodWorkflow/TravelPeriodWorkflow';
@@ -7,7 +7,6 @@ import { TravelPlannerWorkflowContext, TravelPlannerWorkflowReducer } from './Tr
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import NavigationTabBar from './NavigationTabBar/NavigationTabBar';
-import { View } from 'react-native';
 import TravelPlanResult from './TravelPlanResult/TravelPlanResult';
 
 interface TravelPlannerWorkflowProps {

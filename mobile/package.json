@@ -18,6 +18,7 @@
     "@react-navigation/material-top-tabs": "^5.3.10",
     "@react-navigation/native": "^5.8.10",
     "@types/lodash.debounce": "^4.0.6",
+    "@types/react-daterange-picker": "^2.0.4",
     "@webileapps/rn-range-slider": "^0.0.11",
     "expo": "~39.0.2",
     "expo-linear-gradient": "~8.3.0",
