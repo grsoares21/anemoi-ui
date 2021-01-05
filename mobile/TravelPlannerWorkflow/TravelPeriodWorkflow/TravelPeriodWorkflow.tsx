@@ -11,6 +11,8 @@ const TravelPeriodWorkflow: React.FC = () => {
         <Text style={styles.title}>Anotado!</Text>
         <Text style={styles.highlightedTitle}>Para quando você está planejando esta viagem?</Text>
       </View>
+
+      {/** TODO: separate this two buttos into a component */}
       <View style={{ flexDirection: 'row' }}>
         <TouchableOpacity
           style={{ paddingVertical: 20, alignItems: 'center', flex: 1 }}

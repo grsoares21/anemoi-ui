@@ -8,6 +8,7 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import { NavigationContainer } from '@react-navigation/native';
 import NavigationTabBar from './NavigationTabBar/NavigationTabBar';
 import TravelPlanResult from './TravelPlanResult/TravelPlanResult';
+import Pager from '../shared/Pager/Pager';
 
 interface TravelPlannerWorkflowProps {
   launchWorkflow: boolean;
@@ -39,7 +40,7 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
         }}
       >
         <Navigation.Navigator
-          swipeEnabled={false}
+          pager={props => <Pager {...props} preventSwipeLeftOn={1} preventSwipeRightOn={1} />}
           tabBar={props => <NavigationTabBar {...props} currentWorkflowSection={workflowSection} />}
         >
           <Navigation.Screen name="CitySelection" component={CitySelectionWorkflow} />
