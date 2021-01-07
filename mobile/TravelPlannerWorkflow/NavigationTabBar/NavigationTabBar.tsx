@@ -57,7 +57,7 @@ const NavigationTabBar: React.FC<NavigationTabBarProps> = ({
     >
       <View
         style={{
-          width: currentWorkflowSection * 25 + '%',
+          width: (currentWorkflowSection + 1) * 25 + '%',
           height: 28,
           backgroundColor: '#ffbbcf'
         }}

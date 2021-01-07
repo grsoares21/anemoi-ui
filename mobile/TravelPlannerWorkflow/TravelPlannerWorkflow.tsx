@@ -17,7 +17,7 @@ interface TravelPlannerWorkflowProps {
 const Navigation = createMaterialTopTabNavigator();
 
 const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
-  const [workflowSection, updateWorkflowSection] = useState(WorkflowSection.StayPeriod);
+  const [workflowSection, updateWorkflowSection] = useState(WorkflowSection.CitySelection);
 
   const [state, dispatch] = useReducer(TravelPlannerWorkflowReducer, {
     departureCities: [],
@@ -29,18 +29,21 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
     noOfTravelers: 1,
     preferredCriteria: 'price'
   });
+  console.log(`Workflow section: ${workflowSection}`);
 
   return (
     <TravelPlannerWorkflowContext.Provider value={{ state, dispatch }}>
       <NavigationContainer
         onStateChange={navigationState => {
-          if (navigationState && navigationState.index + 1 > workflowSection) {
-            updateWorkflowSection(navigationState.index + 1);
+          if (navigationState && navigationState.index > workflowSection) {
+            updateWorkflowSection(navigationState.index);
           }
         }}
       >
         <Navigation.Navigator
-          pager={props => <Pager {...props} preventSwipeLeftOn={1} preventSwipeRightOn={1} />}
+          pager={props => (
+            <Pager {...props} preventSwipeLeftOn={[0, 1, 2, 3].filter(index => index >= workflowSection)} />
+          )}
           tabBar={props => <NavigationTabBar {...props} currentWorkflowSection={workflowSection} />}
         >
           <Navigation.Screen name="CitySelection" component={CitySelectionWorkflow} />

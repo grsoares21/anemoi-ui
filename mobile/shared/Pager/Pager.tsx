@@ -5,7 +5,8 @@ import { PanGestureHandler, State } from 'react-native-gesture-handler';
 import Animated, {
   Easing as OldEasing,
   // @ts-ignore
-  EasingNode
+  EasingNode,
+  greaterOrEq
 } from 'react-native-reanimated';
 import memoize from './memoize';
 
@@ -19,8 +20,8 @@ export type Props<T extends Route> = PagerCommonProps & {
   onIndexChange: (index: number) => void;
   navigationState: NavigationState<T>;
   layout: Layout;
-  preventSwipeLeftOn?: number;
-  preventSwipeRightOn?: number;
+  preventSwipeLeftOn?: number[];
+  preventSwipeRightOn?: number[];
   // Clip unfocused views to improve memory usage
   // Don't enable this on iOS where this is buggy and views don't re-appear
   removeClippedSubviews?: boolean;
@@ -127,6 +128,26 @@ export default class Pager<T extends Route> extends React.Component<Props<T>, Co
     if (this.context && this.context.addGestureHandlerRef) {
       this.context.addGestureHandlerRef(this.gestureHandlerRef);
     }
+
+    this.preventSwipeLeft.setValue(
+      this.props.preventSwipeLeftOn
+        ? or(
+            new Value(0),
+            new Value(0),
+            ...this.props.preventSwipeLeftOn.map(forbiddenIndex => eq(new Value(forbiddenIndex), this.index))
+          )
+        : new Value(0)
+    );
+
+    this.preventSwipeRight.setValue(
+      this.props.preventSwipeRightOn
+        ? or(
+            new Value(0),
+            new Value(0),
+            ...this.props.preventSwipeRightOn.map(forbiddenIndex => eq(new Value(forbiddenIndex), this.index))
+          )
+        : new Value(0)
+    );
   }
 
   componentDidUpdate(prevProps: Props<T>) {
@@ -290,6 +311,10 @@ export default class Pager<T extends Route> extends React.Component<Props<T>, Co
   // It is calculated based on the translate value and layout width
   // If we don't have the layout yet, we should return the current index
   private position = cond(this.layoutWidth, divide(multiply(this.progress, -1), this.layoutWidth), this.index);
+
+  private preventSwipeLeft: Animated.Value<0 | 1> = new Value(1);
+
+  private preventSwipeRight: Animated.Value<0 | 1> = new Value(0);
 
   // Animation configuration
   private springConfig = {
@@ -494,8 +519,7 @@ export default class Pager<T extends Route> extends React.Component<Props<T>, Co
 
   private translateX = block([
     onChange(this.gesturesEnabled, cond(not(this.gesturesEnabled), call([this.gesturesEnabled], this.toggleEnabled))),
-    onChange(
-      this.index,
+    onChange(this.index, [
       call([this.index], ([value]) => {
         this.currentIndexValue = value;
         // Without this check, the pager can go to an infinite update <-> animate loop for sync updates
@@ -512,8 +536,28 @@ export default class Pager<T extends Route> extends React.Component<Props<T>, Co
             this.forceUpdate();
           }
         }
+
+        this.preventSwipeLeft.setValue(
+          this.props.preventSwipeLeftOn
+            ? or(
+                new Value(0),
+                new Value(0),
+                ...this.props.preventSwipeLeftOn.map(forbiddenIndex => eq(new Value(forbiddenIndex), this.index))
+              )
+            : new Value(0)
+        );
+
+        this.preventSwipeRight.setValue(
+          this.props.preventSwipeRightOn
+            ? or(
+                new Value(0),
+                new Value(0),
+                ...this.props.preventSwipeRightOn.map(forbiddenIndex => eq(new Value(forbiddenIndex), this.index))
+              )
+            : new Value(0)
+        );
       })
-    ),
+    ]),
     onChange(
       this.position,
       // Listen to updates in the position to detect when we enter a screen
@@ -584,6 +628,18 @@ export default class Pager<T extends Route> extends React.Component<Props<T>, Co
       ]
     ),
     onChange(
+      this.preventSwipeRight,
+      call([this.preventSwipeRight], swipe => {
+        console.log(`Swipe right ${swipe}`);
+      })
+    ),
+    onChange(
+      this.preventSwipeLeft,
+      call([this.preventSwipeLeft], swipe => {
+        console.log(`Swipe left ${swipe}`);
+      })
+    ),
+    onChange(
       this.nextIndex,
       cond(neq(this.nextIndex, UNSET), [
         // Stop any running animations
@@ -595,7 +651,17 @@ export default class Pager<T extends Route> extends React.Component<Props<T>, Co
       ])
     ),
     cond(
-      eq(this.gestureState, State.ACTIVE),
+      and(
+        eq(this.gestureState, State.ACTIVE),
+        not(and(this.preventSwipeLeft, lessThan(this.gestureX, 0))),
+        not(and(this.preventSwipeRight, greaterOrEq(this.gestureX, 0)))
+        // not(
+        //   or(
+        //     and(eq(this.index, new Value(this.props.preventSwipeRightOn)), greaterThan(this.gestureX, 0)),
+        //     and(eq(this.index, new Value(this.props.preventSwipeLeftOn)), lessThan(this.gestureX, 0))
+        //   )
+        // )
+      ),
       [
         this.maybeCancel,
         cond(this.isSwiping, NOOP, [
@@ -605,6 +671,7 @@ export default class Pager<T extends Route> extends React.Component<Props<T>, Co
           // Also update the drag offset to the last progress
           set(this.offsetX, this.progress)
         ]),
+
         // Update progress with previous offset + gesture distance
         set(this.progress, I18nManager.isRTL ? sub(this.offsetX, this.gestureX) : add(this.offsetX, this.gestureX)),
         // Stop animations while we're dragging
@@ -621,6 +688,8 @@ export default class Pager<T extends Route> extends React.Component<Props<T>, Co
               // We check against a minimum distance instead of 0 because `activeOffsetX` doesn't seem to be respected on Android
               // For other factors such as state update, the velocity and gesture distance don't matter
               greaterThan(abs(this.gestureX), SWIPE_DISTANCE_MINIMUM),
+              not(and(this.preventSwipeLeft, lessThan(this.gestureX, 0))),
+              not(and(this.preventSwipeRight, greaterOrEq(this.gestureX, 0))),
               greaterThan(abs(this.extrapolatedPosition), divide(this.layoutWidth, 2))
             ),
             // For swipe gesture, to calculate the index, determine direction and add to index
@@ -661,10 +730,8 @@ export default class Pager<T extends Route> extends React.Component<Props<T>, Co
   );
 
   render() {
-    console.log(`Index: ${this.index}`);
-    console.log(`Prevent swipe left on: ${this.props.preventSwipeLeftOn}`);
+    console.log(`prevent swipe left on: ${this.props.preventSwipeLeftOn?.join(',')}`);
     const { layout, navigationState, swipeEnabled, children, removeClippedSubviews, gestureHandlerProps } = this.props;
-    console.log(`Prevent swipe right on: ${this.props.preventSwipeRightOn}`);
     const translateX = this.getTranslateX(this.layoutWidth, this.routesLength, this.translateX);
 
     return children({
