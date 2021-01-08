@@ -1,15 +1,32 @@
 import { FontAwesome5 } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import moment from 'moment';
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import DateRangePicker, { DateRangePickerState } from '../../shared/DateRangePicker/DateRangePicker';
 
 const TravelPeriodWorkflow: React.FC = () => {
   const navigation = useNavigation();
+  const [dates, setDates] = useState<DateRangePickerState>({
+    endDate: moment(),
+    startDate: moment(),
+    displayedDate: moment()
+  });
+
   return (
     <View style={{ backgroundColor: 'white', flex: 1, padding: 10 }}>
       <View style={{ flex: 1 }}>
         <Text style={styles.title}>Anotado!</Text>
         <Text style={styles.highlightedTitle}>Para quando você está planejando esta viagem?</Text>
+        <DateRangePicker
+          onChange={setDates}
+          endDate={dates.endDate}
+          startDate={dates.startDate}
+          displayedDate={dates.displayedDate}
+          range
+        >
+          <Text>Click me!</Text>
+        </DateRangePicker>
       </View>
 
       {/** TODO: separate this two buttos into a component */}

@@ -1,7 +1,7 @@
 import { FontAwesome5 } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import React, { useContext, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import InputSpinner from 'react-native-input-spinner';
 import { TravelPlannerWorkflowContext } from '../TravelPlannerWorkflow.state';
 
@@ -14,8 +14,8 @@ const StayPeriodWorkflow: React.FC = () => {
   const navigation = useNavigation();
 
   return (
-    <View style={{ backgroundColor: 'white', flex: 1, padding: 10 }}>
-      <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, padding: 10, backgroundColor: 'white' }}>
+      <ScrollView style={{ flex: 1 }}>
         <Text style={styles.title}>
           Soa como um bom plano! Para te ajudar a planejar ele, vou precisar saber por volta de quantos dias você deseja
           ficar em cada cidade:
@@ -77,7 +77,7 @@ const StayPeriodWorkflow: React.FC = () => {
             </View>
           </View>
         ))}
-      </View>
+      </ScrollView>
       <View style={{ flexDirection: 'row' }}>
         <TouchableOpacity
           style={{ paddingVertical: 20, alignItems: 'center', flex: 1 }}
