@@ -1,18 +1,34 @@
 import { FontAwesome5 } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Switch } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import MultiCitySelector from '../../shared/MultiCitySelector/MultiCitySelector';
+import { WorkflowSection } from '../TravelPlannerWorkflow.d';
 import { TravelPlannerWorkflowContext } from '../TravelPlannerWorkflow.state';
 
-const CitySelectionWorkflow: React.FC = () => {
-  const [sameDepartureArrival, setSameDepartureArrival] = useState(false);
+interface CitySelectionWorkflowProps {
+  updateWorkflowSection: (newSection: WorkflowSection) => void;
+}
+
+const CitySelectionWorkflow: React.FC<CitySelectionWorkflowProps> = ({ updateWorkflowSection }) => {
+  const [sameDepartureArrival, setSameDepartureArrival] = useState(true);
 
   const { state, dispatch } = useContext(TravelPlannerWorkflowContext);
   const { departureCities, visitingCities, arrivalCities } = state;
+  const [advanceEnabled, setAdvanceEnabled] = useState(false);
 
   const navigation = useNavigation();
+
+  useEffect(() => {
+    const enableAdvance =
+      departureCities.length >= 1 && visitingCities.length >= 1 && (sameDepartureArrival || arrivalCities.length >= 1);
+    setAdvanceEnabled(enableAdvance);
+
+    if (!enableAdvance) {
+      updateWorkflowSection(WorkflowSection.CitySelection);
+    }
+  }, [departureCities, visitingCities, arrivalCities, sameDepartureArrival]);
 
   return (
     <View style={{ flex: 1, backgroundColor: 'white' }}>
@@ -54,7 +70,7 @@ const CitySelectionWorkflow: React.FC = () => {
         />
         <View style={{ flexDirection: 'row', marginTop: 5 }}>
           <Switch
-            trackColor={{ false: '#767577', true: '#FC427B' }}
+            trackColor={{ false: '#8a8a8a', true: '#FC427B' }}
             thumbColor={'#f4f3f4'}
             onValueChange={value => {
               value
@@ -72,12 +88,13 @@ const CitySelectionWorkflow: React.FC = () => {
       <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
         <View style={{ flex: 0.5 }}>
           <TouchableOpacity
+            disabled={!advanceEnabled}
             style={{ paddingVertical: 20, alignItems: 'center' }}
             onPress={() => {
               navigation.navigate('StayPeriod');
             }}
           >
-            <FontAwesome5 name="chevron-right" size={24} color="#FC427B" />
+            <FontAwesome5 name="chevron-right" size={24} color={advanceEnabled ? '#FC427B' : '#ccc'} />
           </TouchableOpacity>
         </View>
       </View>

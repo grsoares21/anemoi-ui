@@ -157,7 +157,9 @@ export default class Pager<T extends Route> extends React.Component<Props<T>, Co
       swipeVelocityImpact,
       springVelocityScale,
       springConfig,
-      timingConfig
+      timingConfig,
+      preventSwipeLeftOn,
+      preventSwipeRightOn
     } = this.props;
     const { index, routes } = navigationState;
 
@@ -183,6 +185,26 @@ export default class Pager<T extends Route> extends React.Component<Props<T>, Co
       this.progress.setValue(-index * layout.width);
       this.layoutWidth.setValue(layout.width);
     }
+
+    this.preventSwipeLeft.setValue(
+      this.props.preventSwipeLeftOn
+        ? or(
+            new Value(0),
+            new Value(0),
+            ...this.props.preventSwipeLeftOn.map(forbiddenIndex => eq(new Value(forbiddenIndex), this.index))
+          )
+        : new Value(0)
+    );
+
+    this.preventSwipeRight.setValue(
+      this.props.preventSwipeRightOn
+        ? or(
+            new Value(0),
+            new Value(0),
+            ...this.props.preventSwipeRightOn.map(forbiddenIndex => eq(new Value(forbiddenIndex), this.index))
+          )
+        : new Value(0)
+    );
 
     if (prevProps.swipeVelocityImpact !== swipeVelocityImpact) {
       this.swipeVelocityImpact.setValue(
@@ -628,18 +650,6 @@ export default class Pager<T extends Route> extends React.Component<Props<T>, Co
       ]
     ),
     onChange(
-      this.preventSwipeRight,
-      call([this.preventSwipeRight], swipe => {
-        console.log(`Swipe right ${swipe}`);
-      })
-    ),
-    onChange(
-      this.preventSwipeLeft,
-      call([this.preventSwipeLeft], swipe => {
-        console.log(`Swipe left ${swipe}`);
-      })
-    ),
-    onChange(
       this.nextIndex,
       cond(neq(this.nextIndex, UNSET), [
         // Stop any running animations
@@ -730,7 +740,6 @@ export default class Pager<T extends Route> extends React.Component<Props<T>, Co
   );
 
   render() {
-    console.log(`prevent swipe left on: ${this.props.preventSwipeLeftOn?.join(',')}`);
     const { layout, navigationState, swipeEnabled, children, removeClippedSubviews, gestureHandlerProps } = this.props;
     const translateX = this.getTranslateX(this.layoutWidth, this.routesLength, this.translateX);
 

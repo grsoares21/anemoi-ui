@@ -44,11 +44,7 @@ const NavigationTabBar: React.FC<NavigationTabBarProps> = ({
 
             return (
               <View key={index} style={{ flex: 1, alignItems: 'center', padding: 15 }}>
-                <FontAwesome5
-                  name={routeIconMap[route.name]}
-                  color={isFocused ? '#FC427B' : isDisabled ? '#999' : '#7893d3'}
-                  size={28}
-                />
+                <FontAwesome5 name={routeIconMap[route.name]} color="black" size={28} />
               </View>
             );
           })}
@@ -95,7 +91,7 @@ const NavigationTabBar: React.FC<NavigationTabBarProps> = ({
           });
         };
 
-        const isDisabled = index >= currentWorkflowSection;
+        const isDisabled = index > currentWorkflowSection;
         return (
           <TouchableOpacity
             accessibilityRole="button"
@@ -119,57 +115,9 @@ const NavigationTabBar: React.FC<NavigationTabBarProps> = ({
         );
       })}
 
-      <View style={{ flex: 1, height: 28, backgroundColor: '#e1e1e1' }} />
+      <View style={{ flex: 1, height: 28, backgroundColor: '#ccc' }} />
     </MaskedView>
   );
 };
 
 export default NavigationTabBar;
-
-/*<View style={{ position: 'absolute', width: '100%', height: 43, backgroundColor: 'transparent', zIndex: 3 }}>
-        {state.routes.map((route, index) => {
-          const { options } = descriptors[route.key];
-          const isFocused = state.index === index;
-
-          const onPress = () => {
-            alert(route.name);
-            /*const event = navigation.emit({
-              type: 'tabPress',
-              target: route.key,
-              canPreventDefault: true
-            });
-
-            if (!isFocused && !event.defaultPrevented) {
-              navigation.navigate(route.name);
-            }
-          };
-
-          const onLongPress = () => {
-            navigation.emit({
-              type: 'tabLongPress',
-              target: route.key
-            });
-          };
-
-          const isDisabled = index > currentWorkflowSection;
-
-          return (
-            <TouchableOpacity
-              accessibilityRole="button"
-              accessibilityState={isFocused ? { selected: true } : {}}
-              accessibilityLabel={options.tabBarAccessibilityLabel}
-              disabled={isDisabled}
-              onPress={onPress}
-              onLongPress={onLongPress}
-              style={{
-                flex: 1,
-                height: 28,
-                backgroundColor: 'red',
-                zIndex: 3,
-                opacity: 1
-              }}
-            />
-          );
-        })}
-      </View>
-      */

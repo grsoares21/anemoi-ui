@@ -55,19 +55,12 @@ const MultiCitySelector: React.FC<MultiCitySelectorProps> = props => {
   }, [shouldRefocus, selectElement]);
 
   const debouncedFetchCityOptions = debounce(
-    (
-      searchTerm: string,
-      callback: (values: MultiCitySelectorOptions[]) => void
-    ) => {
+    (searchTerm: string, callback: (values: MultiCitySelectorOptions[]) => void) => {
       LocationServices.searchCities(searchTerm, i18n.language)
         .then(cities =>
           cities
             .filter(
-              city =>
-                !props.invalidCities ||
-                !props.invalidCities.some(
-                  invalidCity => invalidCity.id === city.id
-                )
+              city => !props.invalidCities || !props.invalidCities.some(invalidCity => invalidCity.id === city.id)
             )
             // filter invalid options out if there are any
             .map(city => {
@@ -80,7 +73,7 @@ const MultiCitySelector: React.FC<MultiCitySelectorProps> = props => {
         )
         .then(cities => callback(cities))
         .catch(error => {
-          console.log(error);
+          console.error(error);
         });
     },
     500
@@ -89,10 +82,7 @@ const MultiCitySelector: React.FC<MultiCitySelectorProps> = props => {
   const themeClass = useTheme();
 
   return useMemo(() => {
-    const fetchCityOptions = (
-      searchTerm: string,
-      callback: (values: MultiCitySelectorOptions[]) => void
-    ) => {
+    const fetchCityOptions = (searchTerm: string, callback: (values: MultiCitySelectorOptions[]) => void) => {
       if (!searchTerm) {
         return Promise.resolve({ options: [] });
       }
@@ -103,9 +93,7 @@ const MultiCitySelector: React.FC<MultiCitySelectorProps> = props => {
       <>
         <Async
           ref={selectElement}
-          className={`MultiCitySelector ${
-            props.invalid && touched ? 'invalid' : ''
-          } ${themeClass}`}
+          className={`MultiCitySelector ${props.invalid && touched ? 'invalid' : ''} ${themeClass}`}
           classNamePrefix="MultiCitySelector"
           isDisabled={props.disabled}
           onBlur={() => setTouched(true)}
@@ -118,14 +106,9 @@ const MultiCitySelector: React.FC<MultiCitySelectorProps> = props => {
             })
           }
           onKeyDown={(e: KeyboardEventInit) => {
-            let stateManager =
-              selectElement.current && selectElement.current.select.state;
+            let stateManager = selectElement.current && selectElement.current.select.state;
             if (stateManager != null && e.key === 'Enter') {
-              if (
-                !stateManager.menuIsOpen &&
-                stateManager.value &&
-                stateManager.value.length > 0
-              ) {
+              if (!stateManager.menuIsOpen && stateManager.value && stateManager.value.length > 0) {
                 // the confirm is executed when there is at least one value selected
                 // and the user is not selecting any values
                 props.onConfirm && props.onConfirm();
@@ -139,51 +122,32 @@ const MultiCitySelector: React.FC<MultiCitySelectorProps> = props => {
             DropdownIndicator: () => null,
             IndicatorSeparator: () => null
           }}
-          onChange={(
-            value: ValueType<MultiCitySelectorOptions>,
-            action: Action
-          ) => {
+          onChange={(value: ValueType<MultiCitySelectorOptions>, action: Action) => {
             switch (action.action) {
               case 'clear':
                 props.onClear && props.onClear();
                 break;
               case 'select-option':
-                props.onAddCity &&
-                  action.option &&
-                  props.onAddCity(
-                    (action.option as MultiCitySelectorOptions).data
-                  );
+                props.onAddCity && action.option && props.onAddCity((action.option as MultiCitySelectorOptions).data);
                 setShouldRefocus(true);
                 break;
               case 'pop-value':
               case 'remove-value':
                 props.onRemoveCity &&
                   action.removedValue &&
-                  props.onRemoveCity(
-                    (action.removedValue as MultiCitySelectorOptions).data
-                  );
+                  props.onRemoveCity((action.removedValue as MultiCitySelectorOptions).data);
                 break;
               default:
                 break;
             }
 
             value
-              ? props.onChange &&
-                props.onChange(
-                  (value as MultiCitySelectorOptions[]).map(
-                    option => option.data
-                  )
-                )
+              ? props.onChange && props.onChange((value as MultiCitySelectorOptions[]).map(option => option.data))
               : props.onChange && props.onChange([]);
           }}
         />
-        <span
-          className="MultiCitySelector__InvalidMessage"
-          data-testid="invalid-message"
-        >
-          {props.invalid && touched && props.invalidMessage
-            ? props.invalidMessage
-            : ''}
+        <span className="MultiCitySelector__InvalidMessage" data-testid="invalid-message">
+          {props.invalid && touched && props.invalidMessage ? props.invalidMessage : ''}
         </span>
       </>
     );

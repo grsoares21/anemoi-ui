@@ -10,13 +10,9 @@ import NavigationTabBar from './NavigationTabBar/NavigationTabBar';
 import TravelPlanResult from './TravelPlanResult/TravelPlanResult';
 import Pager from '../shared/Pager/Pager';
 
-interface TravelPlannerWorkflowProps {
-  launchWorkflow: boolean;
-}
-
 const Navigation = createMaterialTopTabNavigator();
 
-const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
+const TravelPlannerWorkflow: React.FC = () => {
   const [workflowSection, updateWorkflowSection] = useState(WorkflowSection.CitySelection);
 
   const [state, dispatch] = useReducer(TravelPlannerWorkflowReducer, {
@@ -29,7 +25,6 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
     noOfTravelers: 1,
     preferredCriteria: 'price'
   });
-  console.log(`Workflow section: ${workflowSection}`);
 
   return (
     <TravelPlannerWorkflowContext.Provider value={{ state, dispatch }}>
@@ -46,7 +41,9 @@ const TravelPlannerWorkflow: React.FC<TravelPlannerWorkflowProps> = props => {
           )}
           tabBar={props => <NavigationTabBar {...props} currentWorkflowSection={workflowSection} />}
         >
-          <Navigation.Screen name="CitySelection" component={CitySelectionWorkflow} />
+          <Navigation.Screen name="CitySelection">
+            {() => <CitySelectionWorkflow updateWorkflowSection={updateWorkflowSection} />}
+          </Navigation.Screen>
           <Navigation.Screen name="StayPeriod" component={StayPeriodWorkflow} />
           <Navigation.Screen name="TravelPeriod" component={TravelPeriodWorkflow} />
           <Navigation.Screen name="TravelPlanResult" component={TravelPlanResult} />
