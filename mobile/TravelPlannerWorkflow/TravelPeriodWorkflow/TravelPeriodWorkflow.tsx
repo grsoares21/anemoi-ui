@@ -9,8 +9,7 @@ const TravelPeriodWorkflow: React.FC = () => {
   const navigation = useNavigation();
   const [dates, setDates] = useState<DateRangePickerState>({
     endDate: moment(),
-    startDate: moment(),
-    displayedDate: moment()
+    startDate: moment()
   });
 
   return (
@@ -18,13 +17,7 @@ const TravelPeriodWorkflow: React.FC = () => {
       <View style={{ flex: 1 }}>
         <Text style={styles.title}>Anotado!</Text>
         <Text style={styles.highlightedTitle}>Para quando você está planejando esta viagem?</Text>
-        <DateRangePicker
-          onChange={setDates}
-          endDate={dates.endDate}
-          startDate={dates.startDate}
-          displayedDate={dates.displayedDate}
-          range
-        >
+        <DateRangePicker onChange={setDates} endDate={dates.endDate} startDate={dates.startDate} range>
           <Text>Click me!</Text>
         </DateRangePicker>
       </View>

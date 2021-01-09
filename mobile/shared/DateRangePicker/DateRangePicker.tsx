@@ -1,6 +1,15 @@
 import moment from 'moment';
 import React, { useState, useEffect, useCallback } from 'react';
-import { StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
+import {
+  KeyboardAvoidingView,
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View
+} from 'react-native';
+import Modal from 'react-native-modal';
 import Button from './Button';
 import Day from './Day';
 import Header from './Header';
@@ -8,7 +17,6 @@ import Header from './Header';
 import { Dimensions } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
 
-const height = Dimensions.get('screen').height;
 const width = Dimensions.get('screen').width;
 
 export interface DateRangePickerState {
@@ -16,13 +24,11 @@ export interface DateRangePickerState {
   startDate?: moment.Moment | null;
   endDate?: moment.Moment | null;
   selecting?: boolean;
-  displayedDate: moment.Moment;
 }
 
 interface DateRangePickerProps {
   startDate?: moment.Moment | null;
   endDate?: moment.Moment | null;
-  displayedDate: moment.Moment;
   minDate?: moment.Moment;
   maxDate?: moment.Moment;
   date?: moment.Moment | null;
@@ -36,26 +42,23 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
   startDate,
   endDate,
   onChange,
-  displayedDate,
   minDate,
   date,
   maxDate,
   range,
-  children,
   presetButtons,
   open
 }) => {
+  const today = moment();
+
   const [isOpen, setIsOpen] = useState(false);
   const [weeks, setWeeks] = useState<JSX.Element[]>([]);
   const [selecting, setSelecting] = useState(false);
   const [dayHeaders, setDayHeaders] = useState<JSX.Element[]>([]);
+  const [displayedDate, setDisplayedDate] = useState(today);
 
   const _onOpen = () => {
     if (typeof open !== 'boolean') onOpen();
-  };
-
-  const _onClose = () => {
-    if (typeof open !== 'boolean') onClose();
   };
 
   const onOpen = () => {
@@ -67,22 +70,17 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
     setSelecting(false);
     if (!endDate) {
       onChange({
-        endDate: startDate,
-        displayedDate: moment()
+        endDate: startDate
       });
     }
   };
 
   const previousMonth = () => {
-    onChange({
-      displayedDate: moment(displayedDate).subtract(1, 'months')
-    });
+    setDisplayedDate(moment(displayedDate.subtract(1, 'months')));
   };
 
   const nextMonth = () => {
-    onChange({
-      displayedDate: moment(displayedDate).add(1, 'months')
-    });
+    setDisplayedDate(moment(displayedDate.add(1, 'months')));
   };
 
   const selected = useCallback((_date, _startDate, _endDate, __date) => {
@@ -97,23 +95,21 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
     return (_minDate && _date.isBefore(_minDate, 'day')) || (_maxDate && _date.isAfter(_maxDate, 'day'));
   }, []);
 
-  const today = () => {
+  const onClickToday = () => {
     if (range) {
       setSelecting(true);
       onChange({
         date: null,
-        startDate: moment(),
+        startDate: today,
         endDate: null,
-        selecting: true,
-        displayedDate: moment()
+        selecting: true
       });
     } else {
       setSelecting(false);
       onChange({
-        date: moment(),
+        date: today,
         startDate: null,
-        endDate: null,
-        displayedDate: moment()
+        endDate: null
       });
     }
   };
@@ -122,9 +118,8 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
     setSelecting(false);
     onChange({
       date: null,
-      startDate: moment().startOf('week'),
-      endDate: moment().endOf('week'),
-      displayedDate: moment()
+      startDate: today.startOf('week'),
+      endDate: today.endOf('week')
     });
   };
 
@@ -132,9 +127,8 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
     setSelecting(false);
     onChange({
       date: null,
-      startDate: moment().startOf('month'),
-      endDate: moment().endOf('month'),
-      displayedDate: moment()
+      startDate: today.startOf('month'),
+      endDate: today.endOf('month')
     });
   };
 
@@ -146,30 +140,28 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
         if (selecting) {
           if (_date.isBefore(startDate, 'day')) {
             setSelecting(true);
-            onChange({ startDate: _date, displayedDate: _date });
+            onChange({ startDate: _date });
           } else {
             setSelecting(!selecting);
-            onChange({ endDate: _date, displayedDate: _date });
+            onChange({ endDate: _date });
           }
         } else {
           setSelecting(!selecting);
           onChange({
             date: null,
             endDate: null,
-            startDate: _date,
-            displayedDate: _date
+            startDate: _date
           });
         }
       } else {
         onChange({
           date: _date,
           startDate: null,
-          endDate: null,
-          displayedDate: _date
+          endDate: null
         });
       }
     },
-    [moment, displayedDate, onChange, range, selecting, startDate]
+    [moment, onChange, range, selecting, startDate]
   );
 
   useEffect(() => {
@@ -182,8 +174,8 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
   useEffect(() => {
     function populateHeaders() {
       let _dayHeaders = [];
-      for (let i = 0; i <= 6; ++i) {
-        let day = moment(displayedDate).weekday(i).format('dddd').substr(0, 2);
+      for (let i = 0; i < 7; ++i) {
+        let day = today.weekday(i).format('dddd').substr(0, 2);
         _dayHeaders.push(<Header key={`dayHeader-${i}`} day={day} index={i} />);
       }
       return _dayHeaders;
@@ -191,7 +183,7 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
 
     function populateWeeks() {
       let _weeks = [];
-      let startOfMonth = moment(displayedDate).set('date', 1);
+      let startOfMonth = displayedDate.startOf('month');
       let offset = startOfMonth.weekday();
       let week = Array.from({ length: offset }, (x, i) => <Day empty key={'empty-' + i} />);
       let daysInMonth = displayedDate.daysInMonth();
@@ -228,44 +220,48 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
     populate();
   }, [startDate, endDate, date, moment, displayedDate, selected, disabled, minDate, maxDate, select]);
 
-  const node = (
-    <View>
-      <TouchableWithoutFeedback onPress={_onOpen}>
-        {children ? (
-          children
-        ) : (
-          <View>
-            <Text>Click me to show date picker</Text>
+  return (
+    <TouchableOpacity onPress={() => setIsOpen(true)}>
+      <Modal
+        onBackdropPress={() => setIsOpen(false)}
+        style={{
+          justifyContent: 'flex-end',
+          margin: 0
+        }}
+        animationInTiming={300}
+        animationOutTiming={300}
+        useNativeDriver
+        hideModalContentWhileAnimating
+        isVisible={isOpen}
+      >
+        <KeyboardAvoidingView
+          behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
+          style={[styles.modalContainer, { alignItems: 'center' }]}
+        >
+          <View style={styles.modalTitle}>
+            <Text>{displayedDate.format('MMMM') + ' ' + displayedDate.format('YYYY')}</Text>
           </View>
-        )}
-      </TouchableWithoutFeedback>
-    </View>
-  );
-
-  return isOpen ? (
-    <>
-      <View style={styles.backdrop}>
-        <TouchableWithoutFeedback style={styles.closeTrigger} onPress={_onClose}>
-          <View style={styles.closeContainer} />
-        </TouchableWithoutFeedback>
-        <View>
-          <View style={styles.container}>
-            <View style={styles.header}>
-              <TouchableOpacity onPress={previousMonth}>
-                <FontAwesome5 name="chevron-left" size={12} color={'#FC427B'} />
-              </TouchableOpacity>
-              <Text style={styles.headerText}>{displayedDate.format('MMMM') + ' ' + displayedDate.format('YYYY')}</Text>
-              <TouchableOpacity onPress={nextMonth}>
-                <FontAwesome5 name="chevron-right" size={12} color={'#FC427B'} />
-              </TouchableOpacity>
-            </View>
-            <View style={styles.calendar}>
-              {dayHeaders && <View style={styles.dayHeaderContainer}>{dayHeaders}</View>}
-              {weeks}
+          <View style={[styles.container]}>
+            <View style={{ minHeight: 446 }}>
+              <View style={styles.header}>
+                <TouchableOpacity onPress={previousMonth}>
+                  <FontAwesome5 name="chevron-left" size={12} color={'#FC427B'} />
+                </TouchableOpacity>
+                <Text style={styles.headerText}>
+                  {displayedDate.format('MMMM') + ' ' + displayedDate.format('YYYY')}
+                </Text>
+                <TouchableOpacity onPress={nextMonth}>
+                  <FontAwesome5 name="chevron-right" size={12} color={'#FC427B'} />
+                </TouchableOpacity>
+              </View>
+              <View style={styles.calendar}>
+                {dayHeaders && <View style={styles.dayHeaderContainer}>{dayHeaders}</View>}
+                {weeks}
+              </View>
             </View>
             {presetButtons && (
               <View style={styles.buttonContainer}>
-                <Button onPress={today}>Today</Button>
+                <Button onPress={onClickToday}>Today</Button>
                 {range && (
                   <>
                     <Button onPress={thisWeek}>This Week</Button>
@@ -275,12 +271,30 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
               </View>
             )}
           </View>
-        </View>
+        </KeyboardAvoidingView>
+      </Modal>
+      <View>
+        <TouchableWithoutFeedback onPress={_onOpen}>
+          <View
+            style={{
+              justifyContent: 'space-evenly',
+              flexDirection: 'row',
+              marginHorizontal: 10,
+              marginVertical: 10,
+              padding: 10,
+              borderWidth: 2,
+              borderStyle: 'solid',
+              borderColor: '#ced4da',
+              borderRadius: 8
+            }}
+          >
+            <Text>Data de Início</Text>
+            <FontAwesome5 name="arrow-right" size={15} color="#6c757d"></FontAwesome5>
+            <Text>Data de Fim</Text>
+          </View>
+        </TouchableWithoutFeedback>
       </View>
-      {node}
-    </>
-  ) : (
-    <>{node}</>
+    </TouchableOpacity>
   );
 };
 
@@ -292,28 +306,19 @@ DateRangePicker.defaultProps = {
 };
 
 const styles = StyleSheet.create({
-  backdrop: {
-    backgroundColor: 'rgba(0,0,0,0.6)',
-    position: 'absolute',
-    width: width,
-    height: height,
-    justifyContent: 'center',
-    alignItems: 'center',
-    zIndex: 2147483647
+  modalTitle: {
+    paddingBottom: 10,
+    alignItems: 'center'
+  },
+  modalContainer: {
+    paddingTop: 16,
+    backgroundColor: '#fff',
+    borderTopLeftRadius: 8,
+    borderTopRightRadius: 8
   },
   container: {
-    backgroundColor: 'white',
     borderRadius: 8,
     width: width * 0.85
-  },
-  closeTrigger: {
-    width: width,
-    height: height
-  },
-  closeContainer: {
-    width: '100%',
-    height: '100%',
-    position: 'absolute'
   },
   header: {
     flexDirection: 'row',
