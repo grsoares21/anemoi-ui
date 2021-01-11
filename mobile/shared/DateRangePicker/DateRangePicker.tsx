@@ -1,5 +1,5 @@
 import moment from 'moment';
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, VoidFunctionComponent } from 'react';
 import {
   KeyboardAvoidingView,
   Platform,
@@ -19,31 +19,26 @@ import { FontAwesome5 } from '@expo/vector-icons';
 
 const width = Dimensions.get('screen').width;
 
-export interface DateRangePickerState {
-  date?: moment.Moment | null;
-  startDate?: moment.Moment | null;
-  endDate?: moment.Moment | null;
-  selecting?: boolean;
-}
-
 interface DateRangePickerProps {
-  startDate?: moment.Moment | null;
-  endDate?: moment.Moment | null;
+  displayedStartDate?: moment.Moment;
+  displayedEndDate?: moment.Moment;
+  displayedDate?: moment.Moment;
   minDate?: moment.Moment;
   maxDate?: moment.Moment;
-  date?: moment.Moment | null;
   range: boolean;
-  onChange: (state: DateRangePickerState) => void;
+  onSelectPeriod?: (dates: { startDate: moment.Moment; endDate: moment.Moment }) => void;
+  onSelectDate?: (date: moment.Moment) => void;
   presetButtons?: boolean;
   open?: boolean;
 }
 
 const DateRangePicker: React.FC<DateRangePickerProps> = ({
-  startDate,
-  endDate,
-  onChange,
+  onSelectPeriod,
+  onSelectDate,
+  displayedDate,
+  displayedEndDate,
+  displayedStartDate,
   minDate,
-  date,
   maxDate,
   range,
   presetButtons,
@@ -54,8 +49,11 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
   const [isOpen, setIsOpen] = useState(false);
   const [weeks, setWeeks] = useState<JSX.Element[]>([]);
   const [selecting, setSelecting] = useState(false);
+  const [date, setDate] = useState<moment.Moment>();
+  const [startDate, setStartDate] = useState<moment.Moment>();
+  const [endDate, setEndDate] = useState<moment.Moment>();
   const [dayHeaders, setDayHeaders] = useState<JSX.Element[]>([]);
-  const [displayedDate, setDisplayedDate] = useState(today);
+  const [displayedMonthDate, setDisplayedMonthDate] = useState(today);
 
   const _onOpen = () => {
     if (typeof open !== 'boolean') onOpen();
@@ -63,24 +61,27 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
 
   const onOpen = () => {
     setIsOpen(true);
+    setSelecting(false);
+    setStartDate(undefined);
+    setEndDate(undefined);
+    setDate(undefined);
   };
 
   const onClose = () => {
     setIsOpen(false);
-    setSelecting(false);
-    if (!endDate) {
-      onChange({
-        endDate: startDate
-      });
+    if (range) {
+      onSelectPeriod && startDate && endDate && onSelectPeriod({ startDate, endDate });
+    } else {
+      onSelectDate && date && onSelectDate(date);
     }
   };
 
   const previousMonth = () => {
-    setDisplayedDate(moment(displayedDate.subtract(1, 'months')));
+    setDisplayedMonthDate(moment(displayedMonthDate.subtract(1, 'months')));
   };
 
   const nextMonth = () => {
-    setDisplayedDate(moment(displayedDate.add(1, 'months')));
+    setDisplayedMonthDate(moment(displayedMonthDate.add(1, 'months')));
   };
 
   const selected = useCallback((_date, _startDate, _endDate, __date) => {
@@ -98,78 +99,48 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
   const onClickToday = () => {
     if (range) {
       setSelecting(true);
-      onChange({
-        date: null,
-        startDate: today,
-        endDate: null,
-        selecting: true
-      });
+      setStartDate(today);
+      setEndDate(undefined);
     } else {
       setSelecting(false);
-      onChange({
-        date: today,
-        startDate: null,
-        endDate: null
-      });
+      setDate(today);
     }
   };
 
   const thisWeek = () => {
     setSelecting(false);
-    onChange({
-      date: null,
-      startDate: today.startOf('week'),
-      endDate: today.endOf('week')
-    });
+    setStartDate(today.startOf('week'));
+    setEndDate(today.endOf('week'));
   };
 
   const thisMonth = () => {
     setSelecting(false);
-    onChange({
-      date: null,
-      startDate: today.startOf('month'),
-      endDate: today.endOf('month')
-    });
+    setStartDate(today.startOf('month'));
+    setEndDate(today.endOf('month'));
   };
 
   const select = useCallback(
     day => {
-      let _date = moment(displayedDate);
+      let _date = moment(displayedMonthDate);
       _date.set('date', day);
       if (range) {
-        if (selecting) {
-          if (_date.isBefore(startDate, 'day')) {
-            setSelecting(true);
-            onChange({ startDate: _date });
-          } else {
-            setSelecting(!selecting);
-            onChange({ endDate: _date });
-          }
+        if (!selecting || (selecting && _date.isBefore(startDate, 'day'))) {
+          setSelecting(true);
+          setStartDate(_date);
         } else {
-          setSelecting(!selecting);
-          onChange({
-            date: null,
-            endDate: null,
-            startDate: _date
-          });
+          setSelecting(false);
+          setEndDate(_date);
         }
       } else {
-        onChange({
-          date: _date,
-          startDate: null,
-          endDate: null
-        });
+        setDate(_date);
       }
     },
-    [moment, onChange, range, selecting, startDate]
+    [moment, range, selecting, startDate]
   );
 
   useEffect(() => {
-    if (typeof open === 'boolean') {
-      if (open && !isOpen) onOpen();
-      else if (!open && isOpen) onClose();
-    }
-  }, [open]);
+    endDate && onClose();
+  }, [endDate]);
 
   useEffect(() => {
     function populateHeaders() {
@@ -183,13 +154,13 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
 
     function populateWeeks() {
       let _weeks = [];
-      let startOfMonth = displayedDate.startOf('month');
+      let startOfMonth = displayedMonthDate.startOf('month');
       let offset = startOfMonth.weekday();
       let week = Array.from({ length: offset }, (x, i) => <Day empty key={'empty-' + i} />);
-      let daysInMonth = displayedDate.daysInMonth();
+      let daysInMonth = displayedMonthDate.daysInMonth();
       week = week.concat();
       for (let i = 1; i <= daysInMonth; ++i) {
-        let _date = moment(displayedDate).set('date', i);
+        let _date = moment(displayedMonthDate).set('date', i);
         let _selected = selected(_date, startDate, endDate, date);
         let _disabled = disabled(_date, minDate, maxDate);
         week.push(
@@ -218,12 +189,12 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
       setWeeks(_weeks);
     }
     populate();
-  }, [startDate, endDate, date, moment, displayedDate, selected, disabled, minDate, maxDate, select]);
+  }, [startDate, endDate, date, moment, displayedMonthDate, selected, disabled, minDate, maxDate, select]);
 
   return (
-    <TouchableOpacity onPress={() => setIsOpen(true)}>
+    <TouchableOpacity onPress={onOpen}>
       <Modal
-        onBackdropPress={() => setIsOpen(false)}
+        onBackdropPress={onClose}
         style={{
           justifyContent: 'flex-end',
           margin: 0
@@ -238,8 +209,14 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
           behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
           style={[styles.modalContainer, { alignItems: 'center' }]}
         >
-          <View style={styles.modalTitle}>
-            <Text>{displayedDate.format('MMMM') + ' ' + displayedDate.format('YYYY')}</Text>
+          <View style={[styles.modalTitle, { flexDirection: 'row', justifyContent: 'space-evenly', width: '100%' }]}>
+            <Text style={{ borderColor: '#FC427B', borderBottomWidth: !selecting ? 2 : 0 }}>
+              {startDate?.format('DD/MM/YYYY') ?? 'Data de Início'}
+            </Text>
+            <FontAwesome5 name="arrow-right" size={15} color="#6c757d"></FontAwesome5>
+            <Text style={{ borderColor: '#FC427B', borderBottomWidth: selecting ? 2 : 0 }}>
+              {endDate?.format('DD/MM/YYYY') ?? 'Data de Fim'}
+            </Text>
           </View>
           <View style={[styles.container]}>
             <View style={{ minHeight: 446 }}>
@@ -248,7 +225,7 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
                   <FontAwesome5 name="chevron-left" size={12} color={'#FC427B'} />
                 </TouchableOpacity>
                 <Text style={styles.headerText}>
-                  {displayedDate.format('MMMM') + ' ' + displayedDate.format('YYYY')}
+                  {displayedMonthDate.locale('fr').format('MMMM') + ' ' + displayedMonthDate.format('YYYY')}
                 </Text>
                 <TouchableOpacity onPress={nextMonth}>
                   <FontAwesome5 name="chevron-right" size={12} color={'#FC427B'} />
@@ -288,9 +265,9 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
               borderRadius: 8
             }}
           >
-            <Text>Data de Início</Text>
+            <Text>{displayedStartDate?.format('DD/MM/YYYY') ?? 'Data de Início'}</Text>
             <FontAwesome5 name="arrow-right" size={15} color="#6c757d"></FontAwesome5>
-            <Text>Data de Fim</Text>
+            <Text>{displayedEndDate?.format('DD/MM/YYYY') ?? 'Data de Fim'}</Text>
           </View>
         </TouchableWithoutFeedback>
       </View>
@@ -307,8 +284,7 @@ DateRangePicker.defaultProps = {
 
 const styles = StyleSheet.create({
   modalTitle: {
-    paddingBottom: 10,
-    alignItems: 'center'
+    paddingBottom: 10
   },
   modalContainer: {
     paddingTop: 16,
