@@ -1,5 +1,5 @@
 const dev = {
-  anemoiServicesUrl: 'http://localhost:3001/'
+  anemoiServicesUrl: 'http://10.0.2.2:3001/'
 };
 
 const prod = {
@@ -8,4 +8,4 @@ const prod = {
 
 const config = process.env.NODE_ENV === 'production' ? prod : dev;
 
-export default config;
+export default prod;
