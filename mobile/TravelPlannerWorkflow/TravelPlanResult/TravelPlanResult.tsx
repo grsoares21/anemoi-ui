@@ -11,8 +11,7 @@ const TravelPlanResult: React.FC = () => {
   moment.locale('pt');
   const navigation = useNavigation();
   const {
-    state: { travelPlanResult },
-    dispatch
+    state: { travelPlanResult }
   } = useContext(TravelPlannerWorkflowContext);
 
   return (

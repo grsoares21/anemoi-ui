@@ -40,6 +40,12 @@ const TravelPeriodWorkflow: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { departureDateRange, arrivalDateRange } = state;
 
+  const isSearchable =
+    departureDateRange.startDate &&
+    departureDateRange.endDate &&
+    arrivalDateRange.startDate &&
+    arrivalDateRange.endDate;
+
   return (
     <View style={{ backgroundColor: 'white', flex: 1, padding: 10 }}>
       <View style={{ flex: 1 }}>
@@ -92,10 +98,11 @@ const TravelPeriodWorkflow: React.FC = () => {
             style={{
               alignItems: 'center',
               flex: 1,
-              backgroundColor: '#FC427B',
+              backgroundColor: isSearchable ? '#FC427B' : '#CCCCCC',
               borderRadius: 15,
               justifyContent: 'center'
             }}
+            disabled={!isSearchable}
             onPress={() => {
               setIsLoading(true);
               sendTravelPlanRequest(state).then(result => {
