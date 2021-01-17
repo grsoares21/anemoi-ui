@@ -1,30 +1,27 @@
 import React, { useRef } from 'react';
 import { useState } from 'react';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { StyleSheet, Text, Image, useWindowDimensions, Animated, Easing } from 'react-native';
 import Button from '../shared/Button/Button';
 import ClassLinearGradient from '../shared/ClassLinearGradient';
 
 const AnimatedLinearGradient = Animated.createAnimatedComponent(ClassLinearGradient);
 
-interface WelcomePageProps {
-  collapseCallback: () => void;
-}
-
-export default function WelcomePage(props: WelcomePageProps) {
+export default function WelcomePage() {
   const { height } = useWindowDimensions();
+  const insets = useSafeAreaInsets();
   const [welcomeCollapsed, setWelcomeCollapsed] = useState(false);
 
-  const collapseAnim = useRef(new Animated.Value(height)).current;
+  const collapseAnim = useRef(new Animated.Value(height + insets.top)).current;
   const contentFadeAnim = useRef(new Animated.Value(1)).current;
   const anemoiTitleFadeAnim = useRef(new Animated.Value(0)).current;
 
   const collapseWelcomePage = () => {
     Animated.timing(collapseAnim, {
-      toValue: 75,
+      toValue: 70,
       useNativeDriver: false,
       duration: 500
     }).start(() => {
-      props.collapseCallback();
       setWelcomeCollapsed(true);
       Animated.timing(anemoiTitleFadeAnim, {
         toValue: 1,
@@ -47,7 +44,8 @@ export default function WelcomePage(props: WelcomePageProps) {
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
       style={{
-        height: collapseAnim
+        height: collapseAnim,
+        paddingTop: insets.top > 26 ? 5 : 0
       }}
     >
       {!welcomeCollapsed && (

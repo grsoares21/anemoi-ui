@@ -15,6 +15,7 @@ mobile/npm-debug.*
 *.jks
 *.p8
 *.p12
+*.log
 *.key
 *.mobileprovision
 *.orig.*
