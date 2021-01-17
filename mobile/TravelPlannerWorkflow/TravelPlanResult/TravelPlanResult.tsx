@@ -1,14 +1,14 @@
 import { Entypo, FontAwesome5 } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import moment from 'moment';
+
 import React, { useContext } from 'react';
 import { ScrollView, TouchableOpacity, View, Text } from 'react-native';
 import AirplaneTravelIcon from './AirplaneTravelIcon';
 import { TravelPlannerWorkflowContext } from '../TravelPlannerWorkflow.state';
 import * as Linking from 'expo-linking';
+import { format } from 'date-fns';
 
 const TravelPlanResult: React.FC = () => {
-  moment.locale('pt');
   const navigation = useNavigation();
   const {
     state: { travelPlanResult }
@@ -59,7 +59,7 @@ const TravelPlanResult: React.FC = () => {
                   fontWeight: '700'
                 }}
               >
-                {moment(startTime).format('LLL')}
+                {format(new Date(startTime), 'Pp')}
               </Text>
             </View>
             <AirplaneTravelIcon width="30%" height="80%" />
@@ -92,7 +92,7 @@ const TravelPlanResult: React.FC = () => {
                   fontWeight: '700'
                 }}
               >
-                {moment(endTime).format('LLL')}
+                {format(new Date(endTime), 'Pp')}
               </Text>
             </View>
           </View>

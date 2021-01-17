@@ -20,6 +20,7 @@
     "@types/lodash.debounce": "^4.0.6",
     "@types/react-daterange-picker": "^2.0.4",
     "@webileapps/rn-range-slider": "^0.0.11",
+    "date-fns": "^2.16.1",
     "expo": "~39.0.2",
     "expo-linear-gradient": "~8.3.0",
     "expo-status-bar": "~1.0.2",

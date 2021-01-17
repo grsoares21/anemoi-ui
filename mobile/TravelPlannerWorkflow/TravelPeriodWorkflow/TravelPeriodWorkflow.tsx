@@ -1,8 +1,7 @@
 import { AnemoiServices } from '@anemoi-ui/services';
-import TravelPlanParameters from '@anemoi-ui/services/AnemoiServices/TravelPlanParameters';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import moment from 'moment';
+
 import React, { useContext, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
 import DateRangePicker from '../../shared/DateRangePicker/DateRangePicker';
@@ -57,14 +56,14 @@ const TravelPeriodWorkflow: React.FC = () => {
             dispatch({
               type: 'setDateRanges',
               dateRanges: {
-                departureDateRange: { startDate: startDate.toDate(), endDate: endDate.toDate() },
+                departureDateRange: { startDate, endDate },
                 arrivalDateRange
               }
             });
           }}
           range
-          displayedStartDate={departureDateRange.startDate ? moment(departureDateRange.startDate) : undefined}
-          displayedEndDate={departureDateRange.endDate ? moment(departureDateRange.endDate) : undefined}
+          displayedStartDate={departureDateRange.startDate ?? undefined}
+          displayedEndDate={departureDateRange.endDate ?? undefined}
         />
         <Text>Possivel periodo de chegada:</Text>
         <DateRangePicker
@@ -73,13 +72,13 @@ const TravelPeriodWorkflow: React.FC = () => {
               type: 'setDateRanges',
               dateRanges: {
                 departureDateRange,
-                arrivalDateRange: { startDate: startDate.toDate(), endDate: endDate.toDate() }
+                arrivalDateRange: { startDate, endDate }
               }
             });
           }}
           range
-          displayedStartDate={arrivalDateRange.startDate ? moment(arrivalDateRange.startDate) : undefined}
-          displayedEndDate={arrivalDateRange.endDate ? moment(arrivalDateRange.endDate) : undefined}
+          displayedStartDate={arrivalDateRange.startDate ?? undefined}
+          displayedEndDate={arrivalDateRange.endDate ?? undefined}
         />
       </View>
 
