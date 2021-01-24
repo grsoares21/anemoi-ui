@@ -8,9 +8,6 @@ class AnemoiServices {
   calculateTravelPlan(parameters: TravelPlanParameters): Promise<TravelPlanResult> {
     let searchUrl = this.baseUrl + 'calculateTravelPlan';
 
-    console.log(searchUrl);
-    console.log(JSON.stringify(parameters));
-
     return fetch(searchUrl, {
       method: 'POST',
       headers: {
