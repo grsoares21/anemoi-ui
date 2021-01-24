@@ -1,9 +1,10 @@
 import React, { useRef } from 'react';
 import { useState } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { StyleSheet, Text, Image, useWindowDimensions, Animated, Easing } from 'react-native';
+import { StyleSheet, Text, Image, useWindowDimensions } from 'react-native';
 import Button from '../shared/Button/Button';
 import ClassLinearGradient from '../shared/ClassLinearGradient';
+import Animated, { Easing } from 'react-native-reanimated';
 
 const AnimatedLinearGradient = Animated.createAnimatedComponent(ClassLinearGradient);
 
@@ -19,20 +20,19 @@ export default function WelcomePage() {
   const collapseWelcomePage = () => {
     Animated.timing(collapseAnim, {
       toValue: 70,
-      useNativeDriver: false,
-      duration: 500
+      duration: 500,
+      easing: Easing.linear
     }).start(() => {
       setWelcomeCollapsed(true);
       Animated.timing(anemoiTitleFadeAnim, {
         toValue: 1,
-        useNativeDriver: false,
-        duration: 300
+        duration: 300,
+        easing: Easing.linear
       }).start();
     });
 
     Animated.timing(contentFadeAnim, {
       toValue: 0,
-      useNativeDriver: false,
       duration: 200,
       easing: Easing.linear
     }).start();
