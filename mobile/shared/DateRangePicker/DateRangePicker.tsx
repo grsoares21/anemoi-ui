@@ -152,7 +152,7 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
         setSelectedDate(_date);
       }
     },
-    [range, selecting, startDate]
+    [range, selecting, startDate, displayedMonthDate]
   );
 
   useEffect(() => {
