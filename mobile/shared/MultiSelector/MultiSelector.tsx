@@ -22,17 +22,8 @@ interface MultiSelectorOptionProps {
   onRemove: () => void;
 }
 
-const MultiSelectorOption: React.FC<MultiSelectorOptionProps> = ({
-  option,
-  onSelect,
-  onRemove,
-  selected
-}) => (
-  <TouchableOpacity
-    onPress={() => (selected ? onRemove() : onSelect())}
-    activeOpacity={0.7}
-    style={styles.itemWrapper}
-  >
+const MultiSelectorOption: React.FC<MultiSelectorOptionProps> = ({ option, onSelect, onRemove, selected }) => (
+  <TouchableOpacity onPress={() => (selected ? onRemove() : onSelect())} activeOpacity={0.7} style={styles.itemWrapper}>
     <Text style={styles.itemText}>{option.name}</Text>
     <FontAwesome5
       style={styles.itemIcon}
@@ -76,10 +67,7 @@ const MultiSelector: React.FC<MultiSelectorProps> = ({
     <TouchableOpacity
       onPress={() => disabled || setIsModalOpen(true)}
       activeOpacity={disabled ? 1 : 0.7}
-      style={[
-        styles.container,
-        { backgroundColor: disabled ? '#cacaca' : '#FFF' }
-      ]}
+      style={[styles.container, { backgroundColor: disabled ? '#cacaca' : '#FFF' }]}
     >
       <Modal
         onBackdropPress={() => setIsModalOpen(false)}
@@ -95,7 +83,7 @@ const MultiSelector: React.FC<MultiSelectorProps> = ({
       >
         <KeyboardAvoidingView
           behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
-          style={[styles.modalContainer, { height: 500 }]}
+          style={[styles.modalContainer, { minHeight: 350 }]}
         >
           <View style={styles.modalTitle}>{popupTitle}</View>
           <View style={styles.line} />
@@ -120,9 +108,7 @@ const MultiSelector: React.FC<MultiSelectorProps> = ({
               <MultiSelectorOption
                 option={item}
                 key={index}
-                selected={selectedItems.some(
-                  selectedItem => selectedItem.id === item.id
-                )}
+                selected={selectedItems.some(selectedItem => selectedItem.id === item.id)}
                 onSelect={() => onSelectItem(item)}
                 onRemove={() => onRemoveItem(item)}
               />
@@ -203,6 +189,7 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap'
   },
   listOption: {
+    height: 200,
     paddingHorizontal: 24,
     paddingTop: 1,
     marginTop: 16
