@@ -238,14 +238,14 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
           <View style={[styles.container]}>
             <View style={{ minHeight: 446 }}>
               <View style={styles.header}>
-                <TouchableOpacity onPress={previousMonth}>
-                  <FontAwesome5 name="chevron-left" size={12} color={'#FC427B'} />
+                <TouchableOpacity onPress={previousMonth} style={styles.monthButtons}>
+                  <FontAwesome5 name="chevron-left" size={20} color={'#FC427B'} />
                 </TouchableOpacity>
                 <Text style={styles.headerText}>
                   {format(displayedMonthDate, 'MMMM', { locale: pt }) + ' ' + format(displayedMonthDate, 'yyyy')}
                 </Text>
-                <TouchableOpacity onPress={nextMonth}>
-                  <FontAwesome5 name="chevron-right" size={12} color={'#FC427B'} />
+                <TouchableOpacity onPress={nextMonth} style={styles.monthButtons}>
+                  <FontAwesome5 name="chevron-right" size={20} color={'#FC427B'} />
                 </TouchableOpacity>
               </View>
               <View style={styles.calendar}>
@@ -321,7 +321,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0.5,
     paddingLeft: 20,
     paddingRight: 20,
-    paddingTop: 20,
+    paddingTop: 10,
     paddingBottom: 15
   },
   calendar: {
@@ -335,10 +335,8 @@ const styles = StyleSheet.create({
     color: 'black'
   },
   monthButtons: {
-    fontSize: 16,
-    color: 'black',
-    width: 32,
-    height: 32
+    paddingVertical: 15,
+    paddingHorizontal: 20
   },
   dayHeaderContainer: {
     flexDirection: 'row',
